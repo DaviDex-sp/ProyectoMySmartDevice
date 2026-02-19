@@ -5,7 +5,7 @@ using ProyectoMSD.Modelos;
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurar para escuchar en todas las interfaces de red en el puerto 5000
-builder.WebHost.UseUrls("http://0.0.0.0:5000");
+//builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 builder.Services.AddRazorPages();
 
