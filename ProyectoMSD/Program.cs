@@ -20,11 +20,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "MySmartDeviceCookie";
     });
 
-// Configurar el DbContext usando la versión compatible con TiDB (MySQL 8.0)
+// Configurar el DbContext usando la versión compatible con TiDB (MySQL 8.0) y tolerancia a fallos
 var connString = builder.Configuration.GetConnectionString("ConexionSQL");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connString, ServerVersion.Parse("8.0-mysql"))
+    options.UseMySql(
+        connString,
+        ServerVersion.Parse("8.0-mysql"),
+        mySqlOptions => mySqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5, // Intentará conectarse 5 veces antes de rendirse
+            maxRetryDelay: TimeSpan.FromSeconds(10), // Esperará hasta 10 segundos entre intentos
+            errorNumbersToAdd: null)
+    )
 );
 
 var app = builder.Build();
