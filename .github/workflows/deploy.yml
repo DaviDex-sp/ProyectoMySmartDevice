@@ -1,0 +1,32 @@
+name: Despliegue de MySmartDevice a Azure
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Descargar código fuente
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Configurar entorno .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x' # Usa .NET 8 (Si tu Visual Studio usa otra versión como 6 o 7, cámbiala aquí)
+
+    - name: 🔨 Compilar y Publicar el proyecto
+      run: |
+        dotnet restore
+        dotnet build --configuration Release
+        dotnet publish -c Release -o '${{ env.DOTNET_ROOT }}/myapp'
+
+    - name: 🚀 Despliegue en Azure Web App
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: 'mysmartdeviceproject'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: '${{ env.DOTNET_ROOT }}/myapp'
