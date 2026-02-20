@@ -20,11 +20,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "MySmartDeviceCookie";
     });
 
-// Configurar el DbContext usando una versión fija de XAMPP/MariaDB para evitar el error 500.30
+// Configurar el DbContext usando la versión compatible con TiDB (MySQL 8.0)
 var connString = builder.Configuration.GetConnectionString("ConexionSQL");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connString, ServerVersion.Parse("10.4-mariadb"))
+    options.UseMySql(connString, ServerVersion.Parse("8.0-mysql"))
 );
 
 var app = builder.Build();
