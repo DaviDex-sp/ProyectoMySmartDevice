@@ -4,10 +4,11 @@ using ProyectoMSD.Modelos;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración de las páginas Razor
+// ELIMINAMOS el UseUrls("http://0.0.0.0:5000") porque rompe Azure. 
+// En local, Visual Studio abrirá el puerto correcto automáticamente.
+
 builder.Services.AddRazorPages();
 
-// Configuración de la Autenticación por Cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -19,7 +20,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "MySmartDeviceCookie";
     });
 
-// Configurar el DbContext con MySQL usando la versión fija de XAMPP/MariaDB
+// Configurar el DbContext usando una versión fija de XAMPP/MariaDB para evitar el error 500.30
 var connString = builder.Configuration.GetConnectionString("ConexionSQL");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -28,29 +29,32 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-// ------------------------------------------------------------------
-// BLINDAJE DE ARRANQUE: Forzamos la página de errores para depuración 
-// y protegemos la conexión inicial a la base de datos.
-// ------------------------------------------------------------------
-app.UseDeveloperExceptionPage();
-
+// Proteger la base de datos en el arranque para que la web no colapse si Ngrok o MySQL demoran
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     try
     {
-        // Intenta conectar y crear las tablas si no existen
         context.Database.EnsureCreated();
     }
     catch (Exception ex)
     {
-        // Si Ngrok demora, atrapa el error pero permite que la web cargue
-        Console.WriteLine("Error de BD en el arranque: " + ex.Message);
+        Console.WriteLine("Error de DB en el arranque: " + ex.Message);
     }
 }
-// ------------------------------------------------------------------
 
 // Configuración del pipeline HTTP
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+else
+{
+    // Muestra errores detallados solo cuando estás desarrollando en tu PC
+    app.UseDeveloperExceptionPage();
+}
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -60,6 +64,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-app.MapRazorPages().WithStaticAssets();
+app.MapRazorPages()
+   .WithStaticAssets();
 
 app.Run();
