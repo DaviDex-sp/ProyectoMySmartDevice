@@ -52,4 +52,4 @@ jobs:
           app-name: 'mysmartdeviceproject'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7C17B097433B4351A0D3AE2C673F3798 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4DAB483BD0AD4B508EF596FA4502DC51 }}
