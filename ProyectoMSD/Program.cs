@@ -23,19 +23,14 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 // 1. COMENTAMOS la línea que lee el archivo JSON para que no nos haga trampa
 // var connString = builder.Configuration.GetConnectionString("ConexionSQL");
 
-// 2. FORZAMOS la cadena exacta directamente en el código
-var connString = "Server=gateway01.us-east-1.prod.aws.tidbcloud.com;Port=4000;Database=test;Uid=mvrEn43J8gcsDi3.root;Pwd=8ZesKFBuEHHGcNgZ;SslMode=Required;";
+var connectionString = builder.Configuration.GetConnectionString("ConexionSQL");
 
-// 3. El DbContext queda igual, con sus reintentos
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(
-        connString,
-        ServerVersion.Parse("8.0-mysql"),
+builder.Services.AddDbContext<TuDbContext>(options =>
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
         mySqlOptions => mySqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(10),
-            errorNumbersToAdd: null)
-    )
+            errorNumbersToAdd: null))
 );
 var app = builder.Build();
 
