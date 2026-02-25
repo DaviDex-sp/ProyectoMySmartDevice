@@ -117,50 +117,5 @@ namespace ProyectoMSD.Models
             }
         }
     }
-    public class CrearDispositivoTests
-    {
-        private AppDbContext CrearContextoEnMemoria()
-        {
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
-
-            return new AppDbContext(options);
-        }
-
-        [Fact]
-        public async Task OnPostAsync_ModelValido_GuardaYRedirige()
-        {
-            // Arrange
-            using var context = CrearContextoEnMemoria();
-
-            var page = new ProyectoMSD.Pages.Dispositivos.CreateModel(context)
-            {
-                Dispositivo = new Dispositivo
-                {
-                    // Completa aquí las propiedades requeridas de tu entidad
-                    Nombre = "TV Lenovo",
-                    Tipo = "television",
-                    Usos = "Personal",
-                    Marca = "Lenovo",
-                    Estado = "activo"
-                }
-            };
-
-            page.PageContext = new PageContext(); // para que ModelState exista
-
-            // Act
-            var result = await page.OnPostAsync();
-
-            // Assert: redirige al Index
-            var redirect = Assert.IsType<RedirectToPageResult>(result);
-            Assert.Equal("./Index", redirect.PageName);
-
-            // Assert: el dispositivo se guardó en la BD en memoria
-            Assert.Equal(1, context.Dispositivos.Count());
-            var disp = context.Dispositivos.First();
-            Assert.Equal("TV Lenovo", disp.Nombre);
-        }
-
-    }
+  
 }

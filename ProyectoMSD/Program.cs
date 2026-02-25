@@ -4,34 +4,35 @@ using ProyectoMSD.Modelos;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Servicios de Razor Pages y Autenticación
+// Servicios de Razor Pages
 builder.Services.AddRazorPages();
 
+// Configuración de Autenticación
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Index";
         options.AccessDeniedPath = "/Denegada";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+
+        options.ClaimsIssuer = CookieAuthenticationDefaults.AuthenticationScheme;
         options.Cookie.Name = "MySmartDeviceCookie";
     });
 
-<<<<<<< HEAD
-// Configuración profesional: Leemos la cadena desde el JSON (local) o Variables de Entorno (Azure)
+// 1. LEEMOS LA CADENA DESDE LA CONFIGURACIÓN (Seguridad Profesional)
+// En local leerá el appsettings.json. En la nube leerá la variable de Azure.
 var connString = builder.Configuration.GetConnectionString("ConexionSQL");
 
-// Conectamos a Aiven usando Pomelo configurado para MySQL 8.0
-=======
-// Configuración del DbContext: Ahora lee la cadena desde Azure y autodetecta la versión
-var connString = builder.Configuration.GetConnectionString("ConexionSQL");
-
->>>>>>> b1580d9aeed806651ac03c50aa3af5cc96101938
+// 2. CONFIGURACIÓN DEL DBCONTEXT PARA MYSQL 8.0 (Aiven/Azure)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connString, ServerVersion.AutoDetect(connString),
+    options.UseMySql(
+        connString,
+        ServerVersion.Parse("8.0-mysql"),
         mySqlOptions => mySqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
             maxRetryDelay: TimeSpan.FromSeconds(10),
-            errorNumbersToAdd: null))
+            errorNumbersToAdd: null)
+    )
 );
 
 var app = builder.Build();
@@ -44,17 +45,20 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
+    // Muestra errores detallados solo cuando estás desarrollando en tu PC
     app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-app.MapRazorPages().WithStaticAssets();
+app.MapRazorPages()
+   .WithStaticAssets();
 
 app.Run();
