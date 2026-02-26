@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,9 +23,10 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Propiedade> Propiedades { get; set; }
     public virtual DbSet<Soporte> Soportes { get; set; }
     public virtual DbSet<Usuario> Usuarios { get; set; }
+    public virtual DbSet<RegistroAcceso> RegistroAccesos { get; set; }
 
-    // NOTA PROFESIONAL: El mÃ©todo OnConfiguring se eliminÃ³ por completo 
-    // para evitar que fuerce la conexiÃ³n local a 127.0.0.1.
+    // NOTA PROFESIONAL: El método OnConfiguring se eliminó por completo 
+    // para evitar que fuerce la conexión local a 127.0.0.1.
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -99,7 +100,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.IdPropiedades).HasColumnType("int(11)").HasColumnName("ID_Propiedades");
             entity.Property(e => e.Nombre).HasMaxLength(250);
             entity.Property(e => e.Permisos).HasMaxLength(250);
-            entity.Property(e => e.SeÃ±al).HasColumnType("int(11)");
+            entity.Property(e => e.Señal).HasColumnType("int(11)");
             entity.Property(e => e.Ubicacion).HasMaxLength(250);
 
             entity.HasOne(d => d.IdPropiedadesNavigation).WithMany(p => p.Espacios)
@@ -159,6 +160,27 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Ubicacion).HasMaxLength(250);
         });
 
+
+        modelBuilder.Entity<RegistroAcceso>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("registro_accesos");
+            entity.HasIndex(e => e.IdUsuarios, "ID_Usuarios");
+            entity.HasIndex(e => e.FechaAcceso, "IX_FechaAcceso");
+            entity.Property(e => e.Id).HasColumnType("int(11)").HasColumnName("ID");
+            entity.Property(e => e.IdUsuarios).HasColumnType("int(11)").HasColumnName("ID_Usuarios");
+            entity.Property(e => e.FechaAcceso).HasColumnType("datetime");
+            entity.Property(e => e.TipoAccion).HasMaxLength(50);
+            entity.Property(e => e.DireccionIp).HasMaxLength(45).HasColumnName("Direccion_Ip");
+            entity.Property(e => e.Navegador).HasMaxLength(500);
+            entity.Property(e => e.PaginaVisitada).HasMaxLength(250).HasColumnName("Pagina_Visitada");
+            entity.Property(e => e.DuracionSesion).HasColumnType("int(11)").HasColumnName("Duracion_Sesion");
+
+            entity.HasOne(d => d.IdUsuariosNavigation).WithMany(p => p.RegistroAccesos)
+                .HasForeignKey(d => d.IdUsuarios)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("registro_accesos_ibfk_1");
+        });
         OnModelCreatingPartial(modelBuilder);
     }
 

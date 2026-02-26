@@ -1,0 +1,335 @@
+@page
+@model ProyectoMSD.Pages.Dashboard.IndexModel
+
+@{
+    ViewData["Title"] = "Dashboard Admin";
+}
+
+@section Styles {
+    <link href="~/css/pages/dashboard.css" rel="stylesheet" />
+}
+
+<!-- Dashboard Header -->
+<div class="dashboard-header">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div>
+            <h1><i class="fas fa-shield-alt me-2"></i>Dashboard Administrativo</h1>
+            <p>Panel de control y métricas del sistema MySmartDevice</p>
+        </div>
+        <div class="header-badge">
+            <i class="fas fa-circle text-success" style="font-size:0.5rem;"></i>
+            Sistema Activo — @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+        </div>
+    </div>
+</div>
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+    <div class="kpi-card blue">
+        <div class="kpi-icon blue"><i class="fas fa-users"></i></div>
+        <div class="kpi-value">@Model.TotalUsuarios</div>
+        <div class="kpi-label">Usuarios Registrados</div>
+    </div>
+    <div class="kpi-card green">
+        <div class="kpi-icon green"><i class="fas fa-mobile-alt"></i></div>
+        <div class="kpi-value">@Model.TotalDispositivos</div>
+        <div class="kpi-label">Dispositivos</div>
+    </div>
+    <div class="kpi-card purple">
+        <div class="kpi-icon purple"><i class="fas fa-building"></i></div>
+        <div class="kpi-value">@Model.TotalPropiedades</div>
+        <div class="kpi-label">Propiedades</div>
+    </div>
+    <div class="kpi-card cyan">
+        <div class="kpi-icon cyan"><i class="fas fa-map-marked-alt"></i></div>
+        <div class="kpi-value">@Model.TotalEspacios</div>
+        <div class="kpi-label">Espacios</div>
+    </div>
+    <div class="kpi-card orange">
+        <div class="kpi-icon orange"><i class="fas fa-ticket-alt"></i></div>
+        <div class="kpi-value">@Model.TotalSoportes</div>
+        <div class="kpi-label">Total Soportes</div>
+    </div>
+    <div class="kpi-card red">
+        <div class="kpi-icon red"><i class="fas fa-exclamation-circle"></i></div>
+        <div class="kpi-value">@Model.SoportesPendientes</div>
+        <div class="kpi-label">Soportes Pendientes</div>
+    </div>
+    <div class="kpi-card indigo">
+        <div class="kpi-icon indigo"><i class="fas fa-cogs"></i></div>
+        <div class="kpi-value">@Model.TotalConfiguraciones</div>
+        <div class="kpi-label">Configuraciones</div>
+    </div>
+    <div class="kpi-card pink">
+        <div class="kpi-icon pink"><i class="fas fa-sign-in-alt"></i></div>
+        <div class="kpi-value">@Model.TotalAccesosHoy</div>
+        <div class="kpi-label">Accesos Hoy</div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="charts-grid">
+    <!-- Accesos últimos 7 días -->
+    <div class="chart-card">
+        <h3><i class="fas fa-chart-line"></i>Accesos — Últimos 7 Días</h3>
+        <div class="chart-container">
+            <canvas id="chartAccesos"></canvas>
+        </div>
+    </div>
+
+    <!-- Dispositivos por tipo -->
+    <div class="chart-card">
+        <h3><i class="fas fa-chart-pie"></i>Dispositivos por Tipo</h3>
+        <div class="chart-container">
+            <canvas id="chartDispTipo"></canvas>
+        </div>
+    </div>
+
+    <!-- Soportes por tipo -->
+    <div class="chart-card">
+        <h3><i class="fas fa-chart-bar"></i>Soportes por Tipo</h3>
+        <div class="chart-container">
+            <canvas id="chartSopTipo"></canvas>
+        </div>
+    </div>
+
+    <!-- Usuarios por rol -->
+    <div class="chart-card">
+        <h3><i class="fas fa-user-shield"></i>Usuarios por Rol</h3>
+        <div class="chart-container">
+            <canvas id="chartUsrRol"></canvas>
+        </div>
+    </div>
+
+    <!-- Dispositivos por estado -->
+    <div class="chart-card">
+        <h3><i class="fas fa-toggle-on"></i>Dispositivos por Estado</h3>
+        <div class="chart-container">
+            <canvas id="chartDispEstado"></canvas>
+        </div>
+    </div>
+
+    <!-- Propiedades por tipo -->
+    <div class="chart-card">
+        <h3><i class="fas fa-home"></i>Propiedades por Tipo</h3>
+        <div class="chart-container">
+            <canvas id="chartPropTipo"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Data Tables -->
+<div class="tables-grid">
+    <!-- Últimos Accesos -->
+    <div class="data-table-card">
+        <h3><i class="fas fa-history"></i>Últimos Accesos</h3>
+        <div class="table-responsive">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Fecha</th>
+                        <th>Acción</th>
+                        <th>IP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.UltimosAccesos.Any())
+                    {
+                        @foreach (var acceso in Model.UltimosAccesos)
+                        {
+                            <tr>
+                                <td><i class="fas fa-user me-1 text-primary"></i>@(acceso.IdUsuariosNavigation?.Nombre ?? "N/A")</td>
+                                <td>@acceso.FechaAcceso.ToString("dd/MM/yy HH:mm")</td>
+                                <td>
+                                    @if (acceso.TipoAccion == "Login")
+                                    {
+                                        <span class="badge bg-success">Login</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Logout</span>
+                                    }
+                                </td>
+                                <td><code>@(acceso.DireccionIp ?? "—")</code></td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4" class="text-center text-muted py-3">Sin registros de acceso aún</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Usuarios Más Activos -->
+    <div class="data-table-card">
+        <h3><i class="fas fa-trophy"></i>Usuarios Más Activos</h3>
+        <div class="table-responsive">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Usuario</th>
+                        <th>Accesos</th>
+                        <th>Último</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.UsuariosMasActivos.Any())
+                    {
+                        var rank = 1;
+                        @foreach (var usr in Model.UsuariosMasActivos)
+                        {
+                            <tr>
+                                <td>
+                                    @if (rank == 1) { <span class="badge bg-warning text-dark">🥇</span> }
+                                    else if (rank == 2) { <span class="badge bg-secondary">🥈</span> }
+                                    else if (rank == 3) { <span class="badge bg-dark">🥉</span> }
+                                    else { <span class="badge bg-light text-dark">@rank</span> }
+                                </td>
+                                <td>@usr.Nombre</td>
+                                <td><strong>@usr.TotalAccesos</strong></td>
+                                <td>@usr.UltimoAcceso.ToString("dd/MM/yy")</td>
+                            </tr>
+                            rank++;
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4" class="text-center text-muted py-3">Sin datos de actividad</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Últimos Soportes -->
+    <div class="data-table-card">
+        <h3><i class="fas fa-headset"></i>Últimos Tickets de Soporte</h3>
+        <div class="table-responsive">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tipo</th>
+                        <th>Usuario</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sop in Model.UltimosSoportes)
+                    {
+                        <tr>
+                            <td>#@sop.Id</td>
+                            <td>@sop.Tipo</td>
+                            <td>@(sop.IdUsuariosNavigation?.Nombre ?? "N/A")</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(sop.Respuesta))
+                                {
+                                    <span class="badge bg-success">Respondido</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<script>
+    // Paleta de colores profesional
+    const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#6366f1'];
+    const COLORS_SOFT = ['rgba(59,130,246,0.7)', 'rgba(16,185,129,0.7)', 'rgba(245,158,11,0.7)', 'rgba(239,68,68,0.7)', 'rgba(139,92,246,0.7)', 'rgba(6,182,212,0.7)', 'rgba(236,72,153,0.7)', 'rgba(99,102,241,0.7)'];
+
+    Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+
+    // 1. Accesos últimos 7 días (Línea)
+    const accesosData = @Html.Raw(Model.AccesosPorDiaJson);
+    new Chart(document.getElementById('chartAccesos'), {
+        type: 'line',
+        data: {
+            labels: accesosData.labels,
+            datasets: [{
+                label: 'Logins',
+                data: accesosData.data,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59,130,246,0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointBackgroundColor: '#3b82f6',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                borderWidth: 3
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // 2. Dispositivos por Tipo (Donut)
+    const dispTipoData = @Html.Raw(Model.DispositivosPorTipoJson);
+    new Chart(document.getElementById('chartDispTipo'), {
+        type: 'doughnut',
+        data: {
+            labels: dispTipoData.labels,
+            datasets: [{ data: dispTipoData.data, backgroundColor: COLORS, borderWidth: 3, borderColor: '#fff' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // 3. Soportes por Tipo (Barras)
+    const sopTipoData = @Html.Raw(Model.SoportesPorTipoJson);
+    new Chart(document.getElementById('chartSopTipo'), {
+        type: 'bar',
+        data: {
+            labels: sopTipoData.labels,
+            datasets: [{ label: 'Tickets', data: sopTipoData.data, backgroundColor: COLORS_SOFT, borderColor: COLORS, borderWidth: 2, borderRadius: 8 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // 4. Usuarios por Rol (Pie)
+    const usrRolData = @Html.Raw(Model.UsuariosPorRolJson);
+    new Chart(document.getElementById('chartUsrRol'), {
+        type: 'pie',
+        data: {
+            labels: usrRolData.labels,
+            datasets: [{ data: usrRolData.data, backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'], borderWidth: 3, borderColor: '#fff' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // 5. Dispositivos por Estado (Donut)
+    const dispEstadoData = @Html.Raw(Model.DispositivosPorEstadoJson);
+    new Chart(document.getElementById('chartDispEstado'), {
+        type: 'doughnut',
+        data: {
+            labels: dispEstadoData.labels,
+            datasets: [{ data: dispEstadoData.data, backgroundColor: ['#10b981', '#ef4444', '#f59e0b', '#6366f1'], borderWidth: 3, borderColor: '#fff' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // 6. Propiedades por Tipo (Barras Horizontales)
+    const propTipoData = @Html.Raw(Model.PropiedadesPorTipoJson);
+    new Chart(document.getElementById('chartPropTipo'), {
+        type: 'bar',
+        data: {
+            labels: propTipoData.labels,
+            datasets: [{ label: 'Propiedades', data: propTipoData.data, backgroundColor: COLORS_SOFT, borderColor: COLORS, borderWidth: 2, borderRadius: 8 }]
+        },
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+</script>

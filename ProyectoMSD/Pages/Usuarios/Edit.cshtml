@@ -99,7 +99,24 @@
                         <label class="form-label">
                             <i class="fas fa-map-marker-alt me-1 text-primary"></i>Ubicación
                         </label>
-                        <input asp-for="Usuario.Ubicacion" class="form-control" placeholder="Ciudad, País" />
+                        <select asp-for="Usuario.Ubicacion" class="form-select">
+                            <option value="">Seleccionar ciudad...</option>
+                            <option value="Bogotá">Bogotá</option>
+                            <option value="Medellín">Medellín</option>
+                            <option value="Cali">Cali</option>
+                            <option value="Barranquilla">Barranquilla</option>
+                            <option value="Cartagena">Cartagena</option>
+                            <option value="Bucaramanga">Bucaramanga</option>
+                            <option value="Pereira">Pereira</option>
+                            <option value="Manizales">Manizales</option>
+                            <option value="Santa Marta">Santa Marta</option>
+                            <option value="Cúcuta">Cúcuta</option>
+                            <option value="Ibagué">Ibagué</option>
+                            <option value="Villavicencio">Villavicencio</option>
+                            <option value="Pasto">Pasto</option>
+                            <option value="Neiva">Neiva</option>
+                            <option value="Armenia">Armenia</option>
+                        </select>
                         <span asp-validation-for="Usuario.Ubicacion" class="text-danger"></span>
                     </div>
 
@@ -109,8 +126,8 @@
                         </label>
                         <select asp-for="Usuario.Permisos" class="form-control">
                             <option value="">Seleccionar permisos...</option>
-                            <option value="completo">🔓 Acceso Completo</option>
-                            <option value="solo_lectura">👁️ Solo Lectura</option>
+                            <option value="completo">Acceso Completo</option>
+                            <option value="solo_lectura">Solo Lectura</option>
                         </select>
                         <span asp-validation-for="Usuario.Permisos" class="text-danger"></span>
                     </div>
@@ -137,8 +154,8 @@
                         </label>
                         <select asp-for="Usuario.Acesso" class="form-control">
                             <option value="">Seleccionar estado...</option>
-                            <option value="activo">✅ Activo</option>
-                            <option value="inactivo">❌ Inactivo</option>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
                         </select>
                         <span asp-validation-for="Usuario.Acesso" class="text-danger"></span>
                     </div>

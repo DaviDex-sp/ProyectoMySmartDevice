@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -42,4 +42,6 @@ public partial class Usuario
     public virtual ICollection<Propiedade> Propiedades { get; set; } = new List<Propiedade>();
 
     public virtual ICollection<Soporte> Soportes { get; set; } = new List<Soporte>();
+
+    public virtual ICollection<RegistroAcceso> RegistroAccesos { get; set; } = new List<RegistroAcceso>();
 }

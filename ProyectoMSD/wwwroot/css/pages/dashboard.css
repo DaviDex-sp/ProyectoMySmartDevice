@@ -1,0 +1,296 @@
+/* ============================================================
+   Dashboard Admin — Estilos específicos
+   ============================================================ */
+
+/* === KPI Cards Grid === */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.kpi-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.kpi-card.blue::before {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.kpi-card.green::before {
+    background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.kpi-card.purple::before {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
+.kpi-card.orange::before {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.kpi-card.red::before {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+.kpi-card.cyan::before {
+    background: linear-gradient(135deg, #06b6d4, #22d3ee);
+}
+
+.kpi-card.pink::before {
+    background: linear-gradient(135deg, #ec4899, #f472b6);
+}
+
+.kpi-card.indigo::before {
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+}
+
+.kpi-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.kpi-icon.blue {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.kpi-icon.green {
+    background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.kpi-icon.purple {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
+.kpi-icon.orange {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.kpi-icon.red {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+.kpi-icon.cyan {
+    background: linear-gradient(135deg, #06b6d4, #22d3ee);
+}
+
+.kpi-icon.pink {
+    background: linear-gradient(135deg, #ec4899, #f472b6);
+}
+
+.kpi-icon.indigo {
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+}
+
+.kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-dark, #1e293b);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.kpi-label {
+    font-size: 0.85rem;
+    color: var(--text-light, #64748b);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* === Charts Grid === */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.08);
+}
+
+.chart-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark, #1e293b);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chart-card h3 i {
+    color: var(--primary-blue, #3b82f6);
+}
+
+.chart-container {
+    position: relative;
+    height: 280px;
+}
+
+/* === Dashboard Header === */
+.dashboard-header {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+    border-radius: 24px;
+    padding: 2rem 2.5rem;
+    color: white;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(30, 41, 59, 0.3);
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+}
+
+.dashboard-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+}
+
+.dashboard-header p {
+    opacity: 0.8;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+.dashboard-header .header-badge {
+    background: rgba(59, 130, 246, 0.3);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
+}
+
+/* === Data Tables === */
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.data-table-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+}
+
+.data-table-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark, #1e293b);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.data-table-card h3 i {
+    color: var(--primary-blue, #3b82f6);
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.dashboard-table th {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.75rem;
+    color: var(--text-light, #64748b);
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #f1f5f9;
+    text-align: left;
+}
+
+.dashboard-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #f8fafc;
+    color: var(--text-dark, #1e293b);
+}
+
+.dashboard-table tr:hover td {
+    background: #f8fafc;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .charts-grid,
+    .tables-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header {
+        padding: 1.5rem;
+    }
+
+    .dashboard-header h1 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+}

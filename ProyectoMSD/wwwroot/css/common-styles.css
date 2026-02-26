@@ -8,18 +8,26 @@
 
 /* ----- Variables Globales ----- */
 :root {
-    --primary-gradient: linear-gradient(135deg, #D2EFFE 0%, #D2D9FE 100%);
-    --card-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    --hover-shadow: 0 12px 40px rgba(0,0,0,0.18);
-    --support-green: #7fb069;
-    --support-blue: #258cfb;
-    --primary-blue: #3b82f6;
-    --secondary-blue: #60a5fa;
-    --light-blue: #dbeafe;
-    --extra-light-blue: #eff6ff;
+    --primary-gradient: linear-gradient(135deg, #e0e7ff 0%, #fae8ff 100%);
+    --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    /* Sombra más sutil para resina */
+    --hover-shadow: 0 15px 50px rgba(139, 92, 246, 0.2);
+    --support-green: #10b981;
+    --support-blue: #3b82f6;
+    --primary-blue: #8b5cf6;
+    --secondary-blue: #a855f7;
+    --light-blue: #f3e8ff;
+    --extra-light-blue: #faf5ff;
     --text-dark: #1e293b;
     --text-light: #64748b;
     --bg-light: #f8fafc;
+    /* Efecto "Resina Transparente" */
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    /* Mucho más transparente */
+    --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+    /* Borde blanco brillante como cristal */
+    --glass-blur: blur(4px);
+    /* Menos blur para que parezca agua/resina limpia */
 }
 
 /* ----- Reset y Base ----- */
@@ -36,7 +44,11 @@ html {
 }
 
 body {
-    background: var(--primary-gradient);
+    background-color: #f1f5f9;
+    background-image:
+        radial-gradient(at 0% 0%, rgba(224, 231, 255, 1) 0, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(243, 232, 255, 1) 0, transparent 50%);
+    background-attachment: fixed;
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-bottom: 60px;
@@ -52,30 +64,31 @@ body {
 }
 
 /* ----- Form Placeholders ----- */
-.form-floating > .form-control-plaintext::placeholder,
-.form-floating > .form-control::placeholder {
+.form-floating>.form-control-plaintext::placeholder,
+.form-floating>.form-control::placeholder {
     color: var(--bs-secondary-color);
     text-align: end;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder,
-.form-floating > .form-control:focus::placeholder {
+.form-floating>.form-control-plaintext:focus::placeholder,
+.form-floating>.form-control:focus::placeholder {
     text-align: start;
 }
 
 /* ----- Navbar ----- */
 .navbar-custom {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border-bottom: var(--glass-border);
 }
 
 /* ----- Hero Section ----- */
 .hero-section {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     color: white;
     padding: 3rem 2rem;
@@ -91,16 +104,17 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
     pointer-events: none;
 }
 
 /* ----- Stats Cards ----- */
 .stats-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 18px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 24px;
     padding: 2rem 1.5rem;
     box-shadow: var(--card-shadow);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -115,7 +129,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -131,10 +145,11 @@ body {
 
 /* ----- Action Cards ----- */
 .action-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 16px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 20px;
     height: 100px;
     display: flex;
     align-items: center;
@@ -172,10 +187,11 @@ body {
 
 /* ----- Tablas ----- */
 .table-container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 20px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 24px;
     overflow: hidden;
     box-shadow: var(--card-shadow);
 }
@@ -194,7 +210,7 @@ body {
     left: 0;
     right: 0;
     height: 1px;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* Tabla personalizada (CRUD pages) */
@@ -245,11 +261,13 @@ body {
 }
 
 .form-container {
-    background: white;
-    border-radius: 20px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 24px;
     padding: 2rem;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-    border: 1px solid rgba(59, 130, 246, 0.1);
+    box-shadow: var(--card-shadow);
+    border: var(--glass-border);
 }
 
 .form-header {
@@ -271,6 +289,31 @@ body {
     color: var(--text-light);
     margin: 0.5rem 0 0 0;
     font-size: 0.9rem;
+}
+
+/* Glass Inputs */
+.form-control,
+.form-select {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(2px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: rgba(255, 255, 255, 0.4) !important;
+    border-color: var(--primary-blue) !important;
+    box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+    transform: translateY(-1px);
+}
+
+.form-floating label {
+    padding-left: 1rem;
 }
 
 .form-group {
@@ -296,10 +339,13 @@ body {
 
 /* ----- Activity Sidebar ----- */
 .activity-sidebar {
-    background: white;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
     border-radius: 20px;
     padding: 1.5rem;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    box-shadow: var(--card-shadow);
     height: fit-content;
     position: sticky;
     top: 2rem;
@@ -377,7 +423,7 @@ body {
 
 .btn-primary-custom:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
 }
 
 .btn-secondary-custom {
@@ -414,6 +460,24 @@ body {
 .btn-danger-custom:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+}
+
+/* Neon Glow Button (Reference match) */
+.btn-purple-glow {
+    background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+    border: none;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.35);
+}
+
+.btn-purple-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.55);
+    color: white;
 }
 
 /* Action Buttons (CRUD tables) */
@@ -505,7 +569,7 @@ body {
 
 .btn-group .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* ----- Badges ----- */
@@ -539,9 +603,9 @@ body {
 }
 
 .content-badge {
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     color: #6c757d;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 0.5rem 1rem;
@@ -605,7 +669,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* Avatar grande (edit/delete pages) */
@@ -665,7 +729,7 @@ body {
     right: -50%;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
 }
 
 .profile-info h2 {
@@ -702,7 +766,7 @@ body {
     right: -50%;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
 }
 
 .space-icon-container {
@@ -759,7 +823,7 @@ body {
     right: -50%;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
 }
 
 .device-icon-container {
@@ -824,7 +888,7 @@ body {
     background: white;
     border-radius: 20px;
     padding: 2rem;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(239, 68, 68, 0.1);
 }
 
@@ -952,7 +1016,7 @@ body {
 /* ----- Card Hover (Layout global) ----- */
 .card:hover {
     transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2) !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* ----- Background Usuarios ----- */
@@ -1023,4 +1087,40 @@ body {
     .device-info h2 {
         font-size: 1.5rem;
     }
+}
+
+/* ----- Admin Dashboard Button ----- */
+.btn-admin-dashboard {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-admin-dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: all 0.6s ease;
+}
+
+.btn-admin-dashboard:hover {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(245, 158, 11, 0.4);
+}
+
+.btn-admin-dashboard:hover::before {
+    left: 100%;
 }
