@@ -1,0 +1,37 @@
+/* ============================================================
+   USUARIOS.CSS
+   Estilos exclusivos de las páginas de Usuarios (Index, Delete).
+   ============================================================ */
+
+/* Hero background override para la página de usuarios */
+.hero-background {
+    background-color: slategrey !important;
+    position: relative !important;
+    z-index: 0 !important;
+    isolation: auto !important;
+}
+
+.hero-background * {
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Delete page: header con tema rojo */
+.usuarios-delete .profile-header {
+    background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+}
+
+/* Delete page: activity items con tema rojo */
+.usuarios-delete .activity-item {
+    background: #fef2f2;
+    border-left-color: #ef4444;
+}
+
+.usuarios-delete .activity-item:hover {
+    box-shadow: 0 3px 10px rgba(239, 68, 68, 0.1);
+}
+
+.usuarios-delete .activity-action {
+    color: #ef4444;
+}

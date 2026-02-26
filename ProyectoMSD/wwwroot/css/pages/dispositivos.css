@@ -1,0 +1,92 @@
+/* ============================================================
+   DISPOSITIVOS.CSS
+   Estilos exclusivos de las páginas de Dispositivos.
+   ============================================================ */
+
+/* ----- Index Page ----- */
+.devices-header {
+    background: #4a90e2;
+    color: white;
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.devices-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(50px, -50px);
+}
+
+.devices-table-container {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(127, 176, 105, 0.1);
+}
+
+/* Table de dispositivos: colores personalizados */
+.devices-table-container .table-header {
+    background: #b3d4fc;
+    color: #2c5aa0;
+    padding: 1.5rem 2rem;
+    border-bottom: 2px solid #4a90e2;
+}
+
+.devices-table-container .custom-table th {
+    background: #b3d4fc;
+    color: #2c5aa0;
+}
+
+.devices-table-container .custom-table td {
+    border-bottom: 1px solid rgba(127, 176, 105, 0.1);
+}
+
+.devices-table-container .custom-table tbody tr:hover {
+    background: rgba(127, 176, 105, 0.05);
+}
+
+/* Stats card con borde izquierdo para dispositivos */
+.dispositivos-stats .stats-card {
+    border-left: 4px solid #4a90e2;
+}
+
+/* ----- Status Toggle ----- */
+.status-toggle {
+    width: 50px;
+    height: 26px;
+    background: #dc3545;
+    border-radius: 50px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.status-toggle.active {
+    background: #4a90e2;
+}
+
+.status-toggle::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.status-toggle.active::after {
+    transform: translateX(24px);
+}

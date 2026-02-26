@@ -5,191 +5,187 @@
     ViewData["Title"] = "Edit";
 }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="~/css/Esilo paginaEdits.css" rel="stylesheet">
+@section Styles {
+    <link href="~/css/pages/espacios.css" rel="stylesheet" />
+}
 
-<body>
-    <div class="main-container">
-        <!-- Space Header -->
-        <div class="space-header">
-            <div class="d-flex align-items-center">
-                <div class="space-icon-container me-4">
-                    <div class="space-icon">
-                        <i class="fas fa-home"></i>
-                    </div>
-                    <div class="edit-badge">EDITAR</div>
+<div class="main-container">
+    <!-- Space Header -->
+    <div class="space-header">
+        <div class="d-flex align-items-center">
+            <div class="space-icon-container me-4">
+                <div class="space-icon">
+                    <i class="fas fa-home"></i>
                 </div>
-                <div class="space-info flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h2 class="mb-2">@(Model.Espacio?.Nombre ?? "Espacio")</h2>
-                            <div class="space-status">
-                                <i class="fas fa-map-marker-alt me-2"></i>
-                                @(Model.Espacio?.Ubicacion ?? "Ubicación")
-                            </div>
-                        </div>
-                        <div class="signal-indicator">
-                            <span>Señal: @(Model.Espacio?.Señal ?? 0)%</span>
-                            <div class="d-flex gap-1">
-                                @for (int i = 1; i <= 4; i++)
-                                {
-                                    <div class="signal-bar @(Model.Espacio?.Señal >= (i * 25) ? "active" : "")"></div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="edit-badge">EDITAR</div>
             </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content-wrapper">
-            <!-- Form Section -->
-            <div class="form-container">
-                <div class="form-header">
-                    <h3>
-                        <i class="fas fa-home"></i>
-                        Información del Espacio
-                    </h3>
-                    <p>Actualiza la configuración y datos del espacio en tu hogar inteligente</p>
-                </div>
-
-                <form method="post">
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    <input type="hidden" asp-for="Espacio.Id" />
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-tag me-1 text-primary"></i>Nombre del Espacio
-                            </label>
-                            <input asp-for="Espacio.Nombre" class="form-control" placeholder="Ej: Sala, Cocina, Dormitorio..." />
-                            <span asp-validation-for="Espacio.Nombre" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-map-marker-alt me-1 text-primary"></i>Ubicación
-                            </label>
-                            <input asp-for="Espacio.Ubicacion" class="form-control" placeholder="Ej: Primer piso, Segundo piso..." />
-                            <span asp-validation-for="Espacio.Ubicacion" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-wifi me-1 text-primary"></i>Intensidad de Señal (%)
-                            </label>
-                            <input asp-for="Espacio.Señal" type="number" min="0" max="100" class="form-control" placeholder="0-100" />
-                            <span asp-validation-for="Espacio.Señal" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-shield-alt me-1 text-primary"></i>Permisos de Acceso
-                            </label>
-                            <select asp-for="Espacio.Permisos" class="form-control">
-                                <option value="">Seleccionar permisos...</option>
-                                <option value="Admin">Administrador</option>
-                                <option value="Usuario">Usuario</option>
-                                <option value="Invitado">Invitado</option>
-                                <option value="Restringido">Restringido</option>
-                            </select>
-                            <span asp-validation-for="Espacio.Permisos" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group form-grid-full">
-                            <label class="form-label">
-                                <i class="fas fa-building me-1 text-primary"></i>Propiedad Asociada
-                            </label>
-                            <select asp-for="Espacio.IdPropiedades" class="form-control" asp-items="ViewBag.IdPropiedades">
-                                <option value="">Seleccionar propiedad...</option>
-                            </select>
-                            <span asp-validation-for="Espacio.IdPropiedades" class="text-danger"></span>
+            <div class="space-info flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="mb-2">@(Model.Espacio?.Nombre ?? "Espacio")</h2>
+                        <div class="space-status">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            @(Model.Espacio?.Ubicacion ?? "Ubicación")
                         </div>
                     </div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a asp-page="./Index" class="btn-secondary-custom">
-                            <i class="fas fa-arrow-left me-2"></i>Volver a la lista
-                        </a>
-                        <button type="submit" class="btn-primary-custom">
-                            <i class="fas fa-save me-2"></i>Guardar Cambios
-                        </button>
+                    <div class="signal-indicator">
+                        <span>Señal: @(Model.Espacio?.Señal ?? 0)%</span>
+                        <div class="d-flex gap-1">
+                            @for (int i = 1; i <= 4; i++)
+                            {
+                                <div class="signal-bar @(Model.Espacio?.Señal >= (i * 25) ? "active" : "")"></div>
+                            }
+                        </div>
                     </div>
-                </form>
-            </div>
-
-            <!-- Activity Sidebar -->
-            <div class="activity-sidebar">
-                <div class="activity-header">Estado del Espacio</div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Dispositivos conectados</div>
-                    <div class="activity-title">3 dispositivos activos</div>
-                    <div class="activity-time">Smart Home</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Última actualización</div>
-                    <div class="activity-title">Hace 15 minutos</div>
-                    <div class="activity-time">Sistema</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Conectividad</div>
-                    <div class="activity-title">Señal estable</div>
-                    <div class="activity-time">Red WiFi</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Seguridad</div>
-                    <div class="activity-title">Permisos configurados</div>
-                    <div class="activity-time">Administrador</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Integración</div>
-                    <div class="activity-title">Dispositivos vinculados</div>
-                    <div class="activity-time">IoT Hub</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Form Section -->
+        <div class="form-container">
+            <div class="form-header">
+                <h3>
+                    <i class="fas fa-home"></i>
+                    Información del Espacio
+                </h3>
+                <p>Actualiza la configuración y datos del espacio en tu hogar inteligente</p>
+            </div>
 
-    <script>
-        // Form enhancements
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.style.transform = 'translateY(-1px)';
-                this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.15)';
-            });
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Espacio.Id" />
 
-            input.addEventListener('blur', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '';
-            });
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-tag me-1 text-primary"></i>Nombre del Espacio
+                        </label>
+                        <input asp-for="Espacio.Nombre" class="form-control" placeholder="Ej: Sala, Cocina, Dormitorio..." />
+                        <span asp-validation-for="Espacio.Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt me-1 text-primary"></i>Ubicación
+                        </label>
+                        <input asp-for="Espacio.Ubicacion" class="form-control" placeholder="Ej: Primer piso, Segundo piso..." />
+                        <span asp-validation-for="Espacio.Ubicacion" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-wifi me-1 text-primary"></i>Intensidad de Señal (%)
+                        </label>
+                        <input asp-for="Espacio.Señal" type="number" min="0" max="100" class="form-control" placeholder="0-100" />
+                        <span asp-validation-for="Espacio.Señal" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-shield-alt me-1 text-primary"></i>Permisos de Acceso
+                        </label>
+                        <select asp-for="Espacio.Permisos" class="form-control">
+                            <option value="">Seleccionar permisos...</option>
+                            <option value="Admin">Administrador</option>
+                            <option value="Usuario">Usuario</option>
+                            <option value="Invitado">Invitado</option>
+                            <option value="Restringido">Restringido</option>
+                        </select>
+                        <span asp-validation-for="Espacio.Permisos" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            <i class="fas fa-building me-1 text-primary"></i>Propiedad Asociada
+                        </label>
+                        <select asp-for="Espacio.IdPropiedades" class="form-control" asp-items="ViewBag.IdPropiedades">
+                            <option value="">Seleccionar propiedad...</option>
+                        </select>
+                        <span asp-validation-for="Espacio.IdPropiedades" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-page="./Index" class="btn-secondary-custom">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la lista
+                    </a>
+                    <button type="submit" class="btn-primary-custom">
+                        <i class="fas fa-save me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Activity Sidebar -->
+        <div class="activity-sidebar">
+            <div class="activity-header">Estado del Espacio</div>
+
+            <div class="activity-item">
+                <div class="activity-status">Dispositivos conectados</div>
+                <div class="activity-title">3 dispositivos activos</div>
+                <div class="activity-time">Smart Home</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Última actualización</div>
+                <div class="activity-title">Hace 15 minutos</div>
+                <div class="activity-time">Sistema</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Conectividad</div>
+                <div class="activity-title">Señal estable</div>
+                <div class="activity-time">Red WiFi</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Seguridad</div>
+                <div class="activity-title">Permisos configurados</div>
+                <div class="activity-time">Administrador</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Integración</div>
+                <div class="activity-title">Dispositivos vinculados</div>
+                <div class="activity-time">IoT Hub</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Form enhancements
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.transform = 'translateY(-1px)';
+            this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.15)';
         });
 
-        // Signal indicator update
-        const signalInput = document.querySelector('input[name="Espacio.Señal"]');
-        if (signalInput) {
-            signalInput.addEventListener('input', function() {
-                const value = parseInt(this.value) || 0;
-                const bars = document.querySelectorAll('.signal-bar');
-                bars.forEach((bar, index) => {
-                    if (value >= (index + 1) * 25) {
-                        bar.classList.add('active');
-                    } else {
-                        bar.classList.remove('active');
-                    }
-                });
+        input.addEventListener('blur', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '';
+        });
+    });
+
+    // Signal indicator update
+    const signalInput = document.querySelector('input[name="Espacio.Señal"]');
+    if (signalInput) {
+        signalInput.addEventListener('input', function() {
+            const value = parseInt(this.value) || 0;
+            const bars = document.querySelectorAll('.signal-bar');
+            bars.forEach((bar, index) => {
+                if (value >= (index + 1) * 25) {
+                    bar.classList.add('active');
+                } else {
+                    bar.classList.remove('active');
+                }
             });
-        }
-    </script>
-</body>
+        });
+    }
+</script>
 
 @section Scripts {
     @{

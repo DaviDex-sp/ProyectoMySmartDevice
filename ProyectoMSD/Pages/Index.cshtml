@@ -5,450 +5,101 @@
     ViewData["ShowNavbar"] = false;
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MySmartDevice - Iniciar Sesión</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome para iconos -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Estilos base del sistema */
-        html {
-            font-size: 14px;
-            position: relative;
-            min-height: 100%;
-        }
+@section Styles {
+    <link href="~/css/pages/login.css" rel="stylesheet" />
+}
 
-        {
-            font-size: 16px;
-        }
-
-        }
-
-        :root {
-            --primary-gradient: linear-gradient(135deg, #D2EFFE 0%, #D2D9FE 100%);
-            --card-shadow: 0 8px 32px rgba(0,0,0,0.12);
-            --hover-shadow: 0 12px 40px rgba(0,0,0,0.18);
-        }
-
-        body {
-            background: var(--primary-gradient);
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin-bottom: 60px;
-        }
-
-        .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-            box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-        }
-
-        .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-            color: var(--bs-secondary-color);
-            text-align: end;
-        }
-
-        .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-            text-align: start;
-        }
-
-        /* Estilos específicos del login */
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 0;
-        }
-
-        .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(255,255,255,0.3);
-            overflow: hidden;
-            transition: all 0.4s ease;
-            max-width: 1200px;
-            width: 100%;
-        }
-
-            .login-card:hover {
-                box-shadow: var(--hover-shadow);
-                transform: translateY(-5px);
-            }
-
-        .logo-section {
-            background: linear-gradient(135deg, rgba(210, 239, 254, 0.8) 0%, rgba(210, 217, 254, 0.8) 100%);
-            padding: 3rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-            .logo-section::before {
-                content: '';
-                position: absolute;
-                top: -50%;
-                left: -50%;
-                width: 200%;
-                height: 200%;
-                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-                animation: float 6s ease-in-out infinite;
-            }
-
-        {
-            transform: translateY(0px) rotate(0deg);
-        }
-
-        50% {
-            transform: translateY(-20px) rotate(180deg);
-        }
-
-        }
-
-        .robot-icon {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #258cfb 0%, #1e7ce8 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 8px 32px rgba(37, 140, 251, 0.3);
-        }
-
-        .robot-face {
-            width: 100px;
-            height: 70px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 15px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .robot-eyes {
-            display: flex;
-            gap: 15px;
-        }
-
-        .robot-eye {
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-            .robot-eye::after {
-                content: '';
-                width: 12px;
-                height: 12px;
-                background: #258cfb;
-                border-radius: 50%;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-        .floating-icons {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .floating-icon {
-            position: absolute;
-            width: 35px;
-            height: 35px;
-            background: rgba(255,255,255,0.95);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-            .floating-icon:hover {
-                transform: scale(1.1);
-                box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-            }
-
-        .icon-thermometer {
-            top: 15px;
-            left: 25px;
-            color: #28a745;
-        }
-
-        .icon-camera {
-            top: 25px;
-            right: 20px;
-            color: #17a2b8;
-        }
-
-        .icon-bulb {
-            bottom: 35px;
-            left: 15px;
-            color: #ffc107;
-        }
-
-        .icon-plug {
-            bottom: 15px;
-            right: 35px;
-            color: #dc3545;
-        }
-
-        .brand-text {
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin: 0;
-            color: #258cfb;
-            position: relative;
-            z-index: 2;
-        }
-
-            .brand-text .smart {
-                color: #1e7ce8;
-                font-weight: 600;
-            }
-
-        .login-form-container {
-            padding: 3rem 2.5rem;
-            background: white;
-        }
-
-        .form-title {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-subtitle {
-            color: #6c757d;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        .form-floating {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-control {
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 1rem 0.75rem;
-            font-size: 1rem;
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-            .form-control:focus {
-                border-color: #258cfb;
-                background: white;
-                transform: translateY(-2px);
-            }
-
-        .form-floating label {
-            color: #6c757d;
-            font-weight: 500;
-        }
-
-        .btn-login {
-            background: linear-gradient(135deg, #258cfb 0%, #1e7ce8 100%);
-            border: none;
-            border-radius: 25px;
-            padding: 12px 2rem;
-            font-weight: 600;
-            color: white;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-bottom: 1.5rem;
-        }
-
-            .btn-login:hover {
-                background: linear-gradient(135deg, #1e7ce8 0%, #1a6bc4 100%);
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(37, 140, 251, 0.4);
-            }
-
-        .form-check {
-            padding: 1rem;
-            background: rgba(37, 140, 251, 0.05);
-            border-radius: 12px;
-            border: 1px solid rgba(37, 140, 251, 0.1);
-            margin-bottom: 1.5rem;
-        }
-
-        .form-check-label {
-            color: #495057;
-            font-weight: 500;
-        }
-
-        .register-link {
-            color: #258cfb;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-            .register-link:hover {
-                color: #1e7ce8;
-                text-decoration: underline;
-            }
-
-        .content-badge {
-            background: rgba(255,255,255,0.9);
-            color: #6c757d;
-            border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .alert-danger {
-            background: rgba(220, 53, 69, 0.1);
-            border: 1px solid rgba(220, 53, 69, 0.2);
-            color: #721c24;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-        }
-
-        {
-            margin: 1rem;
-            border-radius: 20px;
-        }
-
-        .logo-section {
-            padding: 2rem 1rem;
-        }
-
-        .login-form-container {
-            padding: 2rem 1.5rem;
-        }
-
-        .brand-text {
-            font-size: 2rem;
-        }
-
-        .robot-icon {
-            width: 150px;
-            height: 150px;
-        }
-
-        }
-    </style>
-</head>
-<body>
-    <div class="container-fluid login-container">
-        <div class="row justify-content-center">
-            <div class="col-xl-10 col-lg-11">
-                <div class="card login-card">
-                    <div class="row g-0">
-                        <!-- Sección del Logo -->
-                        <div class="col-lg-6 logo-section">
-                            <!-- Robot Avatar -->
-                            <div class="robot-icon">
-                                <div class="floating-icons">
-                                    <div class="floating-icon icon-thermometer">
-                                        <i class="fas fa-thermometer-half"></i>
-                                    </div>
-                                    <div class="floating-icon icon-camera">
-                                        <i class="fas fa-video"></i>
-                                    </div>
-                                    <div class="floating-icon icon-bulb">
-                                        <i class="fas fa-lightbulb"></i>
-                                    </div>
-                                    <div class="floating-icon icon-plug">
-                                        <i class="fas fa-plug"></i>
-                                    </div>
+<div class="container-fluid login-container">
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-11">
+            <div class="card login-card">
+                <div class="row g-0">
+                    <!-- Sección del Logo -->
+                    <div class="col-lg-6 logo-section">
+                        <!-- Robot Avatar -->
+                        <div class="robot-icon">
+                            <div class="floating-icons">
+                                <div class="floating-icon icon-thermometer">
+                                    <i class="fas fa-thermometer-half"></i>
                                 </div>
-                                <div class="robot-face">
-                                    <div class="robot-eyes">
-                                        <div class="robot-eye"></div>
-                                        <div class="robot-eye"></div>
-                                    </div>
+                                <div class="floating-icon icon-camera">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <div class="floating-icon icon-bulb">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="floating-icon icon-plug">
+                                    <i class="fas fa-plug"></i>
                                 </div>
                             </div>
-                            <!-- Brand Name -->
-                            <h1 class="brand-text">My<span class="smart">Smart</span>Device</h1>
-                            <p class="text-muted mt-2">Control inteligente para tu hogar</p>
+                            <div class="robot-face">
+                                <div class="robot-eyes">
+                                    <div class="robot-eye"></div>
+                                    <div class="robot-eye"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Brand Name -->
+                        <h1 class="brand-text">My<span class="smart">Smart</span>Device</h1>
+                        <p class="text-muted mt-2">Control inteligente para tu hogar</p>
+                    </div>
+
+                    <!-- Sección del Formulario -->
+                    <div class="col-lg-6 login-form-container">
+                        <div class="text-end mb-4">
+                            <span class="badge content-badge">Contenido</span>
                         </div>
 
-                        <!-- Sección del Formulario -->
-                        <div class="col-lg-6 login-form-container">
-                            <div class="text-end mb-4">
-                                <span class="badge content-badge">Contenido</span>
+                        <h2 class="form-title">Ingresa a MySmartDevice</h2>
+                        <p class="form-subtitle">Accede a tu cuenta en cualquier momento.</p>
+
+                        <!-- MOSTRAR ERRORES DE VALIDACIÓN -->
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <div>@error.ErrorMessage</div>
+                                }
+                            </div>
+                        }
+
+                        <!-- FORMULARIO DE LOGIN -->
+                        <form method="post">
+                            <div class="form-floating">
+                                <input asp-for="Correo" class="form-control" required>
+                                <label asp-for="Correo"><i class="fas fa-envelope me-2"></i>Email</label>
                             </div>
 
-                            <h2 class="form-title">Ingresa a MySmartDevice</h2>
-                            <p class="form-subtitle">Accede a tu cuenta en cualquier momento.</p>
+                            <div class="form-floating">
+                                <input asp-for="Password" type="password" class="form-control"  required>
+                                <label asp-for="Password"><i class="fas fa-lock me-2"></i>Contraseña</label>
+                            </div>
 
-                            <!-- MOSTRAR ERRORES DE VALIDACIÓN -->
-                            @if (!ViewData.ModelState.IsValid)
-                            {
-                                <div class="alert alert-danger">
-                                    <i class="fas fa-exclamation-triangle me-2"></i>
-                                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                                    {
-                                        <div>@error.ErrorMessage</div>
-                                    }
-                                </div>
-                            }
+                            <!-- reCAPTCHA -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="recaptcha" required>
+                                <label class="form-check-label" for="recaptcha">
+                                    <i class="fas fa-shield-alt me-2"></i>No soy un robot
+                                    <small class="text-muted d-block mt-1">
+                                        <i class="fas fa-info-circle me-1"></i>Verificación reCAPTCHA
+                                    </small>
+                                </label>
+                            </div>
 
-                            <!-- FORMULARIO -->
-                            <form method="post">
-                                <div class="form-floating">
-                                    <input asp-for="Correo" class="form-control" required>
-                                    <label asp-for="Correo"><i class="fas fa-envelope me-2"></i>Email</label>
-                                </div>
+                            <button type="submit" class="btn btn-login">
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                            </button>
+                        </form>
 
-                                <div class="form-floating">
-                                    <input asp-for="Password" type="password" class="form-control"  required>
-                                    <label asp-for="Password"><i class="fas fa-lock me-2"></i>Contraseña</label>
-                                </div>
-
-                                <!-- reCAPTCHA -->
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="recaptcha" required>
-                                    <label class="form-check-label" for="recaptcha">
-                                        <i class="fas fa-shield-alt me-2"></i>No soy un robot
-                                        <small class="text-muted d-block mt-1">
-                                            <i class="fas fa-info-circle me-1"></i>Verificación reCAPTCHA
-                                        </small>
-                                    </label>
-                                </div>
-
-                                <button type="submit" class="btn btn-login">
-                                    <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
-                                </button>
-                            </form>
-
-                            <p class="text-center mb-0">
-                                ¿No tienes una cuenta?
-                                <a asp-page="/Registrar" class="register-link">Regístrate aquí</a>
-                            </p>
-                        </div>
+                        <p class="text-center mb-0">
+                            ¿No tienes una cuenta?
+                            <a asp-page="/Registrar" class="register-link">Regístrate aquí</a>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>

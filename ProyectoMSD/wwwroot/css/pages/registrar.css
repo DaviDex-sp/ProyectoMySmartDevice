@@ -1,0 +1,150 @@
+/* ============================================================
+   REGISTRAR.CSS
+   Estilos exclusivos de la página de registro de usuarios.
+   ============================================================ */
+
+.register-header {
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.register-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(37, 140, 251, 0.1) 0%, transparent 70%);
+}
+
+.brand-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--card-shadow);
+    border-left: 5px solid var(--support-blue);
+    text-align: center;
+}
+
+.brand-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--support-blue) 0%, #1e7ce8 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 2.5rem;
+    color: white;
+    box-shadow: 0 4px 20px rgba(37, 140, 251, 0.3);
+}
+
+.brand-text {
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin: 0;
+    color: var(--support-blue);
+    position: relative;
+    z-index: 2;
+}
+
+.brand-text .smart {
+    color: #1e7ce8;
+    font-weight: 600;
+}
+
+.form-section {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 2rem;
+}
+
+.form-section .form-header {
+    background: #f8f9fa;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.form-body {
+    padding: 2rem;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+    display: flex;
+    align-items: center;
+}
+
+/* Form Controls for register page */
+.form-body .form-floating {
+    margin-bottom: 1.5rem;
+}
+
+.form-body .form-control,
+.form-body .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1rem 0.75rem;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.form-body .form-control:focus,
+.form-body .form-select:focus {
+    border-color: var(--support-blue);
+    background: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(37, 140, 251, 0.2);
+}
+
+.form-body .form-floating label {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.btn-register {
+    background: linear-gradient(135deg, var(--support-blue) 0%, #1e7ce8 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 2rem;
+    font-weight: 600;
+    color: white;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-register:hover {
+    background: linear-gradient(135deg, #1e7ce8 0%, #1a6bc4 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(37, 140, 251, 0.4);
+}
+
+.login-link {
+    color: var(--support-blue);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.login-link:hover {
+    color: #1e7ce8;
+    text-decoration: underline;
+}

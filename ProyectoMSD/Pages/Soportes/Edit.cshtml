@@ -5,488 +5,178 @@
     ViewData["Title"] = "Editar Soporte";
 }
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@ViewData["Title"]</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+@section Styles {
+    <link href="~/css/pages/soportes.css" rel="stylesheet" />
+}
 
-<style>
-    :root {
-        --primary-blue: #3b82f6;
-        --secondary-blue: #60a5fa;
-        --light-blue: #dbeafe;
-        --extra-light-blue: #eff6ff;
-        --text-dark: #1e293b;
-        --text-light: #64748b;
-        --bg-light: #f8fafc;
-        --support-green: #10b981;
-        --support-light: #d1fae5;
-    }
-
-    body {
-        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
-        min-height: 100vh;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-
-    .main-container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-    }
-
-    /* Support Header Card */
-    .support-header {
-        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-        border-radius: 20px;
-        padding: 2rem;
-        color: white;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-        position: relative;
-        overflow: hidden;
-    }
-
-        .support-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        }
-
-    .support-icon-container {
-        position: relative;
-        display: inline-block;
-    }
-
-    .support-icon {
-        width: 100px;
-        height: 100px;
-        background: rgba(255, 255, 255, 0.2);
-        border: 4px solid rgba(255, 255, 255, 0.3);
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.5rem;
-        color: white;
-        margin-bottom: 1rem;
-        backdrop-filter: blur(10px);
-    }
-
-    .edit-badge {
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        background: var(--support-green);
-        color: white;
-        padding: 0.25rem 0.75rem;
-        border-radius: 15px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        z-index: 10;
-    }
-
-    .support-info h2 {
-        font-size: 2rem;
-        font-weight: 300;
-        margin-bottom: 0.5rem;
-    }
-
-    .support-status {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        display: inline-block;
-        font-size: 0.9rem;
-        backdrop-filter: blur(10px);
-    }
-
-    /* Content Layout - Sin Media Queries */
-    .content-wrapper {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-        gap: 2rem;
-        align-items: start;
-    }
-
-    /* Form Container */
-    .form-container {
-        background: white;
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-        border: 1px solid rgba(59, 130, 246, 0.1);
-    }
-
-    .form-header {
-        border-bottom: 2px solid #f1f3f4;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-    }
-
-        .form-header h3 {
-            color: var(--primary-blue);
-            font-weight: 600;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .form-header p {
-            color: var(--text-light);
-            margin: 0.5rem 0 0 0;
-            font-size: 0.9rem;
-        }
-
-    /* Form Styles */
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-label {
-        font-weight: 600;
-        color: var(--text-dark);
-        margin-bottom: 0.5rem;
-        display: block;
-    }
-
-    .form-control {
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 0.75rem 1rem;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-        background: #fafbfc;
-    }
-
-        .form-control:focus {
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-            background: white;
-        }
-
-    /* Grid sin Media Queries usando CSS Grid */
-    .form-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1rem;
-    }
-
-    .form-grid-full {
-        grid-column: 1 / -1;
-    }
-
-    /* Activity Sidebar */
-    .activity-sidebar {
-        background: white;
-        border-radius: 20px;
-        padding: 1.5rem;
-        box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-        height: fit-content;
-        position: sticky;
-        top: 2rem;
-    }
-
-    .activity-header {
-        color: var(--text-light);
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 1.5rem;
-    }
-
-    .activity-item {
-        background: var(--extra-light-blue);
-        border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        border-left: 4px solid var(--primary-blue);
-        transition: all 0.2s ease;
-    }
-
-        .activity-item:hover {
-            transform: translateX(3px);
-            box-shadow: 0 3px 10px rgba(59, 130, 246, 0.1);
-        }
-
-    /* Buttons */
-    .btn-primary-custom {
-        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-        border: none;
-        color: white;
-        padding: 0.75rem 2rem;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-        .btn-primary-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-        }
-
-    .btn-secondary-custom {
-        background: white;
-        border: 2px solid var(--primary-blue);
-        color: var(--primary-blue);
-        padding: 0.75rem 2rem;
-        border-radius: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-        transition: all 0.3s ease;
-    }
-
-        .btn-secondary-custom:hover {
-            background: var(--primary-blue);
-            color: white;
-            transform: translateY(-1px);
-        }
-
-    /* Info Cards - Responsive sin media queries */
-    .info-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-
-    .info-card {
-        background: var(--extra-light-blue);
-        border-radius: 12px;
-        padding: 1rem;
-        text-align: center;
-        border: 1px solid var(--light-blue);
-    }
-
-    .info-card-icon {
-        font-size: 1.5rem;
-        color: var(--primary-blue);
-        margin-bottom: 0.5rem;
-    }
-
-    .info-card-value {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--text-dark);
-        margin-bottom: 0.25rem;
-        word-break: break-word;
-    }
-
-    .info-card-label {
-        font-size: 0.8rem;
-        color: var(--text-light);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-</style>
-
-<body>
-    <div class="main-container">
-        <!-- Support Header -->
-        <div class="support-header">
-            <div class="d-flex align-items-center">
-                <div class="support-icon-container me-4">
-                    <div class="support-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <div class="edit-badge">EDITAR</div>
+<div class="main-container">
+    <!-- Support Header -->
+    <div class="profile-header" style="background: linear-gradient(135deg, var(--primary-blue, #3b82f6), var(--secondary-blue, #60a5fa));">
+        <div class="d-flex align-items-center">
+            <div class="avatar-container me-4" style="position:relative;">
+                <div style="width:100px; height:100px; background:rgba(255,255,255,0.2); border:4px solid rgba(255,255,255,0.3); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:white;">
+                    <i class="fas fa-headset"></i>
                 </div>
-                <div class="support-info flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h2 class="mb-2">Ticket #@(Model.Soporte?.Id ?? 0)</h2>
-                            <div class="support-status">
-                                En progreso: Editando información del soporte
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="edit-badge">EDITAR</div>
             </div>
-        </div>
-
-        <!-- Info Cards -->
-        <div class="info-cards">
-            <div class="info-card">
-                <div class="info-card-icon">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-                <div class="info-card-value" id="fechaCard">@(Model.Soporte?.Fecha.ToString("dd/MM/yyyy") ?? "N/A")</div>
-                <div class="info-card-label">Fecha Actual</div>
-            </div>
-            <div class="info-card">
-                <div class="info-card-icon">
-                    <i class="fas fa-list-alt"></i>
-                </div>
-                <div class="info-card-value" id="tipoCard">@(Model.Soporte?.Tipo ?? "N/A")</div>
-                <div class="info-card-label">Tipo de Soporte</div>
-            </div>
-            <div class="info-card">
-                <div class="info-card-icon">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="info-card-value" id="usuarioCard">@(Model.Soporte?.IdUsuariosNavigation?.Nombre ?? "N/A")</div>
-                <div class="info-card-label">Usuario Asignado</div>
-            </div>
-            <div class="info-card">
-                <div class="info-card-icon">
-                    <i class="fas fa-info-circle"></i>
-                </div>
-                <div class="info-card-value" id="estadoCard">@(String.IsNullOrEmpty(Model.Soporte?.Respuesta) ? "Pendiente" : "Respondido")</div>
-                <div class="info-card-label">Estado</div>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content-wrapper">
-            <!-- Form Section -->
-            <div class="form-container">
-                <div class="form-header">
-                    <h3>
-                        <i class="fas fa-edit"></i>
-                        Información del Soporte
-                    </h3>
-                    <p>Actualiza los datos del ticket de soporte en el sistema</p>
-                </div>
-
-                <form method="post">
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    <input type="hidden" asp-for="Soporte.Id" />
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-calendar-alt me-1 text-primary"></i>Fecha del Soporte
-                            </label>
-                            <input asp-for="Soporte.Fecha" type="date" class="form-control" />
-                            <span asp-validation-for="Soporte.Fecha" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-list-alt me-1 text-primary"></i>Tipo de Soporte
-                            </label>
-                            <select asp-for="Soporte.Tipo" class="form-control">
-                                <option value="">Seleccionar tipo...</option>
-                                <option value="Técnico">🔧 Técnico</option>
-                                <option value="Consulta">❓ Consulta</option>
-                                <option value="Incidencia">⚠️ Incidencia</option>
-                                <option value="Solicitud">📝 Solicitud</option>
-                                <option value="Mantenimiento">🛠️ Mantenimiento</option>
-                            </select>
-                            <span asp-validation-for="Soporte.Tipo" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group form-grid-full">
-                            <label class="form-label">
-                                <i class="fas fa-file-alt me-1 text-primary"></i>Descripción del Problema
-                            </label>
-                            <textarea asp-for="Soporte.Descripcion" class="form-control" rows="4" placeholder="Describe detalladamente el problema o solicitud..."></textarea>
-                            <span asp-validation-for="Soporte.Descripcion" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group form-grid-full">
-                            <label class="form-label">
-                                <i class="fas fa-reply me-1 text-success"></i>Respuesta del Soporte
-                            </label>
-                            <textarea asp-for="Soporte.Respuesta" class="form-control" rows="4" placeholder="Ingresa la respuesta o solución proporcionada..."></textarea>
-                            <span asp-validation-for="Soporte.Respuesta" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group form-grid-full">
-                            <label class="form-label">
-                                <i class="fas fa-user me-1 text-primary"></i>Usuario Responsable
-                            </label>
-                            <select asp-for="Soporte.IdUsuarios" class="form-control" asp-items="ViewBag.IdUsuarios">
-                                <option value="">-- Seleccione un usuario --</option>
-                            </select>
-                            <span asp-validation-for="Soporte.IdUsuarios" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a asp-page="./Index" class="btn-secondary-custom">
-                            <i class="fas fa-arrow-left me-2"></i>Volver a la lista
-                        </a>
-                        <button type="submit" class="btn-primary-custom">
-                            <i class="fas fa-save me-2"></i>Guardar Cambios
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Activity Sidebar -->
-            <div class="activity-sidebar">
-                <div class="activity-header">Historial del Ticket</div>
-
-                <div class="activity-item">
-                    <div class="activity-status">En progreso</div>
-                    <div class="activity-title">Editando ticket</div>
-                    <a href="#" class="activity-action">Ver detalles</a>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 1 hora</div>
-                    <div class="activity-title">Ticket actualizado</div>
-                    <div class="activity-action">Sistema</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 3 horas</div>
-                    <div class="activity-title">Respuesta agregada</div>
-                    <div class="activity-action">Soporte Técnico</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Ayer</div>
-                    <div class="activity-title">Ticket creado</div>
-                    <div class="activity-action">@(Model.Soporte?.IdUsuariosNavigation?.Nombre ?? "Usuario")</div>
+            <div class="profile-info flex-grow-1">
+                <h2 class="mb-2 text-white">Ticket #@(Model.Soporte?.Id ?? 0)</h2>
+                <div class="profile-status">
+                    En progreso: Editando información del soporte
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Info Cards -->
+    <div class="info-cards">
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="info-card-value" id="fechaCard">@(Model.Soporte?.Fecha.ToString("dd/MM/yyyy") ?? "N/A")</div>
+            <div class="info-card-label">Fecha Actual</div>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-list-alt"></i></div>
+            <div class="info-card-value" id="tipoCard">@(Model.Soporte?.Tipo ?? "N/A")</div>
+            <div class="info-card-label">Tipo de Soporte</div>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-user"></i></div>
+            <div class="info-card-value" id="usuarioCard">@(Model.Soporte?.IdUsuariosNavigation?.Nombre ?? "N/A")</div>
+            <div class="info-card-label">Usuario Asignado</div>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-info-circle"></i></div>
+            <div class="info-card-value" id="estadoCard">@(String.IsNullOrEmpty(Model.Soporte?.Respuesta) ? "Pendiente" : "Respondido")</div>
+            <div class="info-card-label">Estado</div>
+        </div>
+    </div>
 
-    <script>
-        // Form enhancements - actualizar info cards dinámicamente
-        document.querySelector('input[name="Soporte.Fecha"]')?.addEventListener('change', function() {
-            const card = document.querySelector('#fechaCard');
-            if (this.value) {
-                const fecha = new Date(this.value + 'T00:00:00'); // Fix para DateOnly
-                card.textContent = fecha.toLocaleDateString('es-ES');
-            }
-        });
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Form Section -->
+        <div class="form-container">
+            <div class="form-header">
+                <h3>
+                    <i class="fas fa-edit"></i>
+                    Información del Soporte
+                </h3>
+                <p>Actualiza los datos del ticket de soporte en el sistema</p>
+            </div>
 
-        document.querySelector('select[name="Soporte.Tipo"]')?.addEventListener('change', function() {
-            const card = document.querySelector('#tipoCard');
-            card.textContent = this.value || 'N/A';
-        });
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Soporte.Id" />
 
-        document.querySelector('select[name="Soporte.IdUsuarios"]')?.addEventListener('change', function() {
-            const card = document.querySelector('#usuarioCard');
-            const selectedText = this.options[this.selectedIndex].text;
-            card.textContent = selectedText === '-- Seleccione un usuario --' ? 'N/A' : selectedText;
-        });
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar-alt me-1 text-primary"></i>Fecha del Soporte
+                        </label>
+                        <input asp-for="Soporte.Fecha" type="date" class="form-control" />
+                        <span asp-validation-for="Soporte.Fecha" class="text-danger"></span>
+                    </div>
 
-        document.querySelector('textarea[name="Soporte.Respuesta"]')?.addEventListener('input', function() {
-            const card = document.querySelector('#estadoCard');
-            card.textContent = this.value.trim() ? 'Respondido' : 'Pendiente';
-        });
-    </script>
-</body>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-list-alt me-1 text-primary"></i>Tipo de Soporte
+                        </label>
+                        <select asp-for="Soporte.Tipo" class="form-control">
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="Técnico">🔧 Técnico</option>
+                            <option value="Consulta">❓ Consulta</option>
+                            <option value="Incidencia">⚠️ Incidencia</option>
+                            <option value="Solicitud">📝 Solicitud</option>
+                            <option value="Mantenimiento">🛠️ Mantenimiento</option>
+                        </select>
+                        <span asp-validation-for="Soporte.Tipo" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            <i class="fas fa-file-alt me-1 text-primary"></i>Descripción del Problema
+                        </label>
+                        <textarea asp-for="Soporte.Descripcion" class="form-control" rows="4" placeholder="Describe detalladamente el problema o solicitud..."></textarea>
+                        <span asp-validation-for="Soporte.Descripcion" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            <i class="fas fa-reply me-1 text-success"></i>Respuesta del Soporte
+                        </label>
+                        <textarea asp-for="Soporte.Respuesta" class="form-control" rows="4" placeholder="Ingresa la respuesta o solución proporcionada..."></textarea>
+                        <span asp-validation-for="Soporte.Respuesta" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            <i class="fas fa-user me-1 text-primary"></i>Usuario Responsable
+                        </label>
+                        <select asp-for="Soporte.IdUsuarios" class="form-control" asp-items="ViewBag.IdUsuarios">
+                            <option value="">-- Seleccione un usuario --</option>
+                        </select>
+                        <span asp-validation-for="Soporte.IdUsuarios" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-page="./Index" class="btn-secondary-custom">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la lista
+                    </a>
+                    <button type="submit" class="btn-primary-custom">
+                        <i class="fas fa-save me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Activity Sidebar -->
+        <div class="activity-sidebar">
+            <div class="activity-header">Historial del Ticket</div>
+            <div class="activity-item">
+                <div class="activity-status">En progreso</div>
+                <div class="activity-title">Editando ticket</div>
+                <a href="#" class="activity-action">Ver detalles</a>
+            </div>
+            <div class="activity-item">
+                <div class="activity-status">Hace 1 hora</div>
+                <div class="activity-title">Ticket actualizado</div>
+                <div class="activity-action">Sistema</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-status">Hace 3 horas</div>
+                <div class="activity-title">Respuesta agregada</div>
+                <div class="activity-action">Soporte Técnico</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-status">Ayer</div>
+                <div class="activity-title">Ticket creado</div>
+                <div class="activity-action">@(Model.Soporte?.IdUsuariosNavigation?.Nombre ?? "Usuario")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Form enhancements - actualizar info cards dinámicamente
+    document.querySelector('input[name="Soporte.Fecha"]')?.addEventListener('change', function() {
+        const card = document.querySelector('#fechaCard');
+        if (this.value) {
+            const fecha = new Date(this.value + 'T00:00:00');
+            card.textContent = fecha.toLocaleDateString('es-ES');
+        }
+    });
+    document.querySelector('select[name="Soporte.Tipo"]')?.addEventListener('change', function() {
+        document.querySelector('#tipoCard').textContent = this.value || 'N/A';
+    });
+    document.querySelector('select[name="Soporte.IdUsuarios"]')?.addEventListener('change', function() {
+        const selectedText = this.options[this.selectedIndex].text;
+        document.querySelector('#usuarioCard').textContent = selectedText === '-- Seleccione un usuario --' ? 'N/A' : selectedText;
+    });
+    document.querySelector('textarea[name="Soporte.Respuesta"]')?.addEventListener('input', function() {
+        document.querySelector('#estadoCard').textContent = this.value.trim() ? 'Respondido' : 'Pendiente';
+    });
+</script>
 
 @section Scripts {
     @{

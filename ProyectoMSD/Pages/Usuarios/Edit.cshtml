@@ -3,231 +3,217 @@
 
 @{
     Layout = "_Layout";
-    ViewData["Title"] = "Edit"; 
+    ViewData["Title"] = "Edit";
 }
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="~/css/EditUsuario.css" rel="stylesheet" />
-</head>
+@section Styles {
+    <link href="~/css/pages/usuarios.css" rel="stylesheet" />
+}
 
-<body>
-    <div class="main-container">
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <div class="d-flex align-items-center">
-                <div class="avatar-container me-4">
-                    <div class="avatar">
-                        @(Model.Usuario?.Nombre?.Substring(0, 1).ToUpper() ?? "U")
-                    </div>
-                    <div class="edit-badge">EDITAR</div>
+<div class="main-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="d-flex align-items-center">
+            <div class="avatar-container me-4">
+                <div class="avatar-lg">
+                    @(Model.Usuario?.Nombre?.Substring(0, 1).ToUpper() ?? "U")
                 </div>
-                <div class="profile-info flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h2 class="mb-2">@(Model.Usuario?.Nombre ?? "Usuario")</h2>
-                            <div class="profile-status">
-                                En progreso: Editando información del usuario
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="edit-badge">EDITAR</div>
             </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content-wrapper">
-            <!-- Form Section -->
-            <div class="form-container">
-                <div class="form-header">
-                    <h3>
-                        <i class="fas fa-user-edit"></i>
-                        Información del Usuario
-                    </h3>
-                    <p>Actualiza los datos del usuario en el sistema de hogar inteligente</p>
-                </div>
-
-                <form method="post">
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    <input type="hidden" asp-for="Usuario.Id" />
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-user me-1 text-primary"></i>Nombre Completo
-                            </label>
-                            <input asp-for="Usuario.Nombre" class="form-control" placeholder="Ingresa el nombre completo" />
-                            <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
-                        </div>
-
-                        
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-key me-1 text-primary"></i>Clave
-                            </label>
-                            <input asp-for="Usuario.Clave" type="password" class="form-control" placeholder="Ingresa la clave" />
-                            <span asp-validation-for="Usuario.Clave" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group form-grid-full">
-                            <label class="form-label">
-                                <i class="fas fa-envelope me-1 text-primary"></i>Correo
-                            </label>
-                            <input asp-for="Usuario.Correo" type="text" class="form-control" placeholder="correo@ejemplo.com" />
-                            <span asp-validation-for="Usuario.Correo" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-user-tag me-1 text-primary"></i>Rol en la propiedad
-                            </label>
-                            <select asp-for="Usuario.Rol" class="form-control">
-                                <option value="">Seleccionar rol...</option>
-                                <option value="Admin">👑 Administrador</option>
-                                <option value="Usuario">👤 Usuario</option>
-                                <option value="Huesped">🔍 Huesped</option>
-                            </select>
-                            <span asp-validation-for="Usuario.Rol" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-phone me-1 text-primary"></i>Número telefónico
-                            </label>
-                            <input asp-for="Usuario.Telefono" class="form-control" placeholder="+57 (314) 328 40 52" />
-                            <span asp-validation-for="Usuario.Telefono" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group form-grid-full">
-                            <label class="form-label">
-                                <i class="fas fa-map-marker-alt me-1 text-primary"></i>Ubicación
-                            </label>
-                            <input asp-for="Usuario.Ubicacion" class="form-control" placeholder="Ciudad, País" />
-                            <span asp-validation-for="Usuario.Ubicacion" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-shield-alt me-1 text-primary"></i>Permisos
-                            </label>
-                            <select asp-for="Usuario.Permisos" class="form-control">
-                                <option value="">Seleccionar permisos...</option>
-                                <option value="completo">🔓 Acceso Completo</option>
-                                <option value="solo_lectura">👁️ Solo Lectura</option>
-                            </select>
-                            <span asp-validation-for="Usuario.Permisos" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-id-card me-1 text-primary"></i>Documento
-                            </label>
-                            <input asp-for="Usuario.Documento" class="form-control" placeholder="123141" />
-                            <span asp-validation-for="Usuario.Documento" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-building me-1 text-primary"></i>RUT
-                            </label>
-                            <input asp-for="Usuario.Rut" class="form-control" placeholder="123124" />
-                            <span asp-validation-for="Usuario.Rut" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-toggle-on me-1 text-primary"></i>Estado de Acceso
-                            </label>
-                            <select asp-for="Usuario.Acesso" class="form-control">
-                                <option value="">Seleccionar estado...</option>
-                                <option value="">Seleccionar acceso...</option>
-                                <option value="activo">✅ Activo</option>
-                                <option value="inactivo">❌ Inactivo</option>
-                            </select>
-                            <span asp-validation-for="Usuario.Acesso" class="text-danger"></span>
+            <div class="profile-info flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="mb-2">@(Model.Usuario?.Nombre ?? "Usuario")</h2>
+                        <div class="profile-status">
+                            En progreso: Editando información del usuario
                         </div>
                     </div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a asp-page="./Index" class="btn-secondary-custom">
-                            <i class="fas fa-arrow-left me-2"></i>Volver a la lista
-                        </a>
-                        <button type="submit" class="btn-primary-custom">
-                            <i class="fas fa-save me-2"></i>Guardar Cambios
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Activity Sidebar -->
-            <div class="activity-sidebar">
-                <div class="activity-header">Actividad Reciente</div>
-
-                <div class="activity-item">
-                    <div class="activity-status">En progreso</div>
-                    <div class="activity-title">Editando perfil de usuario</div>
-                    <a href="#" class="activity-action">Ver detalles</a>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 23 minutos</div>
-                    <div class="activity-title">Usuario actualizado correctamente</div>
-                    <div class="activity-time">Sistema</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 2 horas</div>
-                    <div class="activity-title">Acceso al sistema</div>
-                    <div class="activity-time">Inicio de sesión</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 17 horas</div>
-                    <div class="activity-title">Permisos modificados</div>
-                    <div class="activity-time">Administrador</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 1 día</div>
-                    <div class="activity-title">Nuevo dispositivo vinculado</div>
-                    <div class="activity-time">Smart Home</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Form Section -->
+        <div class="form-container">
+            <div class="form-header">
+                <h3>
+                    <i class="fas fa-user-edit"></i>
+                    Información del Usuario
+                </h3>
+                <p>Actualiza los datos del usuario en el sistema de hogar inteligente</p>
+            </div>
 
-    <script>
-        // Form enhancements
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.style.transform = 'translateY(-1px)';
-                this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.15)';
-            });
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Usuario.Id" />
 
-            input.addEventListener('blur', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '';
-            });
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user me-1 text-primary"></i>Nombre Completo
+                        </label>
+                        <input asp-for="Usuario.Nombre" class="form-control" placeholder="Ingresa el nombre completo" />
+                        <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-key me-1 text-primary"></i>Clave
+                        </label>
+                        <input asp-for="Usuario.Clave" type="password" class="form-control" placeholder="Ingresa la clave" />
+                        <span asp-validation-for="Usuario.Clave" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            <i class="fas fa-envelope me-1 text-primary"></i>Correo
+                        </label>
+                        <input asp-for="Usuario.Correo" type="text" class="form-control" placeholder="correo@ejemplo.com" />
+                        <span asp-validation-for="Usuario.Correo" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user-tag me-1 text-primary"></i>Rol en la propiedad
+                        </label>
+                        <select asp-for="Usuario.Rol" class="form-control">
+                            <option value="">Seleccionar rol...</option>
+                            <option value="Admin">👑 Administrador</option>
+                            <option value="Usuario">👤 Usuario</option>
+                            <option value="Huesped">🔍 Huesped</option>
+                        </select>
+                        <span asp-validation-for="Usuario.Rol" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-phone me-1 text-primary"></i>Número telefónico
+                        </label>
+                        <input asp-for="Usuario.Telefono" class="form-control" placeholder="+57 (314) 328 40 52" />
+                        <span asp-validation-for="Usuario.Telefono" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt me-1 text-primary"></i>Ubicación
+                        </label>
+                        <input asp-for="Usuario.Ubicacion" class="form-control" placeholder="Ciudad, País" />
+                        <span asp-validation-for="Usuario.Ubicacion" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-shield-alt me-1 text-primary"></i>Permisos
+                        </label>
+                        <select asp-for="Usuario.Permisos" class="form-control">
+                            <option value="">Seleccionar permisos...</option>
+                            <option value="completo">🔓 Acceso Completo</option>
+                            <option value="solo_lectura">👁️ Solo Lectura</option>
+                        </select>
+                        <span asp-validation-for="Usuario.Permisos" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-id-card me-1 text-primary"></i>Documento
+                        </label>
+                        <input asp-for="Usuario.Documento" class="form-control" placeholder="123141" />
+                        <span asp-validation-for="Usuario.Documento" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-building me-1 text-primary"></i>RUT
+                        </label>
+                        <input asp-for="Usuario.Rut" class="form-control" placeholder="123124" />
+                        <span asp-validation-for="Usuario.Rut" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-toggle-on me-1 text-primary"></i>Estado de Acceso
+                        </label>
+                        <select asp-for="Usuario.Acesso" class="form-control">
+                            <option value="">Seleccionar estado...</option>
+                            <option value="activo">✅ Activo</option>
+                            <option value="inactivo">❌ Inactivo</option>
+                        </select>
+                        <span asp-validation-for="Usuario.Acesso" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-page="./Index" class="btn-secondary-custom">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la lista
+                    </a>
+                    <button type="submit" class="btn-primary-custom">
+                        <i class="fas fa-save me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Activity Sidebar -->
+        <div class="activity-sidebar">
+            <div class="activity-header">Actividad Reciente</div>
+
+            <div class="activity-item">
+                <div class="activity-status">En progreso</div>
+                <div class="activity-title">Editando perfil de usuario</div>
+                <a href="#" class="activity-action">Ver detalles</a>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Hace 23 minutos</div>
+                <div class="activity-title">Usuario actualizado correctamente</div>
+                <div class="activity-time">Sistema</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Hace 2 horas</div>
+                <div class="activity-title">Acceso al sistema</div>
+                <div class="activity-time">Inicio de sesión</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Hace 17 horas</div>
+                <div class="activity-title">Permisos modificados</div>
+                <div class="activity-time">Administrador</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Hace 1 día</div>
+                <div class="activity-title">Nuevo dispositivo vinculado</div>
+                <div class="activity-time">Smart Home</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Form enhancements
+    document.querySelectorAll('.form-control').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.transform = 'translateY(-1px)';
+            this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.15)';
         });
 
-        // Avatar letter generation
-        document.addEventListener('DOMContentLoaded', function() {
-            const avatar = document.querySelector('.avatar');
-            if (avatar && !avatar.textContent.trim()) {
-                avatar.textContent = 'U';
-            }
+        input.addEventListener('blur', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '';
         });
-    </script>
-</body>
-</html>
+    });
+
+    // Avatar letter generation
+    document.addEventListener('DOMContentLoaded', function() {
+        const avatar = document.querySelector('.avatar-lg');
+        if (avatar && !avatar.textContent.trim()) {
+            avatar.textContent = 'U';
+        }
+    });
+</script>
 
 @section Scripts {
     @{

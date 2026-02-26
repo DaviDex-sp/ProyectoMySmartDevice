@@ -3,549 +3,164 @@
 
 @{
     ViewData["Title"] = "Edit";
-   
 }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+@section Styles {
+    <link href="~/css/pages/propiedades.css" rel="stylesheet" />
+}
 
-    <style>
-        :root {
-            --primary-blue: #3b82f6;
-            --secondary-blue: #60a5fa;
-            --light-blue: #dbeafe;
-            --extra-light-blue: #eff6ff;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --bg-light: #f8fafc;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
-            min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        .main-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Property Header Card */
-        .property-header {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            border-radius: 20px;
-            padding: 2rem;
-            color: white;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-            .property-header::before {
-                content: '';
-                position: absolute;
-                top: -50%;
-                right: -50%;
-                width: 100%;
-                height: 100%;
-                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            }
-
-        .property-icon-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        .property-icon {
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: white;
-            margin-bottom: 1rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .edit-badge {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background: #06b6d4;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            z-index: 10;
-        }
-
-        .property-info h2 {
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 0.5rem;
-        }
-
-        .property-status {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-        }
-
-        /* Content Layout */
-        .content-wrapper {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-
-        /* Form Container */
-        .form-container {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-            border: 1px solid rgba(59, 130, 246, 0.1);
-        }
-
-        .form-header {
-            border-bottom: 2px solid #f1f3f4;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-        }
-
-            .form-header h3 {
-                color: var(--primary-blue);
-                font-weight: 600;
-                margin: 0;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .form-header p {
-                color: var(--text-light);
-                margin: 0.5rem 0 0 0;
-                font-size: 0.9rem;
-            }
-
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .form-control {
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            background: #fafbfc;
-        }
-
-            .form-control:focus {
-                border-color: var(--primary-blue);
-                box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-                background: white;
-            }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .form-grid-full {
-            grid-column: 1 / -1;
-        }
-
-        /* Activity Sidebar */
-        .activity-sidebar {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-            height: fit-content;
-            position: sticky;
-            top: 2rem;
-        }
-
-        .activity-header {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1.5rem;
-        }
-
-        .activity-item {
-            background: var(--extra-light-blue);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary-blue);
-            transition: all 0.2s ease;
-        }
-
-            .activity-item:hover {
-                transform: translateX(3px);
-                box-shadow: 0 3px 10px rgba(59, 130, 246, 0.1);
-            }
-
-            .activity-item:last-child {
-                margin-bottom: 0;
-            }
-
-        .activity-status {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin-bottom: 0.25rem;
-        }
-
-        .activity-title {
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .activity-action {
-            font-size: 0.8rem;
-            color: var(--primary-blue);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-            .activity-action:hover {
-                text-decoration: underline;
-            }
-
-        /* Buttons */
-        .btn-primary-custom {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
-            border: none;
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-            .btn-primary-custom:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
-            }
-
-        .btn-secondary-custom {
-            background: white;
-            border: 2px solid var(--primary-blue);
-            color: var(--primary-blue);
-            padding: 0.75rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-            .btn-secondary-custom:hover {
-                background: var(--primary-blue);
-                color: white;
-                transform: translateY(-1px);
-            }
-
-        /* Property Info Cards */
-        .info-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .info-card {
-            background: var(--extra-light-blue);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            border: 1px solid var(--light-blue);
-        }
-
-        .info-card-icon {
-            font-size: 1.5rem;
-            color: var(--primary-blue);
-            margin-bottom: 0.5rem;
-        }
-
-        .info-card-value {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.25rem;
-        }
-
-        .info-card-label {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-
-        {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .form-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .property-header {
-            padding: 1.5rem;
-        }
-
-        .property-icon {
-            width: 80px;
-            height: 80px;
-            font-size: 2rem;
-        }
-
-        .edit-badge {
-            bottom: 3px;
-            right: 3px;
-            padding: 0.2rem 0.6rem;
-            font-size: 0.65rem;
-        }
-
-        .property-info h2 {
-            font-size: 1.5rem;
-        }
-
-        .info-cards {
-            grid-template-columns: 1fr;
-        }
-
-        }
-    </style>
-
-<body>
-    <div class="main-container">
-        <!-- Property Header -->
-        <div class="property-header">
-            <div class="d-flex align-items-center">
-                <div class="property-icon-container me-4">
-                    <div class="property-icon">
-                        <i class="fas fa-home"></i>
-                    </div>
-                    <div class="edit-badge">EDITAR</div>
+<div class="main-container">
+    <!-- Property Header -->
+    <div class="profile-header" style="background: linear-gradient(135deg, var(--primary-blue, #3b82f6), var(--secondary-blue, #60a5fa));">
+        <div class="d-flex align-items-center">
+            <div class="avatar-container me-4" style="position:relative;">
+                <div style="width:100px; height:100px; background:rgba(255,255,255,0.2); border:4px solid rgba(255,255,255,0.3); border-radius:20px; display:flex; align-items:center; justify-content:center; font-size:2.5rem; color:white;">
+                    <i class="fas fa-home"></i>
                 </div>
-                <div class="property-info flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h2 class="mb-2">@(Model.Propiedade?.Direccion ?? "Propiedad")</h2>
-                            <div class="property-status">
-                                En progreso: Editando información de la propiedad
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="edit-badge">EDITAR</div>
             </div>
-        </div>
-
-        <!-- Info Cards -->
-        <div class="info-cards">
-            <div class="info-card">
-                <div class="info-card-icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <div class="info-card-value">@(Model.Propiedade?.Direccion ?? "N/A")</div>
-                <div class="info-card-label">Dirección Actual</div>
-            </div>
-            <div class="info-card">
-                <div class="info-card-icon">
-                    <i class="fas fa-building"></i>
-                </div>
-                <div class="info-card-value">@(Model.Propiedade?.Tipo ?? "N/A")</div>
-                <div class="info-card-label">Tipo</div>
-            </div>
-            <div class="info-card">
-                <div class="info-card-icon">
-                    <i class="fas fa-layer-group"></i>
-                </div>
-                <div class="info-card-value">@(Model.Propiedade?.Pisos ?? 0) pisos</div>
-                <div class="info-card-label">Niveles</div>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content-wrapper">
-            <!-- Form Section -->
-            <div class="form-container">
-                <div class="form-header">
-                    <h3>
-                        <i class="fas fa-home-edit"></i>
-                        Información de la Propiedad
-                    </h3>
-                    <p>Actualiza los datos de la propiedad en el sistema de hogar inteligente</p>
-                </div>
-
-                <form method="post">
-                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-                    <input type="hidden" asp-for="Propiedade.Id" />
-
-                    <div class="form-grid">
-                        <div class="form-group form-grid-full">
-                            <label class="form-label">
-                                <i class="fas fa-map-marker-alt me-1 text-primary"></i>Dirección
-                            </label>
-                            <input asp-for="Propiedade.Direccion" class="form-control" placeholder="Ingresa la dirección completa" />
-                            <span asp-validation-for="Propiedade.Direccion" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-building me-1 text-primary"></i>Tipo de Propiedad
-                            </label>
-                            <select asp-for="Propiedade.Tipo" class="form-control">
-                                <option value="">Seleccionar tipo...</option>
-                                <option value="casa">🏠 Casa</option>
-                                <option value="apartamento">🏢 Apartamento</option>
-								<option value="local">🏪 Local</option>
-								<option value="oficina">🏢 Oficina</option>
-                                <option value="finca">🌿 Finca</option>
-                            </select>
-                            <span asp-validation-for="Propiedade.Tipo" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
-                                <i class="fas fa-layer-group me-1 text-primary"></i>Número de Pisos
-                            </label>
-                            <input asp-for="Propiedade.Pisos" type="number" class="form-control" placeholder="Ej: 2" min="1" max="50" />
-                            <span asp-validation-for="Propiedade.Pisos" class="text-danger"></span>
-                        </div>
-
-                        <div class="form-group form-grid-full">
-                            <label class="form-label">
-                                <i class="fas fa-user-crown me-1 text-primary"></i>Propietario
-                            </label>
-                            <select asp-for="Propiedade.IdUsuarios" class="form-control" asp-items="ViewBag.IdUsuarios">
-                                <option value="">Seleccionar propietario...</option>
-                            </select>
-                            <span asp-validation-for="Propiedade.IdUsuarios" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a asp-page="./Index" class="btn-secondary-custom">
-                            <i class="fas fa-arrow-left me-2"></i>Volver a la lista
-                        </a>
-                        <button type="submit" class="btn-primary-custom">
-                            <i class="fas fa-save me-2"></i>Guardar Cambios
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Activity Sidebar -->
-            <div class="activity-sidebar">
-                <div class="activity-header">Actividad Reciente</div>
-
-                <div class="activity-item">
-                    <div class="activity-status">En progreso</div>
-                    <div class="activity-title">Editando información de propiedad</div>
-                    <a href="#" class="activity-action">Ver detalles</a>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 15 minutos</div>
-                    <div class="activity-title">Propiedad actualizada</div>
-                    <div class="activity-action">Sistema</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 1 hora</div>
-                    <div class="activity-title">Nuevo espacio agregado</div>
-                    <div class="activity-action">Configuración</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 3 horas</div>
-                    <div class="activity-title">Dispositivos sincronizados</div>
-                    <div class="activity-action">Smart Home</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Hace 1 día</div>
-                    <div class="activity-title">Propietario actualizado</div>
-                    <div class="activity-action">Gestión</div>
+            <div class="profile-info flex-grow-1">
+                <h2 class="mb-2 text-white">@(Model.Propiedade?.Direccion ?? "Propiedad")</h2>
+                <div class="profile-status">
+                    En progreso: Editando información de la propiedad
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Info Cards -->
+    <div class="info-cards">
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="info-card-value">@(Model.Propiedade?.Direccion ?? "N/A")</div>
+            <div class="info-card-label">Dirección Actual</div>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-building"></i></div>
+            <div class="info-card-value">@(Model.Propiedade?.Tipo ?? "N/A")</div>
+            <div class="info-card-label">Tipo</div>
+        </div>
+        <div class="info-card">
+            <div class="info-card-icon"><i class="fas fa-layer-group"></i></div>
+            <div class="info-card-value">@(Model.Propiedade?.Pisos ?? 0) pisos</div>
+            <div class="info-card-label">Niveles</div>
+        </div>
+    </div>
 
-    <script>
-        // Form enhancements
-        document.querySelectorAll('.form-control').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.style.transform = 'translateY(-1px)';
-                this.style.boxShadow = '0 4px 15px rgba(59, 130, 246, 0.15)';
-            });
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Form Section -->
+        <div class="form-container">
+            <div class="form-header">
+                <h3>
+                    <i class="fas fa-home"></i>
+                    Información de la Propiedad
+                </h3>
+                <p>Actualiza los datos de la propiedad en el sistema de hogar inteligente</p>
+            </div>
 
-            input.addEventListener('blur', function() {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '';
-            });
-        });
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                <input type="hidden" asp-for="Propiedade.Id" />
 
-        // Update info cards when form values change
-        document.querySelector('input[name="Propiedade.Direccion"]')?.addEventListener('input', function() {
-            const card = document.querySelector('.info-card:nth-child(1) .info-card-value');
-            card.textContent = this.value || 'N/A';
-        });
+                <div class="form-grid">
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt me-1 text-primary"></i>Dirección
+                        </label>
+                        <input asp-for="Propiedade.Direccion" class="form-control" placeholder="Ingresa la dirección completa" />
+                        <span asp-validation-for="Propiedade.Direccion" class="text-danger"></span>
+                    </div>
 
-        document.querySelector('select[name="Propiedade.Tipo"]')?.addEventListener('change', function() {
-            const card = document.querySelector('.info-card:nth-child(2) .info-card-value');
-            card.textContent = this.value || 'N/A';
-        });
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-building me-1 text-primary"></i>Tipo de Propiedad
+                        </label>
+                        <select asp-for="Propiedade.Tipo" class="form-control">
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="casa">🏠 Casa</option>
+                            <option value="apartamento">🏢 Apartamento</option>
+                            <option value="local">🏪 Local</option>
+                            <option value="oficina">🏢 Oficina</option>
+                            <option value="finca">🌿 Finca</option>
+                        </select>
+                        <span asp-validation-for="Propiedade.Tipo" class="text-danger"></span>
+                    </div>
 
-        document.querySelector('input[name="Propiedade.Pisos"]')?.addEventListener('input', function() {
-            const card = document.querySelector('.info-card:nth-child(3) .info-card-value');
-            const value = this.value ? `${this.value} pisos` : '0 pisos';
-            card.textContent = value;
-        });
-    </script>
-</body>
-</html>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-layer-group me-1 text-primary"></i>Número de Pisos
+                        </label>
+                        <input asp-for="Propiedade.Pisos" type="number" class="form-control" placeholder="Ej: 2" min="1" max="50" />
+                        <span asp-validation-for="Propiedade.Pisos" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group form-grid-full">
+                        <label class="form-label">
+                            <i class="fas fa-user me-1 text-primary"></i>Propietario
+                        </label>
+                        <select asp-for="Propiedade.IdUsuarios" class="form-control" asp-items="ViewBag.IdUsuarios">
+                            <option value="">Seleccionar propietario...</option>
+                        </select>
+                        <span asp-validation-for="Propiedade.IdUsuarios" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-page="./Index" class="btn-secondary-custom">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a la lista
+                    </a>
+                    <button type="submit" class="btn-primary-custom">
+                        <i class="fas fa-save me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Activity Sidebar -->
+        <div class="activity-sidebar">
+            <div class="activity-header">Actividad Reciente</div>
+            <div class="activity-item">
+                <div class="activity-status">En progreso</div>
+                <div class="activity-title">Editando información de propiedad</div>
+                <a href="#" class="activity-action">Ver detalles</a>
+            </div>
+            <div class="activity-item">
+                <div class="activity-status">Hace 15 minutos</div>
+                <div class="activity-title">Propiedad actualizada</div>
+                <div class="activity-action">Sistema</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-status">Hace 1 hora</div>
+                <div class="activity-title">Nuevo espacio agregado</div>
+                <div class="activity-action">Configuración</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-status">Hace 3 horas</div>
+                <div class="activity-title">Dispositivos sincronizados</div>
+                <div class="activity-action">Smart Home</div>
+            </div>
+            <div class="activity-item">
+                <div class="activity-status">Hace 1 día</div>
+                <div class="activity-title">Propietario actualizado</div>
+                <div class="activity-action">Gestión</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Update info cards when form values change
+    document.querySelector('input[name="Propiedade.Direccion"]')?.addEventListener('input', function() {
+        document.querySelector('.info-card:nth-child(1) .info-card-value').textContent = this.value || 'N/A';
+    });
+    document.querySelector('select[name="Propiedade.Tipo"]')?.addEventListener('change', function() {
+        document.querySelector('.info-card:nth-child(2) .info-card-value').textContent = this.value || 'N/A';
+    });
+    document.querySelector('input[name="Propiedade.Pisos"]')?.addEventListener('input', function() {
+        document.querySelector('.info-card:nth-child(3) .info-card-value').textContent = this.value ? `${this.value} pisos` : '0 pisos';
+    });
+</script>
 
 @section Scripts {
     @{

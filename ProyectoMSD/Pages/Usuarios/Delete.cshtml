@@ -5,526 +5,177 @@
     ViewData["Title"] = "Delete";
 }
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+@section Styles {
+    <link href="~/css/pages/usuarios.css" rel="stylesheet" />
+}
 
-    <style>
-        :root {
-            --primary-red: #ef4444;
-            --secondary-red: #f87171;
-            --light-red: #fecaca;
-            --extra-light-red: #fef2f2;
-            --primary-blue: #3b82f6;
-            --secondary-blue: #60a5fa;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --bg-light: #f8fafc;
-        }
-
-        body {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
-            min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        .main-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* Profile Header Card - Tema de eliminación */
-        .profile-header {
-            background: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
-            border-radius: 20px;
-            padding: 2rem;
-            color: white;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-            .profile-header::before {
-                content: '';
-                position: absolute;
-                top: -50%;
-                right: -50%;
-                width: 100%;
-                height: 100%;
-                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-                animation: float 6s ease-in-out infinite;
-            }
-
-        {
-            transform: translate(0px, 0px) rotate(0deg);
-        }
-
-        50% {
-            transform: translate(-20px, -20px) rotate(180deg);
-        }
-
-        }
-
-        .avatar-container {
-            position: relative;
-            display: inline-block;
-        }
-
-        .avatar {
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 1rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .delete-badge {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: #dc2626;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 15px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .profile-info h2 {
-            font-size: 2rem;
-            font-weight: 300;
-            margin-bottom: 0.5rem;
-        }
-
-        .profile-status {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-        }
-
-        /* Content Layout */
-        .content-wrapper {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-
-        /* Delete Container */
-        .delete-container {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-            border: 1px solid rgba(239, 68, 68, 0.1);
-        }
-
-        .delete-header {
-            border-bottom: 2px solid #fef2f2;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-        }
-
-            .delete-header h3 {
-                color: var(--primary-red);
-                font-weight: 600;
-                margin: 0;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .delete-header p {
-                color: var(--text-light);
-                margin: 0.5rem 0 0 0;
-                font-size: 0.9rem;
-            }
-
-        .warning-box {
-            background: var(--extra-light-red);
-            border: 1px solid var(--light-red);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--primary-red);
-        }
-
-            .warning-box h4 {
-                color: var(--primary-red);
-                font-size: 1rem;
-                font-weight: 600;
-                margin-bottom: 0.5rem;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .warning-box p {
-                color: var(--text-dark);
-                margin: 0;
-                font-size: 0.9rem;
-            }
-
-        /* User Info Display */
-        .user-info {
-            background: #f8fafc;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .info-item {
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .info-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-value {
-            font-size: 1rem;
-            font-weight: 500;
-            color: var(--text-dark);
-            word-break: break-word;
-        }
-
-        .info-item-full {
-            grid-column: 1 / -1;
-        }
-
-        /* Buttons */
-        .btn-danger-custom {
-            background: linear-gradient(135deg, var(--primary-red) 0%, var(--secondary-red) 100%);
-            border: none;
-            color: white;
-            padding: 0.75rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-            .btn-danger-custom:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
-            }
-
-        .btn-secondary-custom {
-            background: white;
-            border: 2px solid var(--primary-blue);
-            color: var(--primary-blue);
-            padding: 0.75rem 2rem;
-            border-radius: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-
-            .btn-secondary-custom:hover {
-                background: var(--primary-blue);
-                color: white;
-                transform: translateY(-1px);
-            }
-
-        /* Activity Sidebar - Tema de advertencia */
-        .activity-sidebar {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
-            height: fit-content;
-            position: sticky;
-            top: 2rem;
-        }
-
-        .activity-header {
-            color: var(--text-light);
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 1.5rem;
-        }
-
-        .activity-item {
-            background: var(--extra-light-red);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-left: 4px solid var(--primary-red);
-            transition: all 0.2s ease;
-        }
-
-            .activity-item:hover {
-                transform: translateX(3px);
-                box-shadow: 0 3px 10px rgba(239, 68, 68, 0.1);
-            }
-
-            .activity-item:last-child {
-                margin-bottom: 0;
-            }
-
-        .activity-status {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin-bottom: 0.25rem;
-        }
-
-        .activity-title {
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .activity-action {
-            font-size: 0.8rem;
-            color: var(--primary-red);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .info-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .profile-header {
-            padding: 1.5rem;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            font-size: 2rem;
-        }
-
-        .profile-info h2 {
-            font-size: 1.5rem;
-        }
-
-        }
-    </style>
-</head>
-
-<body>
-    <div class="main-container">
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <div class="d-flex align-items-center">
-                <div class="avatar-container me-4">
-                    <div class="avatar">
-                        @(Model.Usuario?.Nombre?.Substring(0, 1).ToUpper() ?? "U")
-                    </div>
-                    <div class="delete-badge">ELIMINAR</div>
+<div class="main-container usuarios-delete">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="d-flex align-items-center">
+            <div class="avatar-container me-4">
+                <div class="avatar-lg">
+                    @(Model.Usuario?.Nombre?.Substring(0, 1).ToUpper() ?? "U")
                 </div>
-                <div class="profile-info flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <h2 class="mb-2">@(Model.Usuario?.Nombre ?? "Usuario")</h2>
-                            <div class="profile-status">
-                                ⚠️ Confirmación requerida: Eliminar usuario del sistema
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="delete-badge">ELIMINAR</div>
             </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content-wrapper">
-            <!-- Delete Section -->
-            <div class="delete-container">
-                <div class="delete-header">
-                    <h3>
-                        <i class="fas fa-user-times"></i>
-                        Eliminar Usuario
-                    </h3>
-                    <p>Confirma la eliminación permanente de este usuario del sistema</p>
-                </div>
-
-                <div class="warning-box">
-                    <h4>
-                        <i class="fas fa-exclamation-triangle"></i>
-                        ¡Atención! Esta acción es irreversible
-                    </h4>
-                    <p>Una vez eliminado, toda la información del usuario se perderá permanentemente y no podrá ser recuperada.</p>
-                </div>
-
-                <div class="user-info">
-                    <h5 class="mb-3 text-dark fw-bold">Información del usuario a eliminar:</h5>
-
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-user"></i>
-                                Nombre
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Nombre)</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-user-tag"></i>
-                                Rol
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Rol)</div>
-                        </div>
-
-                        <div class="info-item info-item-full">
-                            <div class="info-label">
-                                <i class="fas fa-envelope"></i>
-                                Correo
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Correo)</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-phone"></i>
-                                Teléfono
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Telefono)</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Ubicación
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Ubicacion)</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-id-card"></i>
-                                Documento
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Documento)</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-building"></i>
-                                RUT
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Rut)</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-shield-alt"></i>
-                                Permisos
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Permisos)</div>
-                        </div>
-
-                        <div class="info-item">
-                            <div class="info-label">
-                                <i class="fas fa-toggle-on"></i>
-                                Estado
-                            </div>
-                            <div class="info-value">@Html.DisplayFor(model => model.Usuario.Acesso)</div>
+            <div class="profile-info flex-grow-1">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h2 class="mb-2">@(Model.Usuario?.Nombre ?? "Usuario")</h2>
+                        <div class="profile-status">
+                            ⚠️ Confirmación requerida: Eliminar usuario del sistema
                         </div>
                     </div>
-                </div>
-
-                <form method="post">
-                    <input type="hidden" asp-for="Usuario.Id" />
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <a asp-page="./Index" class="btn-secondary-custom">
-                            <i class="fas fa-arrow-left me-2"></i>Cancelar y Volver
-                        </a>
-                        <button type="submit" class="btn-danger-custom" onclick="return confirm('¿Estás absolutamente seguro de eliminar este usuario? Esta acción NO se puede deshacer.');">
-                            <i class="fas fa-trash-alt me-2"></i>Sí, Eliminar Usuario
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Activity Sidebar - Warnings -->
-            <div class="activity-sidebar">
-                <div class="activity-header">Advertencias Importantes</div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Crítico</div>
-                    <div class="activity-title">Eliminación permanente</div>
-                    <div class="activity-action">No se puede recuperar</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Importante</div>
-                    <div class="activity-title">Datos relacionados</div>
-                    <div class="activity-action">Pueden perderse</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Atención</div>
-                    <div class="activity-title">Accesos del sistema</div>
-                    <div class="activity-action">Se revocarán</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Recomendación</div>
-                    <div class="activity-title">Crear respaldo</div>
-                    <div class="activity-action">Antes de eliminar</div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-status">Alternativa</div>
-                    <div class="activity-title">Desactivar usuario</div>
-                    <div class="activity-action">En lugar de eliminar</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <!-- Delete Section -->
+        <div class="delete-container">
+            <div class="delete-header">
+                <h3>
+                    <i class="fas fa-user-times"></i>
+                    Eliminar Usuario
+                </h3>
+                <p>Confirma la eliminación permanente de este usuario del sistema</p>
+            </div>
 
-   
-</body>
-</html>
+            <div class="warning-box">
+                <h4>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    ¡Atención! Esta acción es irreversible
+                </h4>
+                <p>Una vez eliminado, toda la información del usuario se perderá permanentemente y no podrá ser recuperada.</p>
+            </div>
+
+            <div class="user-info">
+                <h5 class="mb-3 text-dark fw-bold">Información del usuario a eliminar:</h5>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-user"></i>
+                            Nombre
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Nombre)</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-user-tag"></i>
+                            Rol
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Rol)</div>
+                    </div>
+
+                    <div class="info-item info-item-full">
+                        <div class="info-label">
+                            <i class="fas fa-envelope"></i>
+                            Correo
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Correo)</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-phone"></i>
+                            Teléfono
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Telefono)</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Ubicación
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Ubicacion)</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-id-card"></i>
+                            Documento
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Documento)</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-building"></i>
+                            RUT
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Rut)</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-shield-alt"></i>
+                            Permisos
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Permisos)</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i class="fas fa-toggle-on"></i>
+                            Estado
+                        </div>
+                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Acesso)</div>
+                    </div>
+                </div>
+            </div>
+
+            <form method="post">
+                <input type="hidden" asp-for="Usuario.Id" />
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a asp-page="./Index" class="btn-secondary-custom">
+                        <i class="fas fa-arrow-left me-2"></i>Cancelar y Volver
+                    </a>
+                    <button type="submit" class="btn-danger-custom" onclick="return confirm('¿Estás absolutamente seguro de eliminar este usuario? Esta acción NO se puede deshacer.');">
+                        <i class="fas fa-trash-alt me-2"></i>Sí, Eliminar Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Activity Sidebar - Warnings -->
+        <div class="activity-sidebar">
+            <div class="activity-header">Advertencias Importantes</div>
+
+            <div class="activity-item">
+                <div class="activity-status">Crítico</div>
+                <div class="activity-title">Eliminación permanente</div>
+                <div class="activity-action">No se puede recuperar</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Importante</div>
+                <div class="activity-title">Datos relacionados</div>
+                <div class="activity-action">Pueden perderse</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Atención</div>
+                <div class="activity-title">Accesos del sistema</div>
+                <div class="activity-action">Se revocarán</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Recomendación</div>
+                <div class="activity-title">Crear respaldo</div>
+                <div class="activity-action">Antes de eliminar</div>
+            </div>
+
+            <div class="activity-item">
+                <div class="activity-status">Alternativa</div>
+                <div class="activity-title">Desactivar usuario</div>
+                <div class="activity-action">En lugar de eliminar</div>
+            </div>
+        </div>
+    </div>
+</div>

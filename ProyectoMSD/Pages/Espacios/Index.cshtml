@@ -5,186 +5,9 @@
     ViewData["Title"] = "Index";
 }
 
-<!-- Bootstrap 5.3 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Font Awesome 6.4 -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-<style>
-    .space-card {
-        border: 1px solid #e0e0e0;
-        border-radius: 15px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        background: #ffffff;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-    }
-
-        .space-card:hover {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-            transform: translateY(-2px);
-        }
-
-    .card-header-custom {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    .space-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: #333;
-        margin: 0;
-    }
-
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .action-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        font-size: 0.875rem;
-    }
-
-    .edit-btn {
-        background: #f8f9fa;
-        color: #6c757d;
-    }
-
-        .edit-btn:hover {
-            background: #0d6efd;
-            color: white;
-        }
-
-    .delete-btn {
-        background: #f8f9fa;
-        color: #6c757d;
-    }
-
-        .delete-btn:hover {
-            background: #dc3545;
-            color: white;
-        }
-
-    .device-stats {
-        background: #f8f9fa;
-        border-radius: 8px;
-        padding: 0.5rem 0.75rem;
-        margin-bottom: 1rem;
-        font-size: 0.875rem;
-        color: #6c757d;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .stat-item {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-    }
-
-    .devices-title {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 0.75rem;
-        font-size: 0.95rem;
-    }
-
-    .device-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5rem 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-        .device-item:last-child {
-            border-bottom: none;
-        }
-
-    .device-info {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .device-icon {
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.875rem;
-    }
-
-    .device-name {
-        font-size: 0.875rem;
-        color: #333;
-    }
-
-    .device-status {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .status-badge {
-        padding: 0.25rem 0.5rem;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    /* 🟢 Activo (verde) */
-    .status-on {
-        background-color: #198754 !important;
-        color: white !important;
-    }
-
-    /* 🔴 Inactivo (rojo) */
-    .status-off {
-        background-color: #dc3545 !important;
-        color: white !important;
-    }
-
-    .status-indicator {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-    }
-
-    .indicator-on {
-        background-color: #198754 !important;
-    }
-
-    .indicator-off {
-        background-color: #dc3545 !important;
-    }
-
-    /* ✨ Hover especial para el botón "Agregar Espacio" */
-    .btn-dark:hover {
-        position: relative;
-        box-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 16px rgba(0, 0, 0, 0.5);
-        transition: all 0.3s ease-in-out;
-    }
-</style>
+@section Styles {
+    <link href="~/css/pages/espacios.css" rel="stylesheet" />
+}
 
 <div class="container py-4">
     <!-- Header -->
@@ -197,7 +20,7 @@
         {
             <a asp-page="Create" class="btn btn-dark">
                 <i class="fas fa-plus me-2"></i>Agregar Espacio
-        </a>
+            </a>
         }
     </div>
 
@@ -250,8 +73,8 @@
                             </div>
                             <div class="stat-item">
                                 @{
-                                    var rand = new Random(espacio.Id); // Seed para consistencia
-                                    int activos = rand.Next(1, 3); // Entre 2 y 4
+                                    var rand = new Random(espacio.Id);
+                                    int activos = rand.Next(1, 3);
                                 }
                                 <span class="badge bg-danger">@activos Inactivos</span>
                             </div>
@@ -352,6 +175,3 @@
         }
     </div>
 </div>
-
-<!-- Bootstrap 5.3 JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,189 +1,26 @@
 ﻿@page
 @model ProyectoMSD.Pages.Soportes.CreateModel
 
-        @{
-        ViewData["Title"] = "Create";
-        }
-        
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+@{
+    ViewData["Title"] = "Create";
+}
 
-<style>
-    :root {
-        --primary-gradient: linear-gradient(135deg, #D2EFFE 0%, #D2D9FE 100%);
-        --card-shadow: 0 8px 32px rgba(0,0,0,0.12);
-        --hover-shadow: 0 12px 40px rgba(0,0,0,0.18);
-        --support-blue: #258cfb;
-        --support-green: #28a745;
-    }
+@section Styles {
+    <link href="~/css/pages/soportes.css" rel="stylesheet" />
+}
 
-    body {
-        background: var(--primary-gradient);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        min-height: 100vh;
-    }
-
-    .create-container {
-        min-height: 100vh;
-        padding: 2rem 0;
-    }
-
-    .create-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(15px);
-        border-radius: 25px;
-        box-shadow: var(--card-shadow);
-        border: 1px solid rgba(255,255,255,0.3);
-        overflow: hidden;
-        transition: all 0.4s ease;
-    }
-
-    .create-card:hover {
-        box-shadow: var(--hover-shadow);
-        transform: translateY(-2px);
-    }
-
-    .card-header {
-        background: linear-gradient(135deg, var(--support-blue) 0%, #1e7ce8 100%);
-        color: white;
-        padding: 2rem;
-        position: relative;
-        overflow: hidden;
-        border-bottom: none;
-    }
-
-    .card-header::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -20%;
-        width: 100%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    }
-
-    .card-body {
-        padding: 2.5rem;
-    }
-
-    .form-label {
-        color: #495057;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-    }
-
-    .form-control, .form-select {
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        padding: 0.75rem 1rem;
-        font-size: 1rem;
-        background: rgba(255,255,255,0.8);
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-    }
-
-    .form-control:focus, .form-select:focus {
-        border-color: var(--support-blue);
-        background: white;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(37, 140, 251, 0.2);
-    }
-
-    .form-control::placeholder {
-        color: #adb5bd;
-        font-style: italic;
-    }
-
-    textarea.form-control {
-        resize: vertical;
-        min-height: 100px;
-    }
-
-    .btn-success {
-        background: linear-gradient(135deg, var(--support-green) 0%, #20c997 100%);
-        border: none;
-        border-radius: 12px;
-        padding: 0.75rem 2rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-success:hover {
-        background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-    }
-
-    .btn-outline-secondary {
-        border: 2px solid #6c757d;
-        border-radius: 12px;
-        padding: 0.75rem 2rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-
-    .btn-outline-secondary:hover {
-        background: #6c757d;
-        border-color: #6c757d;
-        transform: translateY(-2px);
-    }
-
-    .alert-danger {
-        background: rgba(220, 53, 69, 0.1);
-        border: 1px solid rgba(220, 53, 69, 0.2);
-        color: #721c24;
-        border-radius: 12px;
-        backdrop-filter: blur(10px);
-        margin-bottom: 1.5rem;
-    }
-
-    .text-danger {
-        color: #dc3545 !important;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-    }
-
-    .form-text {
-        color: #6c757d;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-    }
-
-    .mb-3 {
-        margin-bottom: 1.5rem !important;
-    }
-
-    .mb-4 {
-        margin-bottom: 2rem !important;
-    }
-
-    .priority-badge {
-        padding: 0.25rem 0.75rem;
-        border-radius: 15px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-left: 0.5rem;
-    }
-
-    .priority-alta { background: #f8d7da; color: #721c24; }
-    .priority-media { background: #fff3cd; color: #856404; }
-    .priority-baja { background: #d1ecf1; color: #0c5460; }
-</style>
-
-<div class="container create-container">
+<div class="container" style="padding: 2rem 0;">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="card create-card">
-                <div class="card-header">
+            <div class="card" style="border-radius: 25px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); border: 1px solid rgba(255,255,255,0.3); overflow: hidden;">
+                <div class="card-header" style="background: linear-gradient(135deg, #258cfb, #1e7ce8); color: white; padding: 2rem; border-bottom: none; position: relative; overflow: hidden;">
                     <h3 class="mb-2 fw-bold">
                         <i class="fas fa-ticket-alt me-3"></i>Crear Nuevo Ticket de Soporte
                     </h3>
                     <p class="mb-0 opacity-90">Describe tu problema o consulta para recibir ayuda</p>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body" style="padding: 2.5rem;">
                     <form method="post">
                         <!-- MOSTRAR TODOS los errores -->
                         <div asp-validation-summary="All" class="alert alert-danger"></div>
@@ -193,7 +30,7 @@
                             <label asp-for="Soporte.Fecha" class="form-label">
                                 <i class="fas fa-calendar-alt me-2 text-primary"></i>Fecha del Ticket
                             </label>
-                            <input asp-for="Soporte.Fecha" type="date" class="form-control" readonly 
+                            <input asp-for="Soporte.Fecha" type="date" class="form-control" readonly
                                    value="@DateTime.Now.ToString("yyyy-MM-dd")">
                             <span asp-validation-for="Soporte.Fecha" class="text-danger"></span>
                             <div class="form-text">
@@ -223,7 +60,7 @@
                             <label asp-for="Soporte.Descripcion" class="form-label">
                                 <i class="fas fa-file-alt me-2 text-primary"></i>Descripción del Problema
                             </label>
-                            <textarea asp-for="Soporte.Descripcion" class="form-control" rows="5" 
+                            <textarea asp-for="Soporte.Descripcion" class="form-control" rows="5"
                                       placeholder="Describe detalladamente tu problema o consulta. Incluye pasos que seguiste, mensajes de error, o cualquier información relevante..."></textarea>
                             <span asp-validation-for="Soporte.Descripcion" class="text-danger"></span>
                             <div class="form-text">
@@ -261,8 +98,6 @@
                                 <i class="fas fa-info-circle me-1"></i>Elige el medio por el cual deseas recibir la respuesta
                             </div>
                         </div>
-
-
 
                         <!-- Botones de Acción -->
                         <div class="d-flex justify-content-between">

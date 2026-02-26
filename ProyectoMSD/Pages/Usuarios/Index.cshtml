@@ -3,441 +3,203 @@
 
 @{
     ViewData["Title"] = "Hogar Inteligente - Gestión de Usuarios";
-
 }
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+@section Styles {
+    <link href="~/css/pages/usuarios.css" rel="stylesheet" />
+}
 
-    <style>
+<!-- Contenido Principal -->
+<div class="container-fluid px-4" style="padding-top: 20px;">
 
+    <div class="hero-section text-center hero-background">
+        <h1 class="display-4 fw-bold mb-4">BIENVENIDO A TU HOGAR INTELIGENTE</h1>
+        <h3 class="mb-0">
+            Tu hogar Gestiona actualmente
+            <span class="fw-bold text-warning">@Model.TotalUsuarios Usuarios</span> en
+            <span class="fw-bold text-warning">@Model.TotalEspacios Espacios</span> Diferentes
+        </h3>
+    </div>
 
-
-        :root {
-            --primary-gradient: linear-gradient(135deg, #D2EFFE 0%, #D2D9FE 100%);
-            --card-shadow: 0 8px 32px rgba(0,0,0,0.12);
-            --hover-shadow: 0 12px 40px rgba(0,0,0,0.18);
-        }
-
-        body {
-            background: var(--primary-gradient);
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .navbar-custom {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .hero-section {
-            background: rgba(255, 255, 255, 0.1) 30%;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 20px;
-            color: white;
-            padding: 3rem 2rem;
-            margin-bottom: 2rem;
-            overflow: hidden;
-            position: relative;
-            z-index: 0;
-        }
-
-            .hero-section::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
-                pointer-events: none;
-            }
-
-        .stats-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 18px;
-            padding: 2rem 1.5rem;
-            box-shadow: var(--card-shadow);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-            .stats-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
-            .stats-card:hover {
-                transform: translateY(-8px) scale(1.02);
-                box-shadow: var(--hover-shadow);
-            }
-
-                .stats-card:hover::before {
-                    opacity: 1;
-                }
-
-        .action-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 16px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            box-shadow: var(--card-shadow);
-            text-decoration: none;
-            color: inherit;
-        }
-
-            .action-card:hover {
-                transform: translateY(-6px) scale(1.05);
-                box-shadow: var(--hover-shadow);
-                text-decoration: none;
-                color: inherit;
-            }
-
-        .action-card-success {
-            background: linear-gradient(135deg, rgba(212, 237, 218, 0.9), rgba(195, 230, 203, 0.9));
-        }
-
-        .action-card-warning {
-            background: linear-gradient(135deg, rgba(255, 243, 205, 0.9), rgba(255, 234, 167, 0.9));
-        }
-
-        .action-card-danger {
-            background: linear-gradient(135deg, rgba(248, 215, 218, 0.9), rgba(241, 194, 199, 0.9));
-        }
-
-        .action-card-info {
-            background: linear-gradient(135deg, rgba(209, 236, 241, 0.9), rgba(190, 229, 235, 0.9));
-        }
-
-        .table-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-        }
-
-        .table-header {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-            padding: 2rem;
-            position: relative;
-        }
-
-            .table-header::after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 1px;
-                background: rgba(255,255,255,0.2);
-            }
-
-        .avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 16px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .table tbody tr {
-            transition: all 0.3s ease;
-        }
-
-            .table tbody tr:hover {
-                background: rgba(102, 126, 234, 0.08);
-                transform: translateY(-1px);
-            }
-
-        .btn-group .btn {
-            transition: all 0.3s ease;
-            border-radius: 8px !important;
-            margin-right: 4px;
-        }
-
-            .btn-group .btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            }
-
-        .badge {
-            padding: 0.5em 0.8em;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .search-container {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--card-shadow);
-        }
-
-        .modal-content {
-            border-radius: 16px;
-            border: none;
-            overflow: hidden;
-        }
-
-        {
-            padding: 2rem 1.5rem;
-        }
-
-        .stats-card {
-            margin-bottom: 1.5rem;
-        }
-
-        .btn-group {
-            flex-direction: column;
-            gap: 4px;
-        }
-
-    </style>
-</head>
-
-<body>
-    <!-- Contenido Principal -->
-    <div class="container-fluid px-4" style="padding-top: 100px;">
-
-        <div class="hero-section text-center hero-background">
-            <h1 class="display-4 fw-bold mb-4" style="stroke:ActiveBorder">BIENVENIDO A TU HOGAR INTELIGENTE</h1>
-            <h3 class="mb-0">
-                Tu hogar Gestiona actualmente
-                <span class="fw-bold text-warning">@Model.TotalUsuarios Usuarios</span> en
-                <span class="fw-bold text-warning">@Model.TotalEspacios Espacios</span> Diferentes
-            </h3>
-        </div>
-
-        <style>
-            .hero-background {
-                background-color: slategrey !important;
-                position: relative !important;
-                z-index: -100 !important; /* ← MUY ATRÁS */
-                isolation: auto !important;
-            }
-
-                /* Asegurar que el contenido del hero siga siendo visible */
-                .hero-background * {
-                    position: relative !important;
-                    z-index: 1 !important;
-                }
-        </style>
-
-        <!-- Cards de Estadísticas -->
-        <div class="row mb-5">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="stats-card text-center">
-                    <div class="mb-3">
-                        <i class="fas fa-users fa-4x text-primary"></i>
-                    </div>
-                    <h2 class="fw-bold text-primary mb-2">@Model.TotalUsuarios USUARIOS</h2>
-                    <p class="text-success mb-1">
-                        <i class="fas fa-arrow-up me-1"></i>
-                        <strong>@Model.UsuariosActivos activos</strong> esta semana
-                    </p>
-                    <small class="text-muted">Usuarios registrados en el sistema</small>
+    <!-- Cards de Estadísticas -->
+    <div class="row mb-5">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="stats-card text-center">
+                <div class="mb-3">
+                    <i class="fas fa-users fa-4x text-primary"></i>
                 </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="stats-card text-center">
-                    <div class="mb-3">
-                        <i class="fas fa-home fa-4x text-success"></i>
-                    </div>
-                    <h2 class="fw-bold text-success mb-2">@Model.TotalEspacios ESPACIOS</h2>
-                    <p class="text-info mb-1">
-                        <i class="fas fa-map-marked-alt me-1"></i>
-                        <strong>Espacios configurados</strong> en hogar
-                    </p>
-                    <small class="text-muted">Áreas de control disponibles</small>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="stats-card text-center">
-                    <div class="mb-3">
-                        <i class="fas fa-mobile-alt fa-4x text-warning"></i>
-                    </div>
-                    <h2 class="fw-bold text-warning mb-2">@Model.TotalDispositivos DISPOSITIVOS</h2>
-                    <p class="text-info mb-1">
-                        <i class="fas fa-map-marked-alt me-1"></i>
-                        <strong>@Model.DispositivosActivos Activos</strong> en hogar
-                    </p>
-                    <small class="text-muted">Total de dispositivos conectados</small>
-                </div>
+                <h2 class="fw-bold text-primary mb-2">@Model.TotalUsuarios USUARIOS</h2>
+                <p class="text-success mb-1">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    <strong>@Model.UsuariosActivos activos</strong> esta semana
+                </p>
+                <small class="text-muted">Usuarios registrados en el sistema</small>
             </div>
         </div>
 
-        <!-- Acciones Rápidas -->
-        <div class="mb-5">
-            <h4 class="text-white mb-4 d-flex align-items-center">
-                <i class="fas fa-bolt me-3 fa-lg"></i>
-                <span class="fw-bold">ACCIONES RÁPIDAS</span>
-            </h4>
-            
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="stats-card text-center">
+                <div class="mb-3">
+                    <i class="fas fa-home fa-4x text-success"></i>
+                </div>
+                <h2 class="fw-bold text-success mb-2">@Model.TotalEspacios ESPACIOS</h2>
+                <p class="text-info mb-1">
+                    <i class="fas fa-map-marked-alt me-1"></i>
+                    <strong>Espacios configurados</strong> en hogar
+                </p>
+                <small class="text-muted">Áreas de control disponibles</small>
+            </div>
+        </div>
 
-            <div class="table-container">
-                <div class="table-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 class="mb-2 fw-bold">
-                                <i class="fas fa-users me-3"></i>Gestión de Usuarios del Sistema
-                            </h3>
-                            <p class="mb-0 opacity-90 fs-5">Administra todos los usuarios registrados en tu hogar inteligente</p>
-                        </div>
-                        <div>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a asp-page="Create" class="btn btn-light btn-lg">
-                                    <i class="fas fa-plus me-2"></i>Crear Nuevo Usuario
-                                </a>
-                            }
-                        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="stats-card text-center">
+                <div class="mb-3">
+                    <i class="fas fa-mobile-alt fa-4x text-warning"></i>
+                </div>
+                <h2 class="fw-bold text-warning mb-2">@Model.TotalDispositivos DISPOSITIVOS</h2>
+                <p class="text-info mb-1">
+                    <i class="fas fa-map-marked-alt me-1"></i>
+                    <strong>@Model.DispositivosActivos Activos</strong> en hogar
+                </p>
+                <small class="text-muted">Total de dispositivos conectados</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="mb-5">
+        <h4 class="text-white mb-4 d-flex align-items-center">
+            <i class="fas fa-bolt me-3 fa-lg"></i>
+            <span class="fw-bold">ACCIONES RÁPIDAS</span>
+        </h4>
+
+        <div class="table-container">
+            <div class="table-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h3 class="mb-2 fw-bold">
+                            <i class="fas fa-users me-3"></i>Gestión de Usuarios del Sistema
+                        </h3>
+                        <p class="mb-0 opacity-90 fs-5">Administra todos los usuarios registrados en tu hogar inteligente</p>
+                    </div>
+                    <div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-page="Create" class="btn btn-light btn-lg">
+                                <i class="fas fa-plus me-2"></i>Crear Nuevo Usuario
+                            </a>
+                        }
                     </div>
                 </div>
+            </div>
 
-                <div class="p-4">
-                    @if (Model.Usuario != null && Model.Usuario.Any())
-                    {
-                        <div class="row g-3">
-                            @foreach (var item in Model.Usuario)
-                            {
-                                <div class="col-12">
-                                    <div class="card shadow-sm rounded-3">
-                                        <div class="card-body d-flex align-items-center">
-                                            <!-- Avatar -->
-                                            <div class="avatar bg-primary text-white me-3 fs-4 d-flex justify-content-center align-items-center rounded-circle" style="width:50px; height:50px;">
-                                                @(item.Nombre?.Substring(0, 1).ToUpper())
-                                            </div>
-
-                                            <!-- Info del usuario -->
-                                            <div class="flex-grow-1">
-                                                <h5 class="fw-bold mb-1">@Html.DisplayFor(modelItem => item.Nombre)</h5>
-                                                <p class="mb-1 text-muted">
-                                                    <i class="fas fa-envelope me-2"></i>@Html.DisplayFor(modelItem => item.Correo)
-                                                </p>
-                                                <p class="mb-1">
-                                                    @{
-                                                        var rolClass = item.Rol?.ToLower() switch
-                                                        {
-                                                            "admin" => "bg-danger text-white",
-                                                            "administrador" => "bg-danger text-white",
-                                                            "usuario" => "bg-success text-white",
-                                                            "moderador" => "bg-warning text-dark",
-                                                            _ => "bg-secondary text-white"
-                                                        };
-                                             
-                                                    }
-                                                    <span class="badge @rolClass">@Html.DisplayFor(modelItem => item.Rol)</span>
-                                                </p>
-                                                <p class="mb-1 text-muted">
-                                                    <i class="fas fa-phone me-2"></i>@Html.DisplayFor(modelItem => item.Telefono)
-                                                </p>
-                                                <p class="mb-1 text-muted">
-                                                    <i class="fas fa-map-marker-alt me-2"></i>@Html.DisplayFor(modelItem => item.Ubicacion)
-                                                </p>
-                                                <p class="mb-1 text-muted">
-                                                    <i class="fas fa-id-card me-2"></i>@Html.DisplayFor(modelItem => item.Documento)
-                                                </p>
-                                                <p class="mb-1 text-muted">
-                                                    <i class="fas fa-building me-2"></i>@Html.DisplayFor(modelItem => item.Rut)
-                                                </p>
-                                                <p class="mb-0 fw-bold">
-                                                    @{
-                                                        var accesoClass = item.Acesso?.ToLower() switch
-                                                        {
-                                                            "activo" => "text-success",
-                                                            "active" => "text-success",
-                                                            "biencaballo" => "text-success",
-                                                            "yes" => "text-success",
-                                                            "habilitado" => "text-success",
-                                                            _ => "text-danger"
-                                                        };
-
-                                                        var accesoIcon = item.Acesso?.ToLower() switch
-                                                        {
-                                                            "activo" => "fa-check-circle",
-                                                            "active" => "fa-check-circle",
-                                                            "biencaballo" => "fa-check-circle",
-                                                            "yes" => "fa-check-circle",
-                                                            "habilitado" => "fa-check-circle",
-                                                            _ => "fa-times-circle"
-                                                        };
-                                                    }
-                                                    <i class="fas @accesoIcon me-2 @accesoClass"></i>@Html.DisplayFor(modelItem => item.Acesso)
-                                                </p>
-                                            </div>
-
-                                     <!-- Botones de acción - SIN DETAILS -->
-                                     @if (User.IsInRole("Admin"))
-                                            {
-                                                <div class="ms-3">
-                                                    <div class="btn-group" role="group">
-                                                        <a asp-page="./Edit" asp-route-id="@item.Id"
-                                                        class="btn btn-outline-primary btn-sm"
-                                                        title="Editar usuario" data-bs-toggle="tooltip">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
-                                                        <a asp-page="./Delete" asp-route-id="@item.Id"
-                                                        class="btn btn-outline-danger btn-sm"
-                                                        title="Eliminar usuario" data-bs-toggle="tooltip">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            }
+            <div class="p-4">
+                @if (Model.Usuario != null && Model.Usuario.Any())
+                {
+                    <div class="row g-3">
+                        @foreach (var item in Model.Usuario)
+                        {
+                            <div class="col-12">
+                                <div class="card shadow-sm rounded-3">
+                                    <div class="card-body d-flex align-items-center">
+                                        <!-- Avatar -->
+                                        <div class="avatar bg-primary text-white me-3 fs-4 d-flex justify-content-center align-items-center rounded-circle" style="width:50px; height:50px;">
+                                            @(item.Nombre?.Substring(0, 1).ToUpper())
                                         </div>
+
+                                        <!-- Info del usuario -->
+                                        <div class="flex-grow-1">
+                                            <h5 class="fw-bold mb-1">@Html.DisplayFor(modelItem => item.Nombre)</h5>
+                                            <p class="mb-1 text-muted">
+                                                <i class="fas fa-envelope me-2"></i>@Html.DisplayFor(modelItem => item.Correo)
+                                            </p>
+                                            <p class="mb-1">
+                                                @{
+                                                    var rolClass = item.Rol?.ToLower() switch
+                                                    {
+                                                        "admin" => "bg-danger text-white",
+                                                        "administrador" => "bg-danger text-white",
+                                                        "usuario" => "bg-success text-white",
+                                                        "moderador" => "bg-warning text-dark",
+                                                        _ => "bg-secondary text-white"
+                                                    };
+                                                }
+                                                <span class="badge @rolClass">@Html.DisplayFor(modelItem => item.Rol)</span>
+                                            </p>
+                                            <p class="mb-1 text-muted">
+                                                <i class="fas fa-phone me-2"></i>@Html.DisplayFor(modelItem => item.Telefono)
+                                            </p>
+                                            <p class="mb-1 text-muted">
+                                                <i class="fas fa-map-marker-alt me-2"></i>@Html.DisplayFor(modelItem => item.Ubicacion)
+                                            </p>
+                                            <p class="mb-1 text-muted">
+                                                <i class="fas fa-id-card me-2"></i>@Html.DisplayFor(modelItem => item.Documento)
+                                            </p>
+                                            <p class="mb-1 text-muted">
+                                                <i class="fas fa-building me-2"></i>@Html.DisplayFor(modelItem => item.Rut)
+                                            </p>
+                                            <p class="mb-0 fw-bold">
+                                                @{
+                                                    var accesoClass = item.Acesso?.ToLower() switch
+                                                    {
+                                                        "activo" => "text-success",
+                                                        "active" => "text-success",
+                                                        "biencaballo" => "text-success",
+                                                        "yes" => "text-success",
+                                                        "habilitado" => "text-success",
+                                                        _ => "text-danger"
+                                                    };
+
+                                                    var accesoIcon = item.Acesso?.ToLower() switch
+                                                    {
+                                                        "activo" => "fa-check-circle",
+                                                        "active" => "fa-check-circle",
+                                                        "biencaballo" => "fa-check-circle",
+                                                        "yes" => "fa-check-circle",
+                                                        "habilitado" => "fa-check-circle",
+                                                        _ => "fa-times-circle"
+                                                    };
+                                                }
+                                                <i class="fas @accesoIcon me-2 @accesoClass"></i>@Html.DisplayFor(modelItem => item.Acesso)
+                                            </p>
+                                        </div>
+
+                                        <!-- Botones de acción -->
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <div class="ms-3">
+                                                <div class="btn-group" role="group">
+                                                    <a asp-page="./Edit" asp-route-id="@item.Id"
+                                                       class="btn btn-outline-primary btn-sm"
+                                                       title="Editar usuario" data-bs-toggle="tooltip">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a asp-page="./Delete" asp-route-id="@item.Id"
+                                                       class="btn btn-outline-danger btn-sm"
+                                                       title="Eliminar usuario" data-bs-toggle="tooltip">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
-                            }
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="text-center py-5">
-                            <i class="fas fa-users fa-4x mb-4 opacity-25"></i>
-                            <h4 class="mb-3">No hay usuarios registrados</h4>
-                            <p class="mb-4">Comienza agregando el primer usuario al sistema.</p>
-                            <a asp-page="Create" class="btn btn-primary btn-lg">
-                                <i class="fas fa-plus me-2"></i>Crear Primer Usuario
-                            </a>
-                        </div>
-                    }
-                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <i class="fas fa-users fa-4x mb-4 opacity-25"></i>
+                        <h4 class="mb-3">No hay usuarios registrados</h4>
+                        <p class="mb-4">Comienza agregando el primer usuario al sistema.</p>
+                        <a asp-page="Create" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus me-2"></i>Crear Primer Usuario
+                        </a>
+                    </div>
+                }
             </div>
-    </body>
-    </html>
+        </div>
+    </div>
+</div>
