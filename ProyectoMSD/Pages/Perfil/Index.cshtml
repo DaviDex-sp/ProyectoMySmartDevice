@@ -1,0 +1,278 @@
+@page
+@model ProyectoMSD.Pages.Perfil.IndexModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Mi Perfil";
+}
+
+@section Styles {
+    <link href="~/css/pages/perfil.css" rel="stylesheet" />
+}
+
+<!-- Profile Header -->
+<div class="perfil-main-container">
+    <div class="perfil-header">
+        <div class="perfil-header-bg"></div>
+        <div class="d-flex align-items-center position-relative">
+            <div class="perfil-avatar-wrapper me-4">
+                <div class="perfil-avatar">
+                    @(Model.Usuario?.Nombre?.Substring(0, 1).ToUpper() ?? "U")
+                </div>
+                <div class="perfil-avatar-ring"></div>
+            </div>
+            <div class="perfil-header-info flex-grow-1">
+                <h2 class="perfil-name">@(Model.Usuario?.Nombre ?? "Usuario")</h2>
+                <p class="perfil-email">
+                    <i class="fas fa-envelope me-2"></i>@(Model.Usuario?.Correo ?? "Sin correo")
+                </p>
+                <div class="perfil-badges">
+                    <span class="perfil-role-badge">
+                        <i class="fas fa-user-tag me-1"></i>@(Model.Usuario?.Rol ?? "Sin rol")
+                    </span>
+                    <span class="perfil-status-badge @(Model.Usuario?.Acesso == "activo" ? "active" : "inactive")">
+                        <i class="fas fa-circle me-1" style="font-size: 0.5rem;"></i>
+                        @(Model.Usuario?.Acesso == "activo" ? "Activo" : "Inactivo")
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    @if (!string.IsNullOrEmpty(Model.MensajeExito))
+    {
+        <div class="alert perfil-alert-success">
+            <i class="fas fa-check-circle me-2"></i>@Model.MensajeExito
+        </div>
+    }
+
+    <!-- Content Grid -->
+    <div class="perfil-content-grid">
+        <!-- Formulario de edición -->
+        <div class="perfil-form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <h3>
+                        <i class="fas fa-user-edit"></i>
+                        Editar Información Personal
+                    </h3>
+                    <p>Actualiza tus datos personales y de contacto</p>
+                </div>
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <!-- Campos ocultos para preservar los datos no editables -->
+                    <input type="hidden" asp-for="Usuario.Id" />
+                    <input type="hidden" asp-for="Usuario.Rol" />
+                    <input type="hidden" asp-for="Usuario.Permisos" />
+                    <input type="hidden" asp-for="Usuario.Documento" />
+                    <input type="hidden" asp-for="Usuario.Rut" />
+                    <input type="hidden" asp-for="Usuario.Acesso" />
+                    <input type="hidden" asp-for="Usuario.Clave" />
+
+                    <div class="form-grid">
+                        <!-- Nombre -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-user me-1 text-primary"></i>Nombre Completo
+                            </label>
+                            <input asp-for="Usuario.Nombre" class="form-control" placeholder="Tu nombre completo" />
+                            <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
+                        </div>
+
+                        <!-- Teléfono -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-phone me-1 text-primary"></i>Teléfono
+                            </label>
+                            <input asp-for="Usuario.Telefono" class="form-control" placeholder="+57 (314) 328 40 52" />
+                            <span asp-validation-for="Usuario.Telefono" class="text-danger"></span>
+                        </div>
+
+                        <!-- Correo -->
+                        <div class="form-group form-grid-full">
+                            <label class="form-label">
+                                <i class="fas fa-envelope me-1 text-primary"></i>Correo Electrónico
+                            </label>
+                            <input asp-for="Usuario.Correo" type="text" class="form-control" placeholder="correo@ejemplo.com" />
+                            <span asp-validation-for="Usuario.Correo" class="text-danger"></span>
+                        </div>
+
+                        <!-- Ubicación -->
+                        <div class="form-group form-grid-full">
+                            <label class="form-label">
+                                <i class="fas fa-map-marker-alt me-1 text-primary"></i>Ubicación
+                            </label>
+                            <select asp-for="Usuario.Ubicacion" class="form-select">
+                                <option value="">Seleccionar ciudad...</option>
+                                <option value="Bogotá">Bogotá</option>
+                                <option value="Medellín">Medellín</option>
+                                <option value="Cali">Cali</option>
+                                <option value="Barranquilla">Barranquilla</option>
+                                <option value="Cartagena">Cartagena</option>
+                                <option value="Bucaramanga">Bucaramanga</option>
+                                <option value="Pereira">Pereira</option>
+                                <option value="Manizales">Manizales</option>
+                                <option value="Santa Marta">Santa Marta</option>
+                                <option value="Cúcuta">Cúcuta</option>
+                                <option value="Ibagué">Ibagué</option>
+                                <option value="Villavicencio">Villavicencio</option>
+                                <option value="Pasto">Pasto</option>
+                                <option value="Neiva">Neiva</option>
+                                <option value="Armenia">Armenia</option>
+                            </select>
+                            <span asp-validation-for="Usuario.Ubicacion" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Sección Cambiar Contraseña -->
+                    <div class="perfil-password-section">
+                        <div class="perfil-password-header" onclick="togglePasswordSection()">
+                            <h5>
+                                <i class="fas fa-lock me-2"></i>Cambiar Contraseña
+                            </h5>
+                            <span class="perfil-password-toggle">
+                                <i class="fas fa-chevron-down" id="passwordToggleIcon"></i>
+                            </span>
+                        </div>
+                        <div class="perfil-password-body" id="passwordSection" style="display: none;">
+                            <p class="text-muted mb-3" style="font-size: 0.85rem;">
+                                <i class="fas fa-info-circle me-1"></i>Deja en blanco si no deseas cambiar la contraseña
+                            </p>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-key me-1 text-primary"></i>Nueva Contraseña
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" name="NuevaClave" id="nuevaClave" class="form-control"
+                                           placeholder="Ingresa tu nueva contraseña" autocomplete="new-password" />
+                                    <button type="button" class="btn perfil-btn-toggle-pass" onclick="togglePassword()">
+                                        <i class="fas fa-eye" id="togglePassIcon"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="submit" class="btn-primary-custom">
+                            <i class="fas fa-save me-2"></i>Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sidebar de información -->
+        <div class="perfil-sidebar">
+            <!-- Info de cuenta -->
+            <div class="perfil-info-card">
+                <h6 class="perfil-info-card-title">
+                    <i class="fas fa-id-badge me-2"></i>Información de Cuenta
+                </h6>
+
+                <div class="perfil-info-item">
+                    <span class="perfil-info-label">Rol</span>
+                    <span class="perfil-info-value">
+                        @if (Model.Usuario?.Rol == "Admin") { <span>👑 Administrador</span> }
+                        else if (Model.Usuario?.Rol == "Usuario") { <span>👤 Usuario</span> }
+                        else { <span>🔍 @Model.Usuario?.Rol</span> }
+                    </span>
+                </div>
+
+                <div class="perfil-info-item">
+                    <span class="perfil-info-label">Permisos</span>
+                    <span class="perfil-info-value">
+                        @if (Model.Usuario?.Permisos == "completo") { <span><i class="fas fa-check-circle text-success me-1"></i>Acceso Completo</span> }
+                        else { <span><i class="fas fa-eye text-warning me-1"></i>Solo Lectura</span> }
+                    </span>
+                </div>
+
+                <div class="perfil-info-item">
+                    <span class="perfil-info-label">Documento</span>
+                    <span class="perfil-info-value">@(Model.Usuario?.Documento?.ToString("N0") ?? "No registrado")</span>
+                </div>
+
+                <div class="perfil-info-item">
+                    <span class="perfil-info-label">RUT</span>
+                    <span class="perfil-info-value">@(Model.Usuario?.Rut ?? "No registrado")</span>
+                </div>
+
+                <div class="perfil-info-item">
+                    <span class="perfil-info-label">Estado de Acceso</span>
+                    <span class="perfil-info-value">
+                        @if (Model.Usuario?.Acesso == "activo")
+                        {
+                            <span class="badge bg-success"><i class="fas fa-check me-1"></i>Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger"><i class="fas fa-times me-1"></i>Inactivo</span>
+                        }
+                    </span>
+                </div>
+            </div>
+
+            <!-- Tips de seguridad -->
+            <div class="perfil-tips-card">
+                <h6 class="perfil-info-card-title">
+                    <i class="fas fa-lightbulb me-2 text-warning"></i>Consejos de Seguridad
+                </h6>
+                <ul class="perfil-tips-list">
+                    <li><i class="fas fa-check-circle text-success me-2"></i>Usa contraseñas de al menos 8 caracteres</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i>Combina letras, números y símbolos</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i>No compartas tu contraseña con nadie</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i>Mantén tu correo electrónico actualizado</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Toggle password section
+    function togglePasswordSection() {
+        const section = document.getElementById('passwordSection');
+        const icon = document.getElementById('passwordToggleIcon');
+        if (section.style.display === 'none') {
+            section.style.display = 'block';
+            icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+        } else {
+            section.style.display = 'none';
+            icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+        }
+    }
+
+    // Toggle password visibility
+    function togglePassword() {
+        const input = document.getElementById('nuevaClave');
+        const icon = document.getElementById('togglePassIcon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    // Form input enhancements
+    document.querySelectorAll('.form-control, .form-select').forEach(input => {
+        input.addEventListener('focus', function () {
+            this.style.transform = 'translateY(-1px)';
+            this.style.boxShadow = '0 4px 15px rgba(139, 92, 246, 0.15)';
+        });
+        input.addEventListener('blur', function () {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '';
+        });
+    });
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
