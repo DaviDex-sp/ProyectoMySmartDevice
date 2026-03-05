@@ -16,7 +16,7 @@ builder.Services.AddScoped<NotificacionNavbarFilter>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Index";
+        options.LoginPath = "/Login";
         options.AccessDeniedPath = "/Denegada";
         options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
 

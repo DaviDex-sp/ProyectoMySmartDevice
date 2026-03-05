@@ -78,6 +78,35 @@ namespace ProyectoMSD.Pages.Propiedades
             {
                 Console.WriteLine("===== INTENTANDO GUARDAR =====");
                 _context.Propiedades.Add(Propiedade);
+
+                // NOTIFICACIÓN PARA EL USUARIO ASIGNADO
+                _context.Notificaciones.Add(new Notificacion
+                {
+                    IdUsuarios = Propiedade.IdUsuarios,
+                    Titulo = "Nueva Propiedad Asignada",
+                    Mensaje = $"Se te ha asignado una nueva propiedad: {Propiedade.Direccion}",
+                    Tipo = "Informacion",
+                    FechaCreacion = DateTime.Now,
+                    Leida = false,
+                    RutaRedireccion = "/Propiedades/Index"
+                });
+
+                // NOTIFICACIÓN PARA EL ADMINISTRADOR (CREADOR)
+                var adminIdClaim = User.FindFirst("UserId")?.Value;
+                if (int.TryParse(adminIdClaim, out int adminId))
+                {
+                    _context.Notificaciones.Add(new Notificacion
+                    {
+                        IdUsuarios = adminId,
+                        Titulo = "Propiedad Creada Exitosamente",
+                        Mensaje = $"Has registrado la propiedad: {Propiedade.Direccion}",
+                        Tipo = "Exito",
+                        FechaCreacion = DateTime.Now,
+                        Leida = false,
+                        RutaRedireccion = "/Propiedades/Index"
+                    });
+                }
+
                 var result = await _context.SaveChangesAsync();
                 Console.WriteLine($"Filas afectadas: {result}");
                 Console.WriteLine("===== GUARDADO EXITOSO =====");

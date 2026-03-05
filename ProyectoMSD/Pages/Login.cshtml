@@ -1,0 +1,105 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Home page";
+    ViewData["ShowNavbar"] = false;
+}
+
+@section Styles {
+    <link href="~/css/pages/login.css" rel="stylesheet" />
+}
+
+<div class="container-fluid login-container">
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-11">
+            <div class="card login-card">
+                <div class="row g-0">
+                    <!-- Sección del Logo -->
+                    <div class="col-lg-6 logo-section">
+                        <!-- Robot Avatar -->
+                        <div class="robot-icon">
+                            <div class="floating-icons">
+                                <div class="floating-icon icon-thermometer">
+                                    <i class="fas fa-thermometer-half"></i>
+                                </div>
+                                <div class="floating-icon icon-camera">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <div class="floating-icon icon-bulb">
+                                    <i class="fas fa-lightbulb"></i>
+                                </div>
+                                <div class="floating-icon icon-plug">
+                                    <i class="fas fa-plug"></i>
+                                </div>
+                            </div>
+                            <div class="robot-face">
+                                <div class="robot-eyes">
+                                    <div class="robot-eye"></div>
+                                    <div class="robot-eye"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Brand Name -->
+                        <h1 class="brand-text">My<span class="smart">Smart</span>Device</h1>
+                        <p class="text-muted mt-2">Control inteligente para tu hogar</p>
+                    </div>
+
+                    <!-- Sección del Formulario -->
+                    <div class="col-lg-6 login-form-container">
+                        <div class="text-end mb-4">
+                            <span class="badge content-badge">Contenido</span>
+                        </div>
+
+                        <h2 class="form-title">Ingresa a MySmartDevice</h2>
+                        <p class="form-subtitle">Accede a tu cuenta en cualquier momento.</p>
+
+                        <!-- MOSTRAR ERRORES DE VALIDACIÓN -->
+                        @if (!ViewData.ModelState.IsValid)
+                        {
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                {
+                                    <div>@error.ErrorMessage</div>
+                                }
+                            </div>
+                        }
+
+                        <!-- FORMULARIO DE LOGIN -->
+                        <form method="post">
+                            <div class="form-floating">
+                                <input asp-for="Correo" class="form-control" required>
+                                <label asp-for="Correo"><i class="fas fa-envelope me-2"></i>Email</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <input asp-for="Password" type="password" class="form-control"  required>
+                                <label asp-for="Password"><i class="fas fa-lock me-2"></i>Contraseña</label>
+                            </div>
+
+                            <!-- reCAPTCHA -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="recaptcha" required>
+                                <label class="form-check-label" for="recaptcha">
+                                    <i class="fas fa-shield-alt me-2"></i>No soy un robot
+                                    <small class="text-muted d-block mt-1">
+                                        <i class="fas fa-info-circle me-1"></i>Verificación reCAPTCHA
+                                    </small>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-purple-glow w-100 mb-3">
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                            </button>
+                        </form>
+
+                        <p class="text-center mb-0">
+                            ¿No tienes una cuenta?
+                            <a asp-page="/Registrar" class="register-link">Regístrate aquí</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

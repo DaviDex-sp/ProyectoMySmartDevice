@@ -16,18 +16,29 @@ namespace ProyectoMSD.Pages.Notificaciones
 
         public List<Notificacion> Notificaciones { get; set; } = new();
         public int CantidadNoLeidas { get; set; }
+        public bool MostrarTodas { get; set; }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(bool mostrarTodas = false)
         {
             var userId = ObtenerUsuarioId();
-            if (userId == null) return RedirectToPage("/Index");
+            if (userId == null) return RedirectToPage("/Login");
 
-            Notificaciones = await _context.Notificaciones
+            var query = _context.Notificaciones
                 .Where(n => n.IdUsuarios == userId.Value)
-                .OrderByDescending(n => n.FechaCreacion)
-                .ToListAsync();
+                .OrderByDescending(n => n.FechaCreacion);
 
-            CantidadNoLeidas = Notificaciones.Count(n => !n.Leida);
+            MostrarTodas = mostrarTodas;
+
+            if (mostrarTodas)
+            {
+                Notificaciones = await query.ToListAsync();
+            }
+            else
+            {
+                Notificaciones = await query.Take(5).ToListAsync();
+            }
+
+            CantidadNoLeidas = await _context.Notificaciones.CountAsync(n => n.IdUsuarios == userId.Value && !n.Leida);
 
             return Page();
         }

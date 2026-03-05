@@ -25,23 +25,24 @@ namespace ProyectoMSD.Pages.Soportes
         {
             if (User.IsInRole("Admin"))
             {
-                // Admin ve TODOS los tickets
+                // Admin ve TODOS los tickets, ordenados: Actualizados (No Pendientes) primero, luego por Fecha más reciente
                 Soporte = await _context.Soportes
                     .Include(s => s.IdUsuariosNavigation)
-                    .OrderBy(s => s.Respuesta == "Pendiente" ? 0 : 1) // Pendientes primero
+                    .OrderBy(s => s.Respuesta == "Pendiente" ? 1 : 0) // Actualizados/Respondidos (0) van antes que Pendientes (1)
                     .ThenByDescending(s => s.Fecha)
                     .ToListAsync();
             }
             else
             {
-                // Usuario ve solo sus propios tickets utilizando el ID de sesión exacto
+                // Usuario ve solo sus propios tickets, ordenados: Actualizados (No Pendientes) primero, luego por Fecha
                 var claimValue = User.FindFirst("UserId")?.Value;
                 if (int.TryParse(claimValue, out int usuarioId))
                 {
                     Soporte = await _context.Soportes
                         .Include(s => s.IdUsuariosNavigation)
                         .Where(s => s.IdUsuarios == usuarioId)
-                        .OrderByDescending(s => s.Fecha)
+                        .OrderBy(s => s.Respuesta == "Pendiente" ? 1 : 0) // Actualizados/Respondidos (0) van antes que Pendientes (1)
+                        .ThenByDescending(s => s.Fecha)
                         .ToListAsync();
                 }
                 else

@@ -103,6 +103,15 @@
                 </div>
             }
         </div>
+
+        @if (!Model.MostrarTodas && Model.Notificaciones.Count == 5)
+        {
+            <div class="text-center mt-4 mb-3">
+                <a asp-page="/Notificaciones/Index" asp-route-mostrarTodas="true" class="btn btn-purple-glow">
+                    Ver más notificaciones <i class="fas fa-chevron-down ms-2"></i>
+                </a>
+            </div>
+        }
     }
     else
     {
