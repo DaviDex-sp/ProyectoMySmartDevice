@@ -59,6 +59,18 @@ namespace ProyectoMSD.Pages.Soportes
             soporte.Respuesta = Respuesta.Trim();
             await _context.SaveChangesAsync();
 
+            _context.Notificaciones.Add(new Notificacion
+            {
+                IdUsuarios = soporte.IdUsuarios,
+                Titulo = "Ticket respondido",
+                Mensaje = $"Tu ticket #{id} ha sido respondido por el equipo de soporte.",
+                Tipo = "TicketRespondido",
+                Leida = false,
+                FechaCreacion = DateTime.Now,
+                RutaRedireccion = $"/Soportes/Details?id={id}"
+            });
+            await _context.SaveChangesAsync();
+
             TempData["SuccessMessage"] = $"Ticket #{id} respondido exitosamente.";
             return RedirectToPage("./Index");
         }

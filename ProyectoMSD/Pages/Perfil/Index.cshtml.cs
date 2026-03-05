@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -52,16 +53,47 @@ namespace ProyectoMSD.Pages.Perfil
             usuarioDb.Ubicacion = Usuario.Ubicacion;
 
             // Si se proporcionó una nueva contraseña, hashearla
+            bool contrasenaCambiada = false;
             if (!string.IsNullOrWhiteSpace(NuevaClave))
             {
                 byte[] salt = new byte[0];
                 var pbkdf2 = new Rfc2898DeriveBytes(NuevaClave, salt, 100_000, HashAlgorithmName.SHA256);
                 byte[] hash = pbkdf2.GetBytes(32);
                 usuarioDb.Clave = Convert.ToBase64String(salt) + ":" + Convert.ToBase64String(hash);
+                contrasenaCambiada = true;
             }
 
             try
             {
+                await _context.SaveChangesAsync();
+                bool datosPersonalesCambiados = true;
+
+                if (datosPersonalesCambiados)
+                {
+                    _context.Notificaciones.Add(new Notificacion
+                    {
+                        IdUsuarios = userId.Value,
+                        Titulo = "Perfil actualizado",
+                        Mensaje = "Has actualizado tu información personal exitosamente.",
+                        Tipo = "PerfilActualizado",
+                        Leida = false,
+                        FechaCreacion = DateTime.Now
+                    });
+                }
+
+                if (contrasenaCambiada)
+                {
+                    _context.Notificaciones.Add(new Notificacion
+                    {
+                        IdUsuarios = userId.Value,
+                        Titulo = "Contraseña cambiada",
+                        Mensaje = "Tu contraseña ha sido cambiada exitosamente.",
+                        Tipo = "ContraseñaCambiada",
+                        Leida = false,
+                        FechaCreacion = DateTime.Now
+                    });
+                }
+
                 await _context.SaveChangesAsync();
                 MensajeExito = "Perfil actualizado correctamente.";
             }

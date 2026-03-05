@@ -44,4 +44,6 @@ public partial class Usuario
     public virtual ICollection<Soporte> Soportes { get; set; } = new List<Soporte>();
 
     public virtual ICollection<RegistroAcceso> RegistroAccesos { get; set; } = new List<RegistroAcceso>();
+
+    public virtual ICollection<Notificacion> Notificaciones { get; set; } = new List<Notificacion>();
 }

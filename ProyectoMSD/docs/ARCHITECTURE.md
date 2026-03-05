@@ -1,102 +1,112 @@
-# 🏗️ Arquitectura CSS — ProyectoMSD
+# 🏗️ Arquitectura del Proyecto — mySmartDevice
 
-## Estructura de Archivos CSS
+mySmartDevice está construido sobre **ASP.NET Core Razor Pages** utilizando Entity Framework Core para el acceso a datos. La arquitectura sigue un patrón orientado a Páginas (similar a MVVM - Model-View-ViewModel) que agrupa la vista HTML y su lógica C# en un mismo lugar, ideal para aplicaciones web escalables y modulares.
+
+---
+
+## 📁 Estructura Principal de Archivos
+
+```
+ProyectoMSD/
+│
+├── 📂 Modelos/               ← (Capa de Datos - Model)
+│   ├── AppDbContext.cs       ← Configuración de Entity Framework (conexión a MySQL)
+│   ├── Usuario.cs            ← Entidades/Tablas de la Base de Datos
+│   ├── Dispositivo.cs
+│   └── Notificacion.cs
+│
+├── 📂 Pages/                 ← (Capa de Presentación y Lógica - View & ViewModel)
+│   ├── 📂 Shared/            ← Vistas compartidas
+│   │   ├── _Layout.cshtml    ← Navbar, Footer, estructura base de HTML
+│   │   └── _Validation...    ← Scripts de validación
+│   │
+│   ├── 📂 Modulos (Ej: Soportes, Dispositivos, Perfil)
+│   │   ├── Index.cshtml      ← Archivo HTML de la Vista (Razor)
+│   │   └── Index.cshtml.cs    ← Code-Behind (Lógica de servidor en C#)
+│   │
+│   ├── _ViewImports.cshtml   ← Importación global de namespaces
+│   └── _ViewStart.cshtml     ← Define el _Layout global
+│
+├── 📂 Filters/               ← (Middleware - Interceptores)
+│   └── NotificacionNavbarFilter.cs  ← Lógica que se ejecuta ANTES de cargar las páginas
+│
+├── 📂 wwwroot/               ← (Archivos Estáticos y Assets Públicos)
+│   ├── 📂 css/               ← Estilos (Ver Arquitectura CSS abajo)
+│   ├── 📂 js/                ← Scripts Frontend compartidos
+│   ├── 📂 images/            ← Logotipos y recursos gráficos fijos
+│   └── 📂 uploads/           ← Archivos subidos por los usuarios (Ej. Avatares)
+│
+├── 📂 docs/                  ← Documentación técnica del proyecto
+│
+├── appsettings.json          ← Configuración (Cadenas de conexión, Secretos)
+└── Program.cs                ← Punto de entrada: Inyección de Dependencias, Pipeline, Routing
+```
+
+---
+
+## 🛠️ Cómo Funciona la Arquitectura (Razor Pages)
+
+El patrón **Razor Pages** agrupa todo lo que necesita una página en una carpeta. Esto hace que escalar el proyecto sea muy limpio, ya que en lugar de tener controladores gigantes y vistas separadas, cada funcionalidad está encapsulada.
+
+### Ejemplo de Vida de una Petición (Ej. Crear un Ticket)
+1. **El Usuario visita `/Soportes/Create`:**
+   - El servidor carga primero `_ViewStart.cshtml`, que envuelve el contenido en `_Layout.cshtml`.
+   - Se ejecuta el `NotificacionNavbarFilter.cs` para inyectar la campana en el Navbar.
+   - ASP.NET ejecuta el backend en `Create.cshtml.cs` (`OnGetAsync()`).
+   - El servidor devuelve el HTML renderizado de `Create.cshtml`.
+
+2. **El Usuario envía el formulario:**
+   - La petición llega al método `OnPostAsync()` de `Create.cshtml.cs`.
+   - El código de C# valida los datos y usa el `AppDbContext` (capa de `Modelos/`) para guardar en la base de datos (MySQL).
+   - Se genera una Notificación.
+   - Si tiene éxito, devuelve un redireccionamiento (`RedirectToPage`).
+
+---
+
+## 🎨 Arquitectura CSS
+
+Para evitar un archivo CSS gigante que afecte el rendimiento, el proyecto utiliza un enfoque modular basado en **Componentes Globales + CSS Cargar Bajo Demanda**.
 
 ```
 wwwroot/css/
-├── common-styles.css          ← Estilos compartidos (variables, base, componentes)
-├── site.css                   ← Estilos globales del framework ASP.NET
-└── pages/
-    ├── login.css              ← Página de inicio de sesión
-    ├── registrar.css          ← Página de registro
-    ├── privacy.css            ← Política de privacidad
-    ├── usuarios.css           ← Módulo de usuarios
-    ├── dispositivos.css       ← Módulo de dispositivos
-    ├── espacios.css           ← Módulo de espacios
-    ├── propiedades.css        ← Módulo de propiedades
-    ├── soportes.css           ← Módulo de soporte
-    └── configuraciones.css    ← Módulo de configuraciones
+├── common-styles.css          ← Variables, colores, botones, navbar (Carga SIEMPRE)
+├── site.css                   ← Defaults limpios
+└── pages/                     ← CSS exclusivo de cada página (Carga SOLO cuando es necesario)
+    ├── login.css
+    ├── soportes.css
+    └── notificaciones.css
 ```
 
-## Cómo Funciona
-
-### 1. `_Layout.cshtml` — Carga CSS Global
-Carga `common-styles.css` para **todas** las páginas y define un bloque `@RenderSection("Styles", required: false)` donde cada página inyecta su CSS específico.
-
-### 2. Páginas Individuales — CSS Específico
-Cada `.cshtml` usa `@section Styles` para cargar su archivo CSS:
-
-```cshtml
-@section Styles {
-    <link href="~/css/pages/dispositivos.css" rel="stylesheet" />
-}
-```
-
-### 3. `common-styles.css` — Componentes Compartidos
-Contiene:
-- **Variables CSS** (`--primary-blue`, `--secondary-blue`, etc.)
-- **Estilos base** (body, tipografía, gradientes de fondo)
-- **Componentes reutilizables**: navbar, tablas, formularios, botones, tarjetas, badges, modales, avatares, alertas
-- **Responsive** breakpoints
-
-## Variables CSS Principales
-
-| Variable | Valor | Uso |
-|----------|-------|-----|
-| `--primary-blue` | `#3b82f6` | Color principal |
-| `--secondary-blue` | `#60a5fa` | Acento secundario |
-| `--light-blue` | `#dbeafe` | Fondos suaves |
-| `--text-dark` | `#1e293b` | Texto principal |
-| `--text-light` | `#64748b` | Texto secundario |
-
-## Agregar una Nueva Página
-
-1. Crear `wwwroot/css/pages/nueva-pagina.css`
-2. En el `.cshtml`, agregar:
+### Reglas para Escalar el CSS:
+1. **Componentes repetitivos:** Si vas a crear un botón o una tarjeta que se verá igual en 5 páginas, pon la clase en `common-styles.css`. Usa las variables globales (`--primary-blue`).
+2. **Estilos únicos:** Si vas a modificar el layout de una gráfica que solo existe en `Estadisticas.cshtml`, crea un archivo `wwwroot/css/pages/estadisticas.css` y cárgalo en la vista usando:
    ```cshtml
    @section Styles {
-       <link href="~/css/pages/nueva-pagina.css" rel="stylesheet" />
+       <link href="~/css/pages/estadisticas.css" rel="stylesheet" />
    }
    ```
-3. Usar las clases de `common-styles.css` para componentes compartidos
-4. Definir estilos únicos en el archivo de la página
 
-## Funciones Clave del Code-Behind
+---
 
-### `OnGetAsync()` — Carga de Datos
-Método principal en cada `PageModel` que carga los datos desde la base de datos.
+## 📡 Patrones de Comunicación Global
 
+Para que el proyecto crezca sin ensuciar el código, se han implementado patrones estandarizados:
+
+### 1. Sistema Pasivo de Notificaciones (Desacoplamiento)
+En lugar de que una página de "Dispositivos" se encargue de lidiar con la UI de notificaciones, usamos la base de datos como puente.
+
+**Al crear o modificar datos importantes, solo invoca esto:**
 ```csharp
-// Ejemplo: Pages/Dispositivos/Index.cshtml.cs
-public async Task OnGetAsync()
-{
-    // Carga todos los dispositivos desde el contexto EF
-    Dispositivo = await _context.Dispositivos.ToListAsync();
-}
+_context.Notificaciones.Add(new Notificacion {
+    IdUsuarios = usarioDestino.Id,
+    Titulo = "Alerta del Sistema",
+    Mensaje = "Operación exitosa",
+    Tipo = "Success",
+    RutaRedireccion = $"/Modulo/Accion/{{id}}" // <-- Te permite navegar al hacer click
+});
+// ¡Y listo! El usuario verá la campanita titilar gracias al Filtro Global.
 ```
 
-### `OnPostAsync()` — Procesamiento de Formularios
-Maneja las solicitudes POST (crear, editar, eliminar).
-
-```csharp
-// Ejemplo: Pages/Dispositivos/Edit.cshtml.cs
-public async Task<IActionResult> OnPostAsync()
-{
-    if (!ModelState.IsValid) return Page();
-    
-    _context.Attach(Dispositivo).State = EntityState.Modified;
-    await _context.SaveChangesAsync();
-    return RedirectToPage("./Index");
-}
-```
-
-### Autenticación y Roles
-El proyecto usa `User.IsInRole("Admin")` para controlar el acceso a acciones CRUD.
-
-```cshtml
-@if (User.IsInRole("Admin"))
-{
-    <a asp-page="./Edit" asp-route-id="@item.Id">Editar</a>
-    <a asp-page="./Delete" asp-route-id="@item.Id">Eliminar</a>
-}
-```
+### 2. Filtros de Página (`NotificacionNavbarFilter.cs`)
+Consultar cosas globales (como saber cuántas notificaciones no leídas tienes) en CADA página destruiría el rendimiento o te obligaría a hacer copy/paste del código 100 veces. Usamos **Filtros Globales**.
+Se registran en `Program.cs` y actúan como "Porteros". Cada vez que un usuario intenta cargar cualquier página, el Filtro "ataja" la petición, inyecta los datos en el `ViewData` y deja que el `_Layout.cshtml` los dibuje de forma transparente. ¡Tu código en los módulos C# se mantiene 100% libre y enfocado en su negocio!

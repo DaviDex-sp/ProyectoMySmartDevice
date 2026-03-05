@@ -77,8 +77,32 @@ namespace ProyectoMSD.Pages.Soportes
 
             try
             {
+                // Cargar UsuarioSesion para usar su nombre en la notificación
+                UsuarioSesion = (await _context.Usuarios.FindAsync(usuarioId.Value))!;
+
                 _context.Soportes.Add(Soporte);
                 await _context.SaveChangesAsync();
+
+                // Notificar a todos los administradores del sistema
+                var administradores = await _context.Usuarios.Where(u => u.Rol == "Admin").ToListAsync();
+                foreach (var admin in administradores)
+                {
+                    _context.Notificaciones.Add(new Notificacion
+                    {
+                        IdUsuarios = admin.Id,
+                        Titulo = "Nuevo Ticket de Soporte",
+                        Mensaje = $"El usuario {UsuarioSesion.Nombre} ha creado un nuevo ticket de tipo {Soporte.Tipo}.",
+                        Tipo = "NuevoTicket",
+                        Leida = false,
+                        FechaCreacion = DateTime.Now,
+                        RutaRedireccion = $"/Soportes/Responder/{Soporte.Id}"
+                    });
+                }
+                
+                if (administradores.Any())
+                {
+                    await _context.SaveChangesAsync();
+                }
 
                 TempData["SuccessMessage"] = "Ticket creado exitosamente.";
                 return RedirectToPage("./Index");

@@ -138,6 +138,14 @@
 
                         <!-- Controles de la derecha -->
                         <div class="d-flex align-items-center gap-2 navbar-actions">
+                            <!-- Notificaciones -->
+                            <a asp-page="/Notificaciones/Index" class="btn btn-nav-notification position-relative" title="Notificaciones">
+                                <i class="fas fa-bell"></i>
+                                @if (ViewData["NotifCount"] != null && (int)ViewData["NotifCount"] > 0)
+                                {
+                                    <span class="notif-badge-count">@ViewData["NotifCount"]</span>
+                                }
+                            </a>
                             @if (!User.IsInRole("Admin"))
                             {
                                 <!-- Mi Perfil (solo usuarios) -->

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,9 +24,10 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Soporte> Soportes { get; set; }
     public virtual DbSet<Usuario> Usuarios { get; set; }
     public virtual DbSet<RegistroAcceso> RegistroAccesos { get; set; }
+    public virtual DbSet<Notificacion> Notificaciones { get; set; }
 
-    // NOTA PROFESIONAL: El método OnConfiguring se eliminó por completo 
-    // para evitar que fuerce la conexión local a 127.0.0.1.
+    // NOTA PROFESIONAL: El mï¿½todo OnConfiguring se eliminï¿½ por completo 
+    // para evitar que fuerce la conexiï¿½n local a 127.0.0.1.
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -100,7 +101,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.IdPropiedades).HasColumnType("int(11)").HasColumnName("ID_Propiedades");
             entity.Property(e => e.Nombre).HasMaxLength(250);
             entity.Property(e => e.Permisos).HasMaxLength(250);
-            entity.Property(e => e.Señal).HasColumnType("int(11)");
+            entity.Property(e => e.SeÃ±al).HasColumnType("int(11)");
             entity.Property(e => e.Ubicacion).HasMaxLength(250);
 
             entity.HasOne(d => d.IdPropiedadesNavigation).WithMany(p => p.Espacios)
@@ -158,6 +159,26 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Rut).HasMaxLength(250);
             entity.Property(e => e.Telefono).HasColumnType("int(11)");
             entity.Property(e => e.Ubicacion).HasMaxLength(250);
+        });
+
+        modelBuilder.Entity<Notificacion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+            entity.ToTable("notificaciones");
+            
+            entity.Property(e => e.Id).HasColumnType("int(11)").HasColumnName("Id");
+            entity.Property(e => e.IdUsuarios).HasColumnType("int(11)").HasColumnName("IdUsuarios");
+            entity.Property(e => e.Titulo).HasMaxLength(255).IsRequired();
+            entity.Property(e => e.Mensaje).HasColumnType("text").IsRequired();
+            entity.Property(e => e.Tipo).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Leida).HasColumnType("tinyint(1)").HasDefaultValue(false);
+            entity.Property(e => e.FechaCreacion).HasColumnType("datetime").IsRequired();
+            entity.Property(e => e.RutaRedireccion).HasMaxLength(255).IsRequired(false);
+
+            entity.HasOne(d => d.Usuario).WithMany(p => p.Notificaciones)
+                .HasForeignKey(d => d.IdUsuarios)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_notificaciones_usuarios");
         });
 
 

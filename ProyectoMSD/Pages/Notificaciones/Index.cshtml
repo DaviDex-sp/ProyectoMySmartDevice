@@ -1,0 +1,117 @@
+@page
+@model ProyectoMSD.Pages.Notificaciones.IndexModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Mis Notificaciones";
+}
+
+@section Styles {
+    <link href="~/css/pages/notificaciones.css" rel="stylesheet" />
+}
+
+<div class="notif-main-container">
+    <div class="notif-header">
+        <div class="notif-header-info">
+            <h2>
+                <i class="fas fa-bell"></i>
+                Mis Notificaciones
+            </h2>
+            <p>Mantente informado sobre la actividad de tu cuenta</p>
+            @if (Model.CantidadNoLeidas > 0)
+            {
+                <span class="notif-count-badge">
+                    <i class="fas fa-circle" style="font-size: 0.5rem;"></i>
+                    @Model.CantidadNoLeidas sin leer
+                </span>
+            }
+        </div>
+
+        @if (Model.CantidadNoLeidas > 0)
+        {
+            <form method="post" asp-page-handler="MarcarTodas">
+                <button type="submit" class="btn-mark-all">
+                    <i class="fas fa-check-double me-1"></i>Marcar todas como leídas
+                </button>
+            </form>
+        }
+    </div>
+
+    @if (Model.Notificaciones.Any())
+    {
+        <div class="notif-list">
+            @foreach (var notif in Model.Notificaciones)
+            {
+                var iconClass = notif.Tipo switch
+                {
+                    "TicketRespondido" => "ticket",
+                    "PerfilActualizado" => "perfil",
+                    "ContraseñaCambiada" => "password",
+                    "FotoPerfilActualizada" => "foto",
+                    _ => "general"
+                };
+                var iconName = notif.Tipo switch
+                {
+                    "TicketRespondido" => "fa-headset",
+                    "PerfilActualizado" => "fa-user-edit",
+                    "ContraseñaCambiada" => "fa-key",
+                    "FotoPerfilActualizada" => "fa-camera",
+                    _ => "fa-info-circle"
+                };
+
+                <div class="notif-card @(!notif.Leida ? "unread" : "")">
+                    <div class="notif-icon @iconClass">
+                        <i class="fas @iconName"></i>
+                    </div>
+                    
+                    @if (!string.IsNullOrEmpty(notif.RutaRedireccion))
+                    {
+                        <a href="@notif.RutaRedireccion" class="notif-content text-decoration-none" style="display: block; color: inherit;">
+                            <div class="notif-title">
+                                @notif.Titulo
+                                <i class="fas fa-external-link-alt ms-2 text-muted" style="font-size: 0.75rem;"></i>
+                            </div>
+                            <div class="notif-message">@notif.Mensaje</div>
+                            <div class="notif-time">
+                                <i class="fas fa-clock"></i>
+                                @notif.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="notif-content">
+                            <div class="notif-title">@notif.Titulo</div>
+                            <div class="notif-message">@notif.Mensaje</div>
+                            <div class="notif-time">
+                                <i class="fas fa-clock"></i>
+                                @notif.FechaCreacion.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        </div>
+                    }
+
+                    @if (!notif.Leida)
+                    {
+                        <div class="notif-actions">
+                            <form method="post" asp-page-handler="MarcarLeida" asp-route-id="@notif.Id">
+                                <button type="submit" class="notif-btn-read" title="Marcar como leída">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="notif-empty">
+            <div class="notif-empty-icon">
+                <i class="fas fa-bell-slash"></i>
+            </div>
+            <h5>No tienes notificaciones</h5>
+            <p>Cuando haya actividad en tu cuenta, aparecerá aquí.</p>
+        </div>
+    }
+</div>

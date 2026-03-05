@@ -283,6 +283,68 @@ body {
     margin-left: 0.5rem;
 }
 
+/* Notification Bell Button */
+.btn-nav-notification {
+    background: rgba(139, 92, 246, 0.06);
+    color: var(--text-light);
+    border: 1px solid rgba(139, 92, 246, 0.12);
+    padding: 0.4rem 0.65rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.btn-nav-notification:hover {
+    background: rgba(139, 92, 246, 0.12);
+    color: var(--primary-blue);
+    border-color: rgba(139, 92, 246, 0.25);
+    transform: translateY(-1px);
+}
+
+.notif-badge-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 2px solid white;
+    animation: badgePop 0.3s ease;
+}
+
+@keyframes badgePop {
+    0% {
+        transform: scale(0);
+    }
+
+    80% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Navbar Avatar Image */
+.navbar-avatar-img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.35rem;
+    border: 2px solid rgba(139, 92, 246, 0.3);
+}
+
 /* Profile Button */
 .btn-nav-profile {
     background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1));

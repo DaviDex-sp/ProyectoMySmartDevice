@@ -1,13 +1,18 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+ï»¿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ProyectoMSD.Modelos;
+using ProyectoMSD.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Servicios de Razor Pages
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.ConfigureFilter(new Microsoft.AspNetCore.Mvc.ServiceFilterAttribute(typeof(NotificacionNavbarFilter)));
+});
+builder.Services.AddScoped<NotificacionNavbarFilter>();
 
-// Configuración de Autenticación
+// Configuraciï¿½n de Autenticaciï¿½n
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -19,11 +24,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "MySmartDeviceCookie";
     });
 
-// 1. LEEMOS LA CADENA DESDE LA CONFIGURACIÓN (Seguridad Profesional)
-// En local leerá el appsettings.json. En la nube leerá la variable de Azure.
+// 1. LEEMOS LA CADENA DESDE LA CONFIGURACIï¿½N (Seguridad Profesional)
+// En local leerï¿½ el appsettings.json. En la nube leerï¿½ la variable de Azure.
 var connString = builder.Configuration.GetConnectionString("ConexionSQL");
 
-// 2. CONFIGURACIÓN DEL DBCONTEXT PARA MYSQL 8.0 (Aiven/Azure)
+// 2. CONFIGURACIï¿½N DEL DBCONTEXT PARA MYSQL 8.0 (Aiven/Azure)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         connString,
@@ -37,7 +42,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-// Configuración del pipeline HTTP
+// Configuraciï¿½n del pipeline HTTP
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -45,7 +50,7 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    // Muestra errores detallados solo cuando estás desarrollando en tu PC
+    // Muestra errores detallados solo cuando estï¿½s desarrollando en tu PC
     app.UseDeveloperExceptionPage();
 }
 
