@@ -64,11 +64,27 @@
                         <!-- FILA 3: Contacto -->
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="Usuario.Telefono" class="form-label fw-bold">
-                                    <i class="fas fa-phone me-1"></i>Teléfono
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-phone me-1"></i>Teléfono Móvil
                                 </label>
-                                <input asp-for="Usuario.Telefono" type="number" class="form-control" placeholder="Ej: 3001234567" id="inputTelefono">
-                                <span asp-validation-for="Usuario.Telefono" class="text-danger fw-bold"></span>
+                                <div class="input-group">
+                                    <select asp-for="Usuario.PrefijoTelefono" class="form-select" style="max-width: 110px;" id="inputPrefijoTelefono">
+                                        <option value="+57">🇨🇴 +57</option>
+                                        <option value="+1">🇺🇸 +1</option>
+                                        <option value="+52">🇲🇽 +52</option>
+                                        <option value="+34">🇪🇸 +34</option>
+                                        <option value="+54">🇦🇷 +54</option>
+                                        <option value="+56">🇨🇱 +56</option>
+                                        <option value="+51">🇵🇪 +51</option>
+                                        <option value="+58">🇻🇪 +58</option>
+                                        <option value="+55">🇧🇷 +55</option>
+                                        <option value="+593">🇪🇨 +593</option>
+                                        <option value="+507">🇵🇦 +507</option>
+                                    </select>
+                                    <input asp-for="Usuario.Telefono" type="number" class="form-control" placeholder="Ej: 3001234567" id="inputTelefono">
+                                </div>
+                                <span asp-validation-for="Usuario.PrefijoTelefono" class="text-danger fw-bold d-block"></span>
+                                <span asp-validation-for="Usuario.Telefono" class="text-danger fw-bold d-block"></span>
                             </div>
 
                             <div class="col-md-6 mb-3">
@@ -213,6 +229,7 @@
             const inputNombre = document.getElementById('inputNombre');
             const inputCorreo = document.getElementById('inputCorreo');
             const inputRol = document.getElementById('inputRol');
+            const inputPrefijoTelefono = document.getElementById('inputPrefijoTelefono');
             const inputTelefono = document.getElementById('inputTelefono');
             const inputUbicacion = document.getElementById('inputUbicacion');
             const inputDocumento = document.getElementById('inputDocumento');
@@ -257,7 +274,8 @@
                 previewRol.className = `badge ${rolClass}`;
 
                 // Actualizar teléfono
-                previewTelefono.textContent = inputTelefono.value || '000000000';
+                const prefijo = inputPrefijoTelefono.value || '+57';
+                previewTelefono.textContent = inputTelefono.value ? `${prefijo} ${inputTelefono.value}` : '000000000';
 
                 // Actualizar ubicación
                 previewUbicacion.textContent = inputUbicacion.value || 'Sin ubicación';
@@ -284,6 +302,7 @@
             inputNombre.addEventListener('input', actualizarPreview);
             inputCorreo.addEventListener('input', actualizarPreview);
             inputRol.addEventListener('change', actualizarPreview);
+            inputPrefijoTelefono.addEventListener('change', actualizarPreview);
             inputTelefono.addEventListener('input', actualizarPreview);
             inputUbicacion.addEventListener('change', actualizarPreview);
             inputDocumento.addEventListener('input', actualizarPreview);

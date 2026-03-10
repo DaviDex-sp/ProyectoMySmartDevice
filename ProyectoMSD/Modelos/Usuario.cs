@@ -19,9 +19,10 @@ public partial class Usuario
 
     [Required(ErrorMessage = "Especifica un Rol")]
     public string Rol { get; set; } = null!;
+    
+    public string? PrefijoTelefono { get; set; }
 
-    [Required(ErrorMessage = "Agrega un telefono")]
-    public int Telefono { get; set; }
+    public string? Telefono { get; set; }
 
     [Required(ErrorMessage = "Requiere una ubicacion")]
     public string Ubicacion { get; set; } = null!;

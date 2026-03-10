@@ -155,9 +155,10 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Documento).HasColumnType("bigint(20)");
             entity.Property(e => e.Nombre).HasMaxLength(250);
             entity.Property(e => e.Permisos).HasMaxLength(250);
+            entity.Property(e => e.PrefijoTelefono).HasMaxLength(10);
             entity.Property(e => e.Rol).HasMaxLength(250);
             entity.Property(e => e.Rut).HasMaxLength(250);
-            entity.Property(e => e.Telefono).HasColumnType("int(11)");
+            entity.Property(e => e.Telefono).HasMaxLength(20);
             entity.Property(e => e.Ubicacion).HasMaxLength(250);
         });
 

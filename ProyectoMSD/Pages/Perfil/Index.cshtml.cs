@@ -49,6 +49,7 @@ namespace ProyectoMSD.Pages.Perfil
             // Actualizar solo los campos permitidos
             usuarioDb.Nombre = Usuario.Nombre;
             usuarioDb.Correo = Usuario.Correo;
+            usuarioDb.PrefijoTelefono = Usuario.PrefijoTelefono;
             usuarioDb.Telefono = Usuario.Telefono;
             usuarioDb.Ubicacion = Usuario.Ubicacion;
 

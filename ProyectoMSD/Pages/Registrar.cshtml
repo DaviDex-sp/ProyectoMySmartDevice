@@ -80,11 +80,25 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-floating">
-                            <input asp-for="Usuario.Telefono" type="number" class="form-control" placeholder="Teléfono">
-                            <label asp-for="Usuario.Telefono"><i class="fas fa-phone me-2"></i>Teléfono</label>
-                            <span asp-validation-for="Usuario.Telefono" class="text-danger"></span>
+                        <label class="form-label text-muted ms-1 mb-1" style="font-size: 0.85rem;"><i class="fas fa-phone me-1"></i>Teléfono Móvil</label>
+                        <div class="input-group mb-3 custom-phone-group">
+                            <select asp-for="Usuario.PrefijoTelefono" class="form-select" style="max-width: 110px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                                <option value="+57">🇨🇴 +57</option>
+                                <option value="+1">🇺🇸 +1</option>
+                                <option value="+52">🇲🇽 +52</option>
+                                <option value="+34">🇪🇸 +34</option>
+                                <option value="+54">🇦🇷 +54</option>
+                                <option value="+56">🇨🇱 +56</option>
+                                <option value="+51">🇵🇪 +51</option>
+                                <option value="+58">🇻🇪 +58</option>
+                                <option value="+55">🇧🇷 +55</option>
+                                <option value="+593">🇪🇨 +593</option>
+                                <option value="+507">🇵🇦 +507</option>
+                            </select>
+                            <input asp-for="Usuario.Telefono" type="number" class="form-control" placeholder="Número de celular" style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                         </div>
+                        <span asp-validation-for="Usuario.PrefijoTelefono" class="text-danger d-block"></span>
+                        <span asp-validation-for="Usuario.Telefono" class="text-danger d-block"></span>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating">

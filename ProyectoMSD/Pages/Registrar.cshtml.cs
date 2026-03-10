@@ -95,11 +95,11 @@ namespace ProyectoMSD.Pages
                 ModelState.AddModelError("Usuario.Clave", "La contrase�a no puede exceder 50 caracteres.");
 
             // Validar tel�fono
-            if (Usuario.Telefono <= 0)
+            if (string.IsNullOrWhiteSpace(Usuario.Telefono))
                 ModelState.AddModelError("Usuario.Telefono", "El tel�fono debe ser un n�mero v�lido.");
-            else if (Usuario.Telefono.ToString().Length < 7)
+            else if (Usuario.Telefono.Trim().Length < 7)
                 ModelState.AddModelError("Usuario.Telefono", "El tel�fono debe tener al menos 7 d�gitos.");
-            else if (Usuario.Telefono.ToString().Length > 15)
+            else if (Usuario.Telefono.Trim().Length > 15)
                 ModelState.AddModelError("Usuario.Telefono", "El tel�fono no puede exceder 15 d�gitos.");
 
             // Validar ubicaci�n

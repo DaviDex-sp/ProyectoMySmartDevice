@@ -82,13 +82,29 @@
                             <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
                         </div>
 
-                        <!-- Teléfono -->
-                        <div class="form-group">
+                        <!-- Teléfono Móvil -->
+                        <div class="form-group mb-3">
                             <label class="form-label">
-                                <i class="fas fa-phone me-1 text-primary"></i>Teléfono
+                                <i class="fas fa-phone me-1 text-primary"></i>Teléfono Móvil
                             </label>
-                            <input asp-for="Usuario.Telefono" class="form-control" placeholder="+57 (314) 328 40 52" />
-                            <span asp-validation-for="Usuario.Telefono" class="text-danger"></span>
+                            <div class="input-group">
+                                <select asp-for="Usuario.PrefijoTelefono" class="form-select text-center" style="max-width: 130px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                                    <option value="+57">🇨🇴 +57</option>
+                                    <option value="+1">🇺🇸 +1</option>
+                                    <option value="+52">🇲🇽 +52</option>
+                                    <option value="+34">🇪🇸 +34</option>
+                                    <option value="+54">🇦🇷 +54</option>
+                                    <option value="+56">🇨🇱 +56</option>
+                                    <option value="+51">🇵🇪 +51</option>
+                                    <option value="+58">🇻🇪 +58</option>
+                                    <option value="+55">🇧🇷 +55</option>
+                                    <option value="+593">🇪🇨 +593</option>
+                                    <option value="+507">🇵🇦 +507</option>
+                                </select>
+                                <input asp-for="Usuario.Telefono" type="number" class="form-control" placeholder="Número de celular" style="border-top-left-radius: 0; border-bottom-left-radius: 0;" />
+                            </div>
+                            <span asp-validation-for="Usuario.PrefijoTelefono" class="text-danger d-block mt-1"></span>
+                            <span asp-validation-for="Usuario.Telefono" class="text-danger d-block mt-1"></span>
                         </div>
 
                         <!-- Correo -->

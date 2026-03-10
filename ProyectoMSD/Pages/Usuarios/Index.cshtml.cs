@@ -59,7 +59,7 @@ namespace ProyectoMSD.Pages.Usuarios
                 if (currentUser != null)
                 {
                     // Determinar si falta información que generalmente no se obtiene de Google
-                    if (currentUser.Documento == 0 || currentUser.Telefono == 0)
+                    if (currentUser.Documento == 0 || string.IsNullOrWhiteSpace(currentUser.Telefono) || currentUser.Telefono == "0")
                     {
                         RequiereInformacionBasica = true;
                     }
