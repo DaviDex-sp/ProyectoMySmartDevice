@@ -9,17 +9,18 @@ using ProyectoMSD.Modelos;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using ProyectoMSD.Interfaces;
 
 namespace ProyectoMSD.Pages.Usuarios
 {
     [Authorize(Roles = "Admin")]
     public class DeleteModel : PageModel
     {
-        private readonly ProyectoMSD.Modelos.AppDbContext _context;
+        private readonly IUsuarioService _usuarioService;
 
-        public DeleteModel(ProyectoMSD.Modelos.AppDbContext context)
+        public DeleteModel(IUsuarioService usuarioService)
         {
-            _context = context;
+            _usuarioService = usuarioService;
         }
 
         [BindProperty]
@@ -32,7 +33,7 @@ namespace ProyectoMSD.Pages.Usuarios
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
+            var usuario = await _usuarioService.GetUsuarioByIdAsync(id.Value);
 
             if (usuario is not null)
             {
@@ -51,13 +52,7 @@ namespace ProyectoMSD.Pages.Usuarios
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario != null)
-            {
-                Usuario = usuario;
-                _context.Usuarios.Remove(Usuario);
-                await _context.SaveChangesAsync();
-            }
+            await _usuarioService.DeleteUsuarioAsync(id.Value);
 
             return RedirectToPage("./Index");
         }

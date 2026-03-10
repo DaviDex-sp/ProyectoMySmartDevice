@@ -8,16 +8,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using ProyectoMSD.Interfaces;
 
 namespace ProyectoMSD.Pages.Usuarios
 {
     public class EditModel : PageModel
     {
-        private readonly ProyectoMSD.Modelos.AppDbContext _context;
+        private readonly IUsuarioService _usuarioService;
 
-        public EditModel(ProyectoMSD.Modelos.AppDbContext context)
+        public EditModel(IUsuarioService usuarioService)
         {
-            _context = context;
+            _usuarioService = usuarioService;
         }
 
         [BindProperty]
@@ -30,7 +31,7 @@ namespace ProyectoMSD.Pages.Usuarios
                 return NotFound();
             }
 
-            var usuario =  await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
+            var usuario =  await _usuarioService.GetUsuarioByIdAsync(id.Value);
             if (usuario == null)
             {
                 return NotFound();
@@ -47,22 +48,21 @@ namespace ProyectoMSD.Pages.Usuarios
             {
                 return Page();
             }
-            //HASHEO CONTRASEÑA
-            byte[] salt = new byte[0];
-            // Crear hash con PBKDF2
-            var pbkdf2 = new Rfc2898DeriveBytes(Usuario.Clave, salt, 100_000, HashAlgorithmName.SHA256);
-            byte[] hash = pbkdf2.GetBytes(32);
-            Usuario.Clave = Convert.ToBase64String(salt) + ":" + Convert.ToBase64String(hash);
-
-            _context.Attach(Usuario).State = EntityState.Modified;
+            
+            // Si la clave viene nula o vacía (el usuario no la cambió en el form), mantenerla (aquí dependería de la lógica de UI, asumo que se reasigna o hash si cambió)
+            if (Usuario.Clave != null && !Usuario.Clave.Contains(":")) 
+            {
+                Usuario.Clave = _usuarioService.HashPassword(Usuario.Clave);
+            }
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _usuarioService.UpdateUsuarioAsync(Usuario);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsuarioExists(Usuario.Id))
+                var exists = await _usuarioService.GetUsuarioByIdAsync(Usuario.Id) != null;
+                if (!exists)
                 {
                     return NotFound();
                 }
@@ -73,11 +73,6 @@ namespace ProyectoMSD.Pages.Usuarios
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool UsuarioExists(int id)
-        {
-            return _context.Usuarios.Any(e => e.Id == id);
         }
     }
 }

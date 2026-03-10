@@ -13,6 +13,9 @@ builder.Services.AddRazorPages(options =>
 });
 builder.Services.AddScoped<NotificacionNavbarFilter>();
 
+// Registrar la capa de Servicios del Módulo de Usuarios
+builder.Services.AddScoped<ProyectoMSD.Interfaces.IUsuarioService, ProyectoMSD.Services.UsuarioService>();
+
 // Configuración de Autenticación Múltiple (Cookies locales + Google)
 builder.Services.AddAuthentication(options =>
     {

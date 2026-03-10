@@ -8,19 +8,20 @@ using ProyectoMSD.Modelos;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication.Google;
+using ProyectoMSD.Interfaces;
 
 namespace ProyectoMSD.Pages
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly AppDbContext _db;
+        private readonly IUsuarioService _usuarioService;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(ILogger<LoginModel> logger, AppDbContext appDbContext)
+        public LoginModel(ILogger<LoginModel> logger, IUsuarioService usuarioService)
         {
             _logger = logger;
-            _db = appDbContext;
+            _usuarioService = usuarioService;
         }
 
         [BindProperty]
@@ -32,17 +33,10 @@ namespace ProyectoMSD.Pages
         {
         }
 
+
         public async Task<IActionResult> OnPostAsync()
         {
-            // Hasheo de contraseña con PBKDF2
-            byte[] salt = new byte[0];
-            var pbkdf2 = new Rfc2898DeriveBytes(Password, salt, 100_000, HashAlgorithmName.SHA256);
-            byte[] hash = pbkdf2.GetBytes(32);
-            Password = Convert.ToBase64String(salt) + ":" + Convert.ToBase64String(hash);
-
-            var usuario = _db.Usuarios
-                .Where(x => x.Correo == Correo && x.Clave == Password)
-                .FirstOrDefault();
+            var usuario = await _usuarioService.AuthenticateAsync(Correo, Password);
 
             if (usuario != null)
             {
@@ -67,17 +61,12 @@ namespace ProyectoMSD.Pages
                 // Registrar el acceso en la tabla de seguimiento
                 try
                 {
-                    var registro = new RegistroAcceso
-                    {
-                        IdUsuarios = usuario.Id,
-                        FechaAcceso = DateTime.Now,
-                        TipoAccion = "Login",
-                        DireccionIp = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                        Navegador = Request.Headers["User-Agent"].ToString(),
-                        PaginaVisitada = "/Login"
-                    };
-                    _db.RegistroAccesos.Add(registro);
-                    await _db.SaveChangesAsync();
+                    await _usuarioService.RegisterAccessAsync(
+                        usuario.Id, 
+                        "Login", 
+                        HttpContext.Connection.RemoteIpAddress?.ToString(), 
+                        Request.Headers["User-Agent"].ToString(), 
+                        "/Login");
                 }
                 catch (Exception ex)
                 {
@@ -117,28 +106,8 @@ namespace ProyectoMSD.Pages
                 return Page();
             }
 
-            // Buscar usuario en DB
-            var usuario = _db.Usuarios.FirstOrDefault(x => x.Correo == email);
-
-            if (usuario == null)
-            {
-                // Crear nuevo usuario con valores por defecto
-                usuario = new Usuario
-                {
-                    Nombre = name ?? "Usuario Google",
-                    Correo = email,
-                    Clave = "[Autenticado por Google]",
-                    Rol = "Usuario",
-                    Telefono = 0,
-                    Ubicacion = "Por Defecto",
-                    Permisos = "Basico",
-                    Acesso = "Activo",
-                    Documento = 0
-                };
-
-                _db.Usuarios.Add(usuario);
-                await _db.SaveChangesAsync();
-            }
+            // Buscar/Crear usuario en DB mediante servicio
+            var usuario = await _usuarioService.AuthenticateGoogleAsync(email, name);
 
             // Crear claims y hacer SignIn local
             var claims = new List<Claim>
@@ -163,17 +132,12 @@ namespace ProyectoMSD.Pages
             // Registrar el acceso en la tabla de seguimiento
             try
             {
-                var registro = new RegistroAcceso
-                {
-                    IdUsuarios = usuario.Id,
-                    FechaAcceso = DateTime.Now,
-                    TipoAccion = "Login Google",
-                    DireccionIp = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                    Navegador = Request.Headers["User-Agent"].ToString(),
-                    PaginaVisitada = "/Login"
-                };
-                _db.RegistroAccesos.Add(registro);
-                await _db.SaveChangesAsync();
+                await _usuarioService.RegisterAccessAsync(
+                    usuario.Id, 
+                    "Login Google", 
+                    HttpContext.Connection.RemoteIpAddress?.ToString(), 
+                    Request.Headers["User-Agent"].ToString(), 
+                    "/Login");
             }
             catch (Exception ex)
             {

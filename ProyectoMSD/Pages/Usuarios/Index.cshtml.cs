@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ProyectoMSD.Modelos;
+using ProyectoMSD.Interfaces;
 
 namespace ProyectoMSD.Pages.Usuarios
 {
@@ -15,10 +16,12 @@ namespace ProyectoMSD.Pages.Usuarios
     public class IndexModel : PageModel
     {
         private readonly ProyectoMSD.Modelos.AppDbContext _context;
+        private readonly IUsuarioService _usuarioService;
 
-        public IndexModel(ProyectoMSD.Modelos.AppDbContext context) 
+        public IndexModel(ProyectoMSD.Modelos.AppDbContext context, IUsuarioService usuarioService) 
         {
             _context = context;
+            _usuarioService = usuarioService;
         }
 
         public IList<Usuario> Usuario { get;set; } = default!;
@@ -38,7 +41,7 @@ namespace ProyectoMSD.Pages.Usuarios
         public async Task OnGetAsync()
         {
             // Cargar TODOS los datos que necesitas
-            Usuario = await _context.Usuarios.ToListAsync();
+            Usuario = await _usuarioService.GetAllUsuariosAsync();
 
             // Si tienes modelo Espacio
             Espacios = await _context.Espacios  // ← Incluye dispositivos relacionados

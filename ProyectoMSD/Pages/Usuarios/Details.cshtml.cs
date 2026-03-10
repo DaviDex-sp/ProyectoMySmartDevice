@@ -6,16 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ProyectoMSD.Modelos;
+using ProyectoMSD.Interfaces;
 
 namespace ProyectoMSD.Pages.Usuarios
 {
     public class DetailsModel : PageModel
     {
-        private readonly ProyectoMSD.Modelos.AppDbContext _context;
+        private readonly IUsuarioService _usuarioService;
 
-        public DetailsModel(ProyectoMSD.Modelos.AppDbContext context)
+        public DetailsModel(IUsuarioService usuarioService)
         {
-            _context = context;
+            _usuarioService = usuarioService;
         }
 
         public Usuario Usuario { get; set; } = default!;
@@ -27,7 +28,7 @@ namespace ProyectoMSD.Pages.Usuarios
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(m => m.Id == id);
+            var usuario = await _usuarioService.GetUsuarioByIdAsync(id.Value);
 
             if (usuario is not null)
             {

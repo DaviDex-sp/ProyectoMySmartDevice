@@ -3,16 +3,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ProyectoMSD.Modelos;
 using System.Security.Cryptography;
+using ProyectoMSD.Interfaces;
 
 namespace ProyectoMSD.Pages
 {
     public class RegistrarModel : PageModel
     {
-        private readonly AppDbContext _context;
+        private readonly IUsuarioService _usuarioService;
 
-        public RegistrarModel(AppDbContext context)
+        public RegistrarModel(IUsuarioService usuarioService)
         {
-            _context = context;
+            _usuarioService = usuarioService;
         }
 
         [BindProperty]
@@ -37,30 +38,24 @@ namespace ProyectoMSD.Pages
             {
                 return Page();
             }
-            //HASHEO CONTRASEÑA
-            byte[] salt = new byte[0];
-            // Crear hash con PBKDF2
-            var pbkdf2 = new Rfc2898DeriveBytes(Usuario.Clave, salt, 100_000, HashAlgorithmName.SHA256);
-            byte[] hash = pbkdf2.GetBytes(32);
-            Usuario.Clave = Convert.ToBase64String(salt) + ":" + Convert.ToBase64String(hash);
           
             try
             {
                 // Limpiar y formatear datos
                 LimpiarDatos();
 
-                // FORZAR valores seguros para registro público (SIEMPRE)
+                // FORZAR valores seguros para registro pÃºblico (SIEMPRE)
                 Usuario.Permisos = "limitado";      // SIEMPRE limitado
                 Usuario.Acesso = "pendiente";       // SIEMPRE pendiente 
-                _context.Usuarios.Add(Usuario);
-                await _context.SaveChangesAsync();
+                
+                await _usuarioService.CreateUsuarioAsync(Usuario);
 
-                TempData["SuccessMessage"] = "¡Cuenta creada exitosamente! Tu cuenta está pendiente de activación por un administrador.";
+                TempData["SuccessMessage"] = "Â¡Cuenta creada exitosamente! Tu cuenta estÃ¡ pendiente de activaciÃ³n por un administrador.";
                 return RedirectToPage("/Index");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, "Error al crear la cuenta. Inténtalo de nuevo.");
+                ModelState.AddModelError(string.Empty, "Error al crear la cuenta. IntÃ©ntalo de nuevo.");
                 return Page();
             }
         }
@@ -79,54 +74,52 @@ namespace ProyectoMSD.Pages
             if (string.IsNullOrWhiteSpace(Usuario.Correo))
                 ModelState.AddModelError("Usuario.Correo", "El correo es obligatorio.");
             else if (!EsEmailValido(Usuario.Correo))
-                ModelState.AddModelError("Usuario.Correo", "El formato del correo no es válido.");
+                ModelState.AddModelError("Usuario.Correo", "El formato del correo no es vï¿½lido.");
             else if (Usuario.Correo.Length > 200)
                 ModelState.AddModelError("Usuario.Correo", "El correo no puede exceder 200 caracteres.");
             else
             {
                 // Verificar si el correo ya existe
-                var existeCorreo = await _context.Usuarios
-                    .AnyAsync(u => u.Correo.ToLower() == Usuario.Correo.ToLower());
+                var existeCorreo = await _usuarioService.ExisteCorreoAsync(Usuario.Correo);
 
                 if (existeCorreo)
                     ModelState.AddModelError("Usuario.Correo", "Ya existe un usuario con este correo.");
             }
 
-            // Validar contraseña
+            // Validar contraseï¿½a
             if (string.IsNullOrWhiteSpace(Usuario.Clave))
-                ModelState.AddModelError("Usuario.Clave", "La contraseña es obligatoria.");
+                ModelState.AddModelError("Usuario.Clave", "La contraseï¿½a es obligatoria.");
             else if (Usuario.Clave.Length < 6)
-                ModelState.AddModelError("Usuario.Clave", "La contraseña debe tener al menos 6 caracteres.");
+                ModelState.AddModelError("Usuario.Clave", "La contraseï¿½a debe tener al menos 6 caracteres.");
             else if (Usuario.Clave.Length > 50)
-                ModelState.AddModelError("Usuario.Clave", "La contraseña no puede exceder 50 caracteres.");
+                ModelState.AddModelError("Usuario.Clave", "La contraseï¿½a no puede exceder 50 caracteres.");
 
-            // Validar teléfono
+            // Validar telï¿½fono
             if (Usuario.Telefono <= 0)
-                ModelState.AddModelError("Usuario.Telefono", "El teléfono debe ser un número válido.");
+                ModelState.AddModelError("Usuario.Telefono", "El telï¿½fono debe ser un nï¿½mero vï¿½lido.");
             else if (Usuario.Telefono.ToString().Length < 7)
-                ModelState.AddModelError("Usuario.Telefono", "El teléfono debe tener al menos 7 dígitos.");
+                ModelState.AddModelError("Usuario.Telefono", "El telï¿½fono debe tener al menos 7 dï¿½gitos.");
             else if (Usuario.Telefono.ToString().Length > 15)
-                ModelState.AddModelError("Usuario.Telefono", "El teléfono no puede exceder 15 dígitos.");
+                ModelState.AddModelError("Usuario.Telefono", "El telï¿½fono no puede exceder 15 dï¿½gitos.");
 
-            // Validar ubicación
+            // Validar ubicaciï¿½n
             if (string.IsNullOrWhiteSpace(Usuario.Ubicacion))
-                ModelState.AddModelError("Usuario.Ubicacion", "La ubicación es obligatoria.");
+                ModelState.AddModelError("Usuario.Ubicacion", "La ubicaciï¿½n es obligatoria.");
             else if (Usuario.Ubicacion.Length < 3)
-                ModelState.AddModelError("Usuario.Ubicacion", "La ubicación debe tener al menos 3 caracteres.");
+                ModelState.AddModelError("Usuario.Ubicacion", "La ubicaciï¿½n debe tener al menos 3 caracteres.");
             else if (Usuario.Ubicacion.Length > 150)
-                ModelState.AddModelError("Usuario.Ubicacion", "La ubicación no puede exceder 150 caracteres.");
+                ModelState.AddModelError("Usuario.Ubicacion", "La ubicaciï¿½n no puede exceder 150 caracteres.");
 
             // Validar documento si se proporciona
             if (Usuario.Documento.HasValue)
             {
                 if (Usuario.Documento <= 0)
-                    ModelState.AddModelError("Usuario.Documento", "El documento debe ser un número válido.");
+                    ModelState.AddModelError("Usuario.Documento", "El documento debe ser un nï¿½mero vï¿½lido.");
                 else if (Usuario.Documento.ToString().Length < 6)
-                    ModelState.AddModelError("Usuario.Documento", "El documento debe tener al menos 6 dígitos.");
+                    ModelState.AddModelError("Usuario.Documento", "El documento debe tener al menos 6 dï¿½gitos.");
                 else
                 {
-                    var existeDocumento = await _context.Usuarios
-                        .AnyAsync(u => u.Documento == Usuario.Documento.Value);
+                    var existeDocumento = await _usuarioService.ExisteDocumentoAsync(Usuario.Documento.Value);
 
                     if (existeDocumento)
                         ModelState.AddModelError("Usuario.Documento", "Ya existe un usuario con este documento.");
@@ -142,7 +135,7 @@ namespace ProyectoMSD.Pages
                     ModelState.AddModelError("Usuario.Rut", "El RUT no puede exceder 15 caracteres.");
             }
 
-            // Validar rol (aunque sea forzado después)
+            // Validar rol (aunque sea forzado despuï¿½s)
             if (string.IsNullOrWhiteSpace(Usuario.Rol))
                 ModelState.AddModelError("Usuario.Rol", "Debe seleccionar un rol.");
         }
