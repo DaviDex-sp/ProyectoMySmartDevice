@@ -100,7 +100,6 @@
     background: rgba(255, 255, 255, 0.4) !important;
     border: 1px solid rgba(255, 255, 255, 0.6) !important;
     border-radius: 16px;
-    padding: 0.85rem 1.2rem;
     font-size: 0.95rem;
     color: #495057;
     backdrop-filter: blur(10px);
@@ -121,6 +120,28 @@
 .form-body .form-floating label {
     color: #6c757d;
     font-weight: 500;
+}
+
+/* Fix input phone group container aligning with floating labels */
+.custom-phone-group {
+    height: calc(3.5rem + 2px); 
+}
+
+.custom-phone-group .form-control, 
+.custom-phone-group .form-select {
+    height: 100%;
+}
+
+/* Hide number input spinners */
+.form-body input[type="number"]::-webkit-outer-spin-button,
+.form-body input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form-body input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .btn-register {
