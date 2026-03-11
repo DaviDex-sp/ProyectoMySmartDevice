@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model ProyectoMSD.Pages.Usuarios.DetailsModel
 
 @{
@@ -43,7 +43,7 @@
             @Html.DisplayNameFor(model => model.Usuario.Telefono)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Usuario.Telefono)
+            @(ProyectoMSD.Helpers.TelefonoHelper.ObtenerPrefijoConBandera(Model.Usuario.PrefijoTelefono)) @Html.DisplayFor(model => model.Usuario.Telefono)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Usuario.Ubicacion)

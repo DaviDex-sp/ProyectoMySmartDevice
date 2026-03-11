@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model ProyectoMSD.Pages.Usuarios.IndexModel
 
 @{
@@ -143,7 +143,7 @@
                                                 <span class="badge @rolClass">@Html.DisplayFor(modelItem => item.Rol)</span>
                                             </p>
                                             <p class="mb-1 text-muted">
-                                                <i class="fas fa-phone me-2"></i>@Html.DisplayFor(modelItem => item.Telefono)
+                                                <i class="fas fa-phone me-2"></i>@(ProyectoMSD.Helpers.TelefonoHelper.ObtenerPrefijoConBandera(item.PrefijoTelefono)) @Html.DisplayFor(modelItem => item.Telefono)
                                             </p>
                                             <p class="mb-1 text-muted">
                                                 <i class="fas fa-map-marker-alt me-2"></i>@Html.DisplayFor(modelItem => item.Ubicacion)

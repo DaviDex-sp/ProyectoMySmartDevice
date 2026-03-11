@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model ProyectoMSD.Pages.Usuarios.CreateModel
 
         @{
@@ -274,7 +274,7 @@
                 previewRol.className = `badge ${rolClass}`;
 
                 // Actualizar teléfono
-                const prefijo = inputPrefijoTelefono.value || '+57';
+                const prefijo = inputPrefijoTelefono.options[inputPrefijoTelefono.selectedIndex]?.text || '+57';
                 previewTelefono.textContent = inputTelefono.value ? `${prefijo} ${inputTelefono.value}` : '000000000';
 
                 // Actualizar ubicación

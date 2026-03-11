@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model ProyectoMSD.Pages.Soportes.IndexModel
 
 @{
@@ -135,10 +135,30 @@
 
         @if (Model.Soporte != null && Model.Soporte.Any())
         {
+            <div class="mb-4">
+                <div class="row align-items-center bg-white p-3 rounded-3 shadow-sm" style="border-left: 4px solid #3b82f6;">
+                    <div class="col-md-5 mb-2 mb-md-0">
+                        <h5 class="mb-0 fw-bold text-primary"><i class="fas fa-filter me-2"></i>Filtro Rápido</h5>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-search text-muted"></i>
+                            </span>
+                            <input type="text" id="ticketSearchInput" class="form-control border-start-0 ps-0" placeholder="Buscar por número de ticket (Ej. 1)..." onkeyup="filterTickets()" style="box-shadow: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive">
-                <table class="table support-table">
+                <table class="table support-table" id="ticketsTable">
                     <thead>
                         <tr>
+                            @if (esAdmin)
+                            {
+                                <th><i class="fas fa-hashtag me-2"></i>ID Ticket</th>
+                            }
                             <th><i class="fas fa-calendar me-2"></i>Fecha</th>
                             <th><i class="fas fa-file-alt me-2"></i>Descripción</th>
                             <th><i class="fas fa-tag me-2"></i>Tipo</th>
@@ -156,6 +176,12 @@
                             bool esPendiente = string.IsNullOrWhiteSpace(item.Respuesta)
                                                || item.Respuesta == "Pendiente";
                             <tr>
+                                @if (esAdmin)
+                                {
+                                    <td>
+                                        <span class="badge bg-secondary">#@item.Id</span>
+                                    </td>
+                                }
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <i class="fas fa-calendar-alt me-2 text-muted"></i>
@@ -283,4 +309,33 @@
         console.log('Página de soporte cargada — Rol: @(esAdmin ? "Admin" : "Usuario")');
         console.log('Total de tickets:', @Model.Soporte.Count());
     });
+
+    function filterTickets() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("ticketSearchInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("ticketsTable");
+        tr = table.getElementsByTagName("tr");
+        
+        var isSearchAdmin = @(esAdmin.ToString().ToLower());
+
+        for (i = 1; i < tr.length; i++) {
+            // Buscamos en la primera columna si es Admin (que contiene el ID), o en alguna celda relevante
+            if (isSearchAdmin) {
+                td = tr[i].getElementsByTagName("td")[0]; // Columna ID Ticket
+            } else {
+                // Para usuarios normales, podrían buscar por descripción (1ra columna es Fecha, 2da Descripcion)
+                td = tr[i].getElementsByTagName("td")[1];
+            }
+            
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
 </script>

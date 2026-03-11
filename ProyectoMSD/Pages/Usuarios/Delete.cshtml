@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model ProyectoMSD.Pages.Usuarios.DeleteModel
 
 @{
@@ -85,7 +85,7 @@
                             <i class="fas fa-phone"></i>
                             Teléfono
                         </div>
-                        <div class="info-value">@Html.DisplayFor(model => model.Usuario.Telefono)</div>
+                        <div class="info-value">@(ProyectoMSD.Helpers.TelefonoHelper.ObtenerPrefijoConBandera(Model.Usuario.PrefijoTelefono)) @Html.DisplayFor(model => model.Usuario.Telefono)</div>
                     </div>
 
                     <div class="info-item">
