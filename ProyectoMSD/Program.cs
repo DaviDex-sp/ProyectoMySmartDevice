@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google; // Agregado para Google
 using Microsoft.EntityFrameworkCore;
 using ProyectoMSD.Modelos;
@@ -15,6 +15,9 @@ builder.Services.AddScoped<NotificacionNavbarFilter>();
 
 // Registrar la capa de Servicios del Módulo de Usuarios
 builder.Services.AddScoped<ProyectoMSD.Interfaces.IUsuarioService, ProyectoMSD.Services.UsuarioService>();
+
+// Registrar la capa de Servicios del Dashboard (Métricas)
+builder.Services.AddScoped<ProyectoMSD.Interfaces.IDashboardService, ProyectoMSD.Services.DashboardService>();
 
 // Configuración de Autenticación Múltiple (Cookies locales + Google)
 builder.Services.AddAuthentication(options =>

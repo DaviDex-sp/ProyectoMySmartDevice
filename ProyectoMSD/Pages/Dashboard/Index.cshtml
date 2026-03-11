@@ -13,8 +13,8 @@
 <div class="dashboard-header">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
-            <h1><i class="fas fa-shield-alt me-2"></i>Dashboard Administrativo</h1>
-            <p>Panel de control y métricas del sistema MySmartDevice</p>
+            <h1><i class="fas fa-chart-line me-2"></i>Dashboard y Métricas Reales</h1>
+            <p>Panel analítico de MySmartDevice</p>
         </div>
         <div class="header-badge">
             <i class="fas fa-circle text-success" style="font-size:0.5rem;"></i>
@@ -27,219 +27,185 @@
 <div class="kpi-grid">
     <div class="kpi-card blue">
         <div class="kpi-icon blue"><i class="fas fa-users"></i></div>
-        <div class="kpi-value">@Model.TotalUsuarios</div>
+        <div class="kpi-value">@Model.Metrics.TotalUsuarios</div>
         <div class="kpi-label">Usuarios Registrados</div>
     </div>
+    <div class="kpi-card pink">
+        <div class="kpi-icon pink"><i class="fas fa-sign-in-alt"></i></div>
+        <div class="kpi-value">@Model.Metrics.IngresosUltimoMes</div>
+        <div class="kpi-label">Ingresos Último Mes</div>
+    </div>
     <div class="kpi-card green">
-        <div class="kpi-icon green"><i class="fas fa-mobile-alt"></i></div>
-        <div class="kpi-value">@Model.TotalDispositivos</div>
-        <div class="kpi-label">Dispositivos</div>
+        <div class="kpi-icon green"><i class="fas fa-stopwatch"></i></div>
+        <div class="kpi-value">@Model.Metrics.TiempoPromedioSesionMinutos m</div>
+        <div class="kpi-label">Promedio de Sesión</div>
     </div>
     <div class="kpi-card purple">
         <div class="kpi-icon purple"><i class="fas fa-building"></i></div>
-        <div class="kpi-value">@Model.TotalPropiedades</div>
-        <div class="kpi-label">Propiedades</div>
-    </div>
-    <div class="kpi-card cyan">
-        <div class="kpi-icon cyan"><i class="fas fa-map-marked-alt"></i></div>
-        <div class="kpi-value">@Model.TotalEspacios</div>
-        <div class="kpi-label">Espacios</div>
+        <div class="kpi-value">@Model.Metrics.TotalPropiedades</div>
+        <div class="kpi-label">Propiedades (Casas/Edificos)</div>
     </div>
     <div class="kpi-card orange">
         <div class="kpi-icon orange"><i class="fas fa-ticket-alt"></i></div>
-        <div class="kpi-value">@Model.TotalSoportes</div>
+        <div class="kpi-value">@Model.Metrics.TotalSoportes</div>
         <div class="kpi-label">Total Soportes</div>
     </div>
     <div class="kpi-card red">
         <div class="kpi-icon red"><i class="fas fa-exclamation-circle"></i></div>
-        <div class="kpi-value">@Model.SoportesPendientes</div>
+        <div class="kpi-value">@Model.Metrics.SoportesPendientes</div>
         <div class="kpi-label">Soportes Pendientes</div>
+    </div>
+    <div class="kpi-card cyan">
+        <div class="kpi-icon cyan"><i class="fas fa-mobile-alt"></i></div>
+        <div class="kpi-value">@Model.Metrics.TotalDispositivos</div>
+        <div class="kpi-label">Dispositivos Inteligentes</div>
     </div>
     <div class="kpi-card indigo">
         <div class="kpi-icon indigo"><i class="fas fa-cogs"></i></div>
-        <div class="kpi-value">@Model.TotalConfiguraciones</div>
-        <div class="kpi-label">Configuraciones</div>
-    </div>
-    <div class="kpi-card pink">
-        <div class="kpi-icon pink"><i class="fas fa-sign-in-alt"></i></div>
-        <div class="kpi-value">@Model.TotalAccesosHoy</div>
-        <div class="kpi-label">Accesos Hoy</div>
+        <div class="kpi-value">@Model.Metrics.TotalConfiguraciones</div>
+        <div class="kpi-label">Configuraciones Guardadas</div>
     </div>
 </div>
 
 <!-- Charts Row -->
 <div class="charts-grid">
     <!-- Accesos últimos 7 días -->
-    <div class="chart-card">
-        <h3><i class="fas fa-chart-line"></i>Accesos — Últimos 7 Días</h3>
+    <div class="chart-card chart-wide">
+        <h3><i class="fas fa-wave-square"></i>Accesos Exitosos — Últimos 7 Días</h3>
         <div class="chart-container">
             <canvas id="chartAccesos"></canvas>
         </div>
     </div>
 
-    <!-- Dispositivos por tipo -->
+    <!-- Navegadores -->
     <div class="chart-card">
-        <h3><i class="fas fa-chart-pie"></i>Dispositivos por Tipo</h3>
+        <h3><i class="fas fa-globe"></i>Navegadores Más Usados</h3>
         <div class="chart-container">
-            <canvas id="chartDispTipo"></canvas>
+            <canvas id="chartNavegadores"></canvas>
         </div>
     </div>
 
-    <!-- Soportes por tipo -->
+    <!-- Páginas -->
     <div class="chart-card">
-        <h3><i class="fas fa-chart-bar"></i>Soportes por Tipo</h3>
+        <h3><i class="fas fa-mouse-pointer"></i>Páginas Más Visitadas</h3>
         <div class="chart-container">
-            <canvas id="chartSopTipo"></canvas>
+            <canvas id="chartPaginas"></canvas>
         </div>
     </div>
 
-    <!-- Usuarios por rol -->
+    <!-- Demografía: Ubicación -->
     <div class="chart-card">
-        <h3><i class="fas fa-user-shield"></i>Usuarios por Rol</h3>
+        <h3><i class="fas fa-map-marker-alt"></i>Demografía por Ciudad</h3>
         <div class="chart-container">
-            <canvas id="chartUsrRol"></canvas>
+            <canvas id="chartUbicacion"></canvas>
         </div>
     </div>
 
-    <!-- Dispositivos por estado -->
+    <!-- Demografía: Rol -->
     <div class="chart-card">
-        <h3><i class="fas fa-toggle-on"></i>Dispositivos por Estado</h3>
+        <h3><i class="fas fa-id-badge"></i>Demografía por Tipo Cliente (Rol)</h3>
         <div class="chart-container">
-            <canvas id="chartDispEstado"></canvas>
+            <canvas id="chartRol"></canvas>
         </div>
     </div>
 
-    <!-- Propiedades por tipo -->
+    <!-- Dispositivos -->
     <div class="chart-card">
-        <h3><i class="fas fa-home"></i>Propiedades por Tipo</h3>
+        <h3><i class="fas fa-plug"></i>Dispositivos por Tipo</h3>
         <div class="chart-container">
-            <canvas id="chartPropTipo"></canvas>
+            <canvas id="chartDispositivos"></canvas>
         </div>
     </div>
 </div>
 
 <!-- Data Tables -->
-<div class="tables-grid">
+<div class="row mt-4">
     <!-- Últimos Accesos -->
-    <div class="data-table-card">
-        <h3><i class="fas fa-history"></i>Últimos Accesos</h3>
-        <div class="table-responsive">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>Usuario</th>
-                        <th>Fecha</th>
-                        <th>Acción</th>
-                        <th>IP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.UltimosAccesos.Any())
-                    {
-                        @foreach (var acceso in Model.UltimosAccesos)
+    <div class="col-lg-6 mb-4">
+        <div class="data-table-card h-100">
+            <h3><i class="fas fa-history"></i>Últimos Accesos (Monitor Real-Time)</h3>
+            <div class="table-responsive">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Acción</th>
+                            <th>IP</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Metrics.UltimosAccesos.Any())
                         {
-                            <tr>
-                                <td><i class="fas fa-user me-1 text-primary"></i>@(acceso.IdUsuariosNavigation?.Nombre ?? "N/A")</td>
-                                <td>@acceso.FechaAcceso.ToString("dd/MM/yy HH:mm")</td>
-                                <td>
-                                    @if (acceso.TipoAccion == "Login")
-                                    {
-                                        <span class="badge bg-success">Login</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">Logout</span>
-                                    }
-                                </td>
-                                <td><code>@(acceso.DireccionIp ?? "—")</code></td>
-                            </tr>
+                            @foreach (var acceso in Model.Metrics.UltimosAccesos)
+                            {
+                                <tr>
+                                    <td><i class="fas fa-user me-1 text-primary"></i>@acceso.NombreUsuario</td>
+                                    <td>
+                                        @if (acceso.TipoAccion == "Login")
+                                        {
+                                            <span class="badge bg-success">Login</span>
+                                        }
+                                        else if (acceso.TipoAccion == "Logout")
+                                        {
+                                            <span class="badge bg-secondary">Logout</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info">@acceso.TipoAccion</span>
+                                        }
+                                    </td>
+                                    <td><code>@acceso.Ip</code></td>
+                                    <td class="text-muted" style="font-size:0.85rem;">@acceso.Fecha.ToString("dd/MM/yy HH:mm:")</td>
+                                </tr>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <tr><td colspan="4" class="text-center text-muted py-3">Sin registros de acceso aún</td></tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Usuarios Más Activos -->
-    <div class="data-table-card">
-        <h3><i class="fas fa-trophy"></i>Usuarios Más Activos</h3>
-        <div class="table-responsive">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Usuario</th>
-                        <th>Accesos</th>
-                        <th>Último</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.UsuariosMasActivos.Any())
-                    {
-                        var rank = 1;
-                        @foreach (var usr in Model.UsuariosMasActivos)
+                        else
                         {
-                            <tr>
-                                <td>
-                                    @if (rank == 1) { <span class="badge bg-warning text-dark">🥇</span> }
-                                    else if (rank == 2) { <span class="badge bg-secondary">🥈</span> }
-                                    else if (rank == 3) { <span class="badge bg-dark">🥉</span> }
-                                    else { <span class="badge bg-light text-dark">@rank</span> }
-                                </td>
-                                <td>@usr.Nombre</td>
-                                <td><strong>@usr.TotalAccesos</strong></td>
-                                <td>@usr.UltimoAcceso.ToString("dd/MM/yy")</td>
-                            </tr>
-                            rank++;
+                            <tr><td colspan="4" class="text-center text-muted py-3">Sin registros de acceso aún</td></tr>
                         }
-                    }
-                    else
-                    {
-                        <tr><td colspan="4" class="text-center text-muted py-3">Sin datos de actividad</td></tr>
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <!-- Últimos Soportes -->
-    <div class="data-table-card">
-        <h3><i class="fas fa-headset"></i>Últimos Tickets de Soporte</h3>
-        <div class="table-responsive">
-            <table class="dashboard-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tipo</th>
-                        <th>Usuario</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var sop in Model.UltimosSoportes)
-                    {
+    <div class="col-lg-6 mb-4">
+        <div class="data-table-card h-100">
+            <h3><i class="fas fa-headset"></i>Últimos Tickets de Soporte</h3>
+            <div class="table-responsive">
+                <table class="dashboard-table">
+                    <thead>
                         <tr>
-                            <td>#@sop.Id</td>
-                            <td>@sop.Tipo</td>
-                            <td>@(sop.IdUsuariosNavigation?.Nombre ?? "N/A")</td>
-                            <td>
-                                @if (!string.IsNullOrEmpty(sop.Respuesta))
-                                {
-                                    <span class="badge bg-success">Respondido</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning text-dark">Pendiente</span>
-                                }
-                            </td>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Usuario</th>
+                            <th>Estado</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var sop in Model.Metrics.UltimosSoportes)
+                        {
+                            <tr>
+                                <td>#@sop.Id</td>
+                                <td>@sop.Tipo</td>
+                                <td>@(sop.IdUsuariosNavigation?.Nombre ?? "N/A")</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(sop.Respuesta))
+                                    {
+                                        <span class="badge bg-success">Respondido</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Pendiente</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -248,28 +214,29 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
 <script>
-    // Paleta de colores profesional
-    const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#6366f1'];
-    const COLORS_SOFT = ['rgba(59,130,246,0.7)', 'rgba(16,185,129,0.7)', 'rgba(245,158,11,0.7)', 'rgba(239,68,68,0.7)', 'rgba(139,92,246,0.7)', 'rgba(6,182,212,0.7)', 'rgba(236,72,153,0.7)', 'rgba(99,102,241,0.7)'];
+    // Paleta de colores Modern Glassmorphism
+    const COLORS = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981', '#06b6d4', '#ef4444', '#6366f1'];
+    const COLORS_SOFT = ['rgba(59,130,246,0.6)', 'rgba(139,92,246,0.6)', 'rgba(236,72,153,0.6)', 'rgba(245,158,11,0.6)', 'rgba(16,185,129,0.6)', 'rgba(6,182,212,0.6)', 'rgba(239,68,68,0.6)', 'rgba(99,102,241,0.6)'];
 
     Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
     Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.color = '#64748b';
 
-    // 1. Accesos últimos 7 días (Línea)
-    const accesosData = @Html.Raw(Model.AccesosPorDiaJson);
+    // 1. Accesos Día (Línea)
+    const accesosData = @Html.Raw(Model.AccesosDiaJson);
     new Chart(document.getElementById('chartAccesos'), {
         type: 'line',
         data: {
             labels: accesosData.labels,
             datasets: [{
-                label: 'Logins',
+                label: 'Ingresos Exitosos',
                 data: accesosData.data,
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59,130,246,0.1)',
+                borderColor: '#8b5cf6',
+                backgroundColor: 'rgba(139,92,246,0.15)',
                 fill: true,
                 tension: 0.4,
                 pointRadius: 6,
-                pointBackgroundColor: '#3b82f6',
+                pointBackgroundColor: '#8b5cf6',
                 pointBorderColor: '#fff',
                 pointBorderWidth: 2,
                 borderWidth: 3
@@ -278,58 +245,58 @@
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
     });
 
-    // 2. Dispositivos por Tipo (Donut)
-    const dispTipoData = @Html.Raw(Model.DispositivosPorTipoJson);
-    new Chart(document.getElementById('chartDispTipo'), {
+    // 2. Navegadores Más Usados (Doughnut)
+    const navsData = @Html.Raw(Model.NavegadoresJson);
+    new Chart(document.getElementById('chartNavegadores'), {
         type: 'doughnut',
         data: {
-            labels: dispTipoData.labels,
-            datasets: [{ data: dispTipoData.data, backgroundColor: COLORS, borderWidth: 3, borderColor: '#fff' }]
+            labels: navsData.labels,
+            datasets: [{ data: navsData.data, backgroundColor: COLORS, borderWidth: 3, borderColor: '#fff' }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '65%' }
     });
 
-    // 3. Soportes por Tipo (Barras)
-    const sopTipoData = @Html.Raw(Model.SoportesPorTipoJson);
-    new Chart(document.getElementById('chartSopTipo'), {
+    // 3. Páginas Más Visitadas (Bar Horizontal)
+    const paginasData = @Html.Raw(Model.PaginasJson);
+    new Chart(document.getElementById('chartPaginas'), {
         type: 'bar',
         data: {
-            labels: sopTipoData.labels,
-            datasets: [{ label: 'Tickets', data: sopTipoData.data, backgroundColor: COLORS_SOFT, borderColor: COLORS, borderWidth: 2, borderRadius: 8 }]
+            labels: paginasData.labels,
+            datasets: [{ label: 'Visitas', data: paginasData.data, backgroundColor: COLORS_SOFT, borderColor: COLORS, borderWidth: 2, borderRadius: 8 }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true } } }
     });
 
-    // 4. Usuarios por Rol (Pie)
-    const usrRolData = @Html.Raw(Model.UsuariosPorRolJson);
-    new Chart(document.getElementById('chartUsrRol'), {
+    // 4. Ubicación de Clientes (Pie)
+    const ubicacionData = @Html.Raw(Model.UbicacionJson);
+    new Chart(document.getElementById('chartUbicacion'), {
         type: 'pie',
         data: {
-            labels: usrRolData.labels,
-            datasets: [{ data: usrRolData.data, backgroundColor: ['#3b82f6', '#ef4444', '#10b981', '#f59e0b'], borderWidth: 3, borderColor: '#fff' }]
+            labels: ubicacionData.labels,
+            datasets: [{ data: ubicacionData.data, backgroundColor: COLORS.slice().reverse(), borderWidth: 3, borderColor: '#fff' }]
         },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
     });
 
-    // 5. Dispositivos por Estado (Donut)
-    const dispEstadoData = @Html.Raw(Model.DispositivosPorEstadoJson);
-    new Chart(document.getElementById('chartDispEstado'), {
+    // 5. Demografía Rol (Doughnut)
+    const rolData = @Html.Raw(Model.RolJson);
+    new Chart(document.getElementById('chartRol'), {
         type: 'doughnut',
         data: {
-            labels: dispEstadoData.labels,
-            datasets: [{ data: dispEstadoData.data, backgroundColor: ['#10b981', '#ef4444', '#f59e0b', '#6366f1'], borderWidth: 3, borderColor: '#fff' }]
+            labels: rolData.labels,
+            datasets: [{ data: rolData.data, backgroundColor: ['#ec4899', '#3b82f6', '#f59e0b', '#10b981'], borderWidth: 3, borderColor: '#fff' }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, cutout: '50%' }
     });
 
-    // 6. Propiedades por Tipo (Barras Horizontales)
-    const propTipoData = @Html.Raw(Model.PropiedadesPorTipoJson);
-    new Chart(document.getElementById('chartPropTipo'), {
+    // 6. Dispositivos por Tipo (Bar)
+    const dispData = @Html.Raw(Model.DispositivosTipoJson);
+    new Chart(document.getElementById('chartDispositivos'), {
         type: 'bar',
         data: {
-            labels: propTipoData.labels,
-            datasets: [{ label: 'Propiedades', data: propTipoData.data, backgroundColor: COLORS_SOFT, borderColor: COLORS, borderWidth: 2, borderRadius: 8 }]
+            labels: dispData.labels,
+            datasets: [{ label: 'Equipos', data: dispData.data, backgroundColor: COLORS_SOFT, borderColor: COLORS, borderWidth: 2, borderRadius: 8 }]
         },
-        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
     });
 </script>
